@@ -1,0 +1,60 @@
+package asciipanel;
+
+import asciiLib.AsciiPanel;
+
+import javax.swing.JFrame;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class ApplicationMain extends JFrame implements KeyListener {
+    //class that extends jframe to create window for the game
+    private static final long serialVersionUID = 1060623638149583738L;
+
+    private AsciiPanel terminal;
+    private Screen screen;
+
+    public ApplicationMain(){
+        super();
+        terminal = new AsciiPanel();
+        add(terminal);
+        pack();
+        // automatically set the size of the window to accommodate the terminal/contents
+
+        screen = new StartScreen();
+        addKeyListener(this);
+        // allows it to listen for keyboard input
+
+        repaint();
+        //method is overridden to update the display
+    }
+
+    public void repaint(){
+        terminal.clear();
+        screen.displayOutput(terminal);
+        super.repaint();
+        //clears the terminal, displays the content of the current screen,
+        //and then calls super.repaint() to repaint the frame
+    }
+
+    public void keyPressed(KeyEvent e) {
+        screen = screen.respondToUserInput(e);
+        repaint();
+        //When a key is pressed, it updates the current screen in response to user input
+        //and then triggers a repaint (update)
+    }
+
+    public void keyReleased(KeyEvent e) {
+        //null
+    }
+
+    public void keyTyped(KeyEvent e) {
+        //null
+    }
+
+    public static void main(String[] args) {
+        ApplicationMain app = new ApplicationMain();
+        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        app.setVisible(true);
+    }
+
+}
