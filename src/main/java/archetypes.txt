@@ -1,0 +1,6 @@
+[archetypeName,health,mana,physicalAttack,magicalAttack,physicalDefense,magicalDefense]
+Warrior,300,50,80,20,70,50
+Mage,200,150,30,100,20,30
+Rogue,250,75,60,40,50,40
+Paladin,350,100,70,60,80,60
+Archer,240,60,65,50,45,30

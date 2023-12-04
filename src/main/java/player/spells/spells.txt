@@ -1,0 +1,54 @@
+Warrior
+Furious Strike
+- Level Requirement: 10
+- Description: Unleashes a powerful attack, dealing heavy damage to the target.
+- Cool Down: 4 rounds
+
+Shield Wall
+- Level Requirement: 30
+- Description: The Warrior creates an impenetrable barrier with their shield, reducing incoming damage for 3 rounds.
+- Cool Down: 6 rounds
+
+Mage
+Fireball
+- Level Requirement: 10
+- Description: Hurls a fiery projectile at the target, dealing moderate fire damage.
+- Cool Down: 2 rounds
+
+Frost Nova
+- Level Requirement: 30
+- Description: The Mage releases a burst of frost, freezing nearby enemies in place for 2 rounds.
+- Cool Down: 6 rounds
+
+Rogue
+Backstab
+- Level Requirement: 10
+- Description: The Rogue sneaks behind the target, delivering a devastating backstab, causing extra damage and stunning the enemy for 1 round.
+- Cool Down: 3 rounds
+
+Shadowstep
+- Level Requirement: 30
+- Description: The Rogue can evade the next spell or attack from the enemies.
+- Cool Down: 6 rounds
+
+Paladin
+Holy Smite
+- Level Requirement: 10
+- Description: Smashes the target with divine light, dealing damage and healing the Paladin for a portion of the damage dealt.
+- Cool Down: 3 rounds
+
+Divine Shield
+- Level Requirement: 30
+- Description: Creates a protective barrier around the Paladin, rendering them immune to damage for 2 rounds.
+- Cool Down: 6 rounds
+
+Archer
+Rapid Shot
+- Level Requirement: 10
+- Description: Fires a flurry of arrows at the target, dealing moderate damage.
+- Cool Down: 2 rounds
+
+Trick Shot
+- Level Requirement: 30
+- Description: Executes a precise shot that can pierce the enemies, causing heavy damage to the enemy.
+- Cool Down: 6 rounds
