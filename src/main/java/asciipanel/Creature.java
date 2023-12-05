@@ -38,13 +38,27 @@ public class Creature {
     private int hp;
     public int hp() { return hp; }
 
-    private int attackValue;
-    public int attackValue() { return attackValue; }
+    private int maxMp;
+    public int maxMp() { return maxMp; }
 
-    private int maxDefenseValue;
-    public int maxDefenseValue() { return maxDefenseValue; }
-    private int defenseValue;
-    public int defenseValue() { return defenseValue; }
+    private int mp;
+    public int mp() { return mp; }
+
+    private int phyAttack;
+    public int phyAttack() { return phyAttack; }
+    private int magAttack;
+    public int magAttack() { return magAttack; }
+
+    private int maxPhyDefense;
+    public int maxPhyDefense() { return maxPhyDefense; }
+    private int maxMagDefense;
+    public int maxMagDefense() { return maxMagDefense; }
+
+    private int phyDefense;
+    public int phyDefense() { return phyDefense; }
+    private int magDefense;
+    public int magDefense() { return magDefense; }
+
 
     private Inventory inventory;
     public Inventory inventory() { return inventory; }
@@ -64,18 +78,28 @@ public class Creature {
 
 
     // later change this and others to incorporate phyattack, magattack ...
-    public Creature(World world, String name, char glyph, Color color, int maxHp, int attack, int maxDefense, String asciiPath){
+    public Creature(World world, String name, char glyph, Color color, int maxHp, int maxMp, int phyAttack, int magAttack, int maxPhyDefense, int maxMagDefense, String asciiPath){
         //constructor injection of creature class to set values
 
         this.world = world; //the world
+
         this.name = name; //the creature name
         this.glyph = glyph; //the creature's glyph
         this.color = color; //the color of glyph
+
         this.maxHp = maxHp; //the Max HP of the creature
         this.hp = maxHp; //the Max HP of creature after damaged
-        this.attackValue = attack; //the attack value of this creature
-        this.maxDefenseValue = maxDefense; //the defense value of this creature
-        this.defenseValue = maxDefense; //the initial defense value of this creature
+        this.maxMp = maxMp;
+        this.mp = maxMp;
+
+        this.phyAttack = phyAttack; //the attack value of this creature
+        this.magAttack = magAttack;
+
+        this.maxPhyDefense = maxPhyDefense; //the defense value of this creature
+        this.phyDefense = maxPhyDefense;
+        this.maxMagDefense = maxMagDefense; //the defense value of this creature
+        this.magDefense = maxMagDefense;
+
         this.inventory = new Inventory(20); //the inventory slot of this creature
         this.maxFood = 2000; //the max food creature can eat
         this.food = maxFood / 3 * 2; //the amount of food creature is on start
@@ -135,12 +159,12 @@ public class Creature {
 
     public void modifyDefense(int amount) {
         //defense value
-        defenseValue += amount;
+        phyDefense += amount;
     }
 
     public void resetDefense(){
         //hp is minus the amount of damage taken
-        defenseValue = maxDefenseValue;
+        phyDefense = maxPhyDefense;
     }
 
     public boolean isDead(){

@@ -11,7 +11,11 @@ public abstract class Archetype {
     protected ArrayList<String> spells;
     protected ArrayList<String> inventory;
 
-    public Archetype(String[] baseStats) {
+    public Archetype() {
+    }
+
+    // setters
+    public void setBaseStats(String[] baseStats) {
         this.archetypeName = baseStats[0];
         this.stats[0] = Integer.parseInt(baseStats[1]);//health
         this.stats[1] = Integer.parseInt(baseStats[2]);//mana
@@ -54,7 +58,10 @@ public abstract class Archetype {
     public int getMagicalDefense() {
         return this.stats[5];
     }
-
+    public int getClassID(int ID) {
+        // Override
+        return ID;
+    }
 
     // Setters
 
@@ -105,11 +112,11 @@ public abstract class Archetype {
     //  So it's at the bottom :/
     public static Archetype createCharacter(int choice) {
         return switch (choice) {
-            case 2 -> new Mage(ArchetypeLoader.loadArchetype(choice));
-            case 3 -> new Rogue(ArchetypeLoader.loadArchetype(choice));
-            case 4 -> new Paladin(ArchetypeLoader.loadArchetype(choice));
-            case 5 -> new Archer(ArchetypeLoader.loadArchetype(choice));
-            default -> new Warrior(ArchetypeLoader.loadArchetype(choice)); // Default class is Warrior classID = 1
+            case 2 -> new Mage();
+            case 3 -> new Rogue();
+            case 4 -> new Paladin();
+            case 5 -> new Archer();
+            default -> new Warrior(); // Default class is Warrior classID = 1
         };
     }
 }

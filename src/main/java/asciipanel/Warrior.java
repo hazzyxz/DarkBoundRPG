@@ -17,13 +17,13 @@ public class Warrior extends Archetype{
     //  Hence, this code is omitted but left as proof
     //  File I/O is better showcased in other parts of the code
     //  e.g. Login & Saving feature
-    public Warrior(String[] stats) {
-        super(stats);
+    public Warrior() {
+        super();
     }
 
 
     //  Getters
-    public int getClassID() {
+    public int getClassID(int ID) {
         return this.classID;
     }
 

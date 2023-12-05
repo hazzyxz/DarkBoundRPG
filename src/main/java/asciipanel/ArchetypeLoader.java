@@ -10,7 +10,7 @@ public class ArchetypeLoader {
 
         //Try to read "ID"th line of Archetype.txt and set it to statsBuffer
         try {
-            FileReader file = new FileReader("C:/Users/Ahmad Taufiq/Desktop/archetypes.txt");
+            FileReader file = new FileReader("src/main/resources/archetypes.txt");
             BufferedReader in = new BufferedReader(file);
 
             //  Number of lines skipped depends on classID

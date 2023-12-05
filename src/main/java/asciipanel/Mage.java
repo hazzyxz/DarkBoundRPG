@@ -2,11 +2,11 @@ package asciipanel;
 
 public class Mage extends Archetype{
     private final int classID = 2;
-    public Mage(String[] stats) {
-        super(stats);
+    public Mage() {
+        super();
     }
 
-    public int getClassID() {
+    public int getClassID(int ID) {
         return this.classID;
     }
 

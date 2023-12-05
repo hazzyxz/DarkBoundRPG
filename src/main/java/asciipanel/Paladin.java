@@ -2,11 +2,11 @@ package asciipanel;
 
 public class Paladin extends Archetype {
     private final int classID = 4;
-    public Paladin(String[] stats) {
-        super(stats);
+    public Paladin() {
+        super();
     }
 
-    public int getClassID() {
+    public int getClassID(int ID) {
         return this.classID;
     }
 

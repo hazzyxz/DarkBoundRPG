@@ -21,6 +21,8 @@ public class PlayScreen implements Screen {
     private Screen subscreen;
     //determine if player have chosen class
 
+    Archetype playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
+
 
 
     public void displayOutput(AsciiPanel terminal) {
@@ -207,7 +209,8 @@ public class PlayScreen implements Screen {
     //create creatures method
     private void createCreatures(StuffFactory creatureFactory){
         //create player and player messages
-        player = creatureFactory.newPlayer(messages);
+        playerCharacter.setBaseStats(ArchetypeLoader.loadArchetype(playerCharacter.getClassID(0)));
+        player = creatureFactory.newPlayer(messages,playerCharacter);
 
         //create fungus
         for (int i = 0; i < 8; i++){

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class BattleScreen implements Screen {
@@ -23,6 +24,7 @@ public class BattleScreen implements Screen {
     private List<String> logHistory; // List to store attack log history
 
     AsciiArtDisplayer enemyAscii = new AsciiArtDisplayer();
+    Random rand = new Random();
 
     public BattleScreen(Creature player, Creature enemy) {
 
@@ -77,29 +79,34 @@ public class BattleScreen implements Screen {
 
         //content profile
         int nameCenter = xCenter-(6 + enemy.name().length())/2;
-        terminal.write(">> " + enemy.name() + " <<",nameCenter,1,Color.red);
-        displayHealth(enemy,2,4,terminal);
+        terminal.write(">> " + enemy.name() + " <<",2,4,Color.red);
+        boolean isPlayer = false;
+        displayHealth(enemy,2,6, isPlayer,terminal);
+        displayMana(enemy,2,8,isPlayer,terminal);
 
-        terminal.write(">> " + player.name() + " <<",46,38,AsciiPanel.green);
-        terminal.write(' ',46,39);
-        displayHealth(player,46,40,terminal);
+        terminal.write(">> " + player.name() + " <<",2,38,AsciiPanel.brightGreen);
+        isPlayer = true;
+        displayHealth(player,2,40, isPlayer, terminal);
+        displayMana(player,2,42,isPlayer,terminal);
 
         //Ascii Art
         // x=43, y=32 character
-        enemyAscii.displayAsciiArtFromFile(6,6, enemy.asciiPath(), isEnemyAttacking, terminal);
+        enemyAscii.displayAsciiArtFromFile(6,10, enemy.asciiPath(), isEnemyAttacking, terminal);
 
         //action
         int y = 38;
-        terminal.write("< ACTION >",2,y++);
-        terminal.write("----------",2,y++);
-        terminal.write("[1] to Attack",2,y++);
-        terminal.write("[2] to Defend",2,y++);
-        terminal.write("[3] to Heal",2,y++);
-        terminal.write("[4] to use Item",2,y++);
-        terminal.write("[5] to Run",2,y++);
+        int x = 46;
+        terminal.write("< ACTION >",x,y++);
+        terminal.write("----------",x,y++);
+        terminal.write("",x,y++);
+        terminal.write("[1] to Attack",x,y++);
+        terminal.write("[2] to Defend",x,y++);
+        terminal.write("[3] to Heal",x,y++);
+        terminal.write("[4] to use Item",x,y++);
+        terminal.write("[5] to Run",x,y++);
 
         y = 38;
-        int x = 20;
+        x = 46+20;
         terminal.write("{ SPELL }",x,y++);
         terminal.write("---------",x,y++);
         terminal.write("[Q] to use Spell 1",x,y++);
@@ -112,10 +119,10 @@ public class BattleScreen implements Screen {
     }
 
     //enemy x=2 y=4
-    private void displayHealth(Creature creature,int x, int y,AsciiPanel terminal){
+    private void displayHealth(Creature creature,int x, int y, boolean isPlayer, AsciiPanel terminal){
         terminal.write("HP ", x, y);
         int remainingPercentage = creature.hp() * 100 / creature.maxHp();
-        int barLength = 29;
+        int barLength = 25;
 
         int barStartX = x + 3;
         terminal.write("{", barStartX, y, AsciiPanel.white);
@@ -124,7 +131,7 @@ public class BattleScreen implements Screen {
 
         for (int i = 0; i < barLength; i++) {
             if (i < healthBarLength) {
-                terminal.write('/', barStartX + i +1, y, AsciiPanel.green);
+                terminal.write('/', barStartX + i +1, y, AsciiPanel.brightRed);
             } else {
                 terminal.write('/', barStartX + i +1, y, AsciiPanel.red);
             }
@@ -132,24 +139,70 @@ public class BattleScreen implements Screen {
 
         terminal.write("}", barStartX + barLength, y, AsciiPanel.white);
 
-        /*
-        x = x+barLength+5;
-        if (remainingPercentage < 10) {
-            terminal.write("" + creature.hp(), x , y, AsciiPanel.red);
-        }
-        else if (remainingPercentage < 25) {
-            terminal.write("" + creature.hp(), x, y, AsciiPanel.darkOrange);
-        } else if (remainingPercentage < 50) {
-            terminal.write("" + creature.hp(), x, y, AsciiPanel.yellow);
-        } else {
-            terminal.write("" + creature.hp(), x, y, AsciiPanel.green);
-        }
+        if(isPlayer){
+            /*
+            x = x+barLength+5;
+            if (remainingPercentage < 10) {
+                terminal.write("" + creature.hp(), x , y, AsciiPanel.red);
+            }
+            else if (remainingPercentage < 25) {
+                terminal.write("" + creature.hp(), x, y, AsciiPanel.darkOrange);
+            } else if (remainingPercentage < 50) {
+                terminal.write("" + creature.hp(), x, y, AsciiPanel.yellow);
+            } else {
+                terminal.write("" + creature.hp(), x, y, AsciiPanel.green);
+            }
 
-        terminal.write( "/", x+3, y,AsciiPanel.white);
-        terminal.write(""+creature.maxHp(), x+3+1, y,AsciiPanel.green);
+             */
+            x = x+barLength+5;
 
-         */
+            terminal.write("" + creature.hp(), x , y, AsciiPanel.brightRed);
+            terminal.write( "/", x+3, y,AsciiPanel.white);
+            terminal.write(""+creature.maxHp(), x+3+1, y,AsciiPanel.brightRed);
+        }
     }
+
+    private void displayMana(Creature creature,int x, int y, boolean isPlayer, AsciiPanel terminal){
+        terminal.write("MP ", x, y);
+        int remainingPercentage = creature.mp() * 100 / creature.maxMp();
+        int barLength = 25;
+
+        int barStartX = x + 3;
+        terminal.write("{", barStartX, y, AsciiPanel.white);
+
+        int manaBarLength = (remainingPercentage * barLength) / 100;
+
+        for (int i = 0; i < barLength; i++) {
+            if (i < manaBarLength) {
+                terminal.write('/', barStartX + i +1, y, AsciiPanel.brightCyan);
+            } else {
+                terminal.write('/', barStartX + i +1, y, AsciiPanel.cyan);
+            }
+        }
+
+        terminal.write("}", barStartX + barLength, y, AsciiPanel.white);
+
+        if(isPlayer){
+            x = x+barLength+5;
+            /*
+            if (remainingPercentage < 10) {
+                terminal.write("" + creature.mp(), x , y, AsciiPanel.red);
+            }
+            else if (remainingPercentage < 25) {
+                terminal.write("" + creature.mp(), x, y, AsciiPanel.darkOrange);
+            } else if (remainingPercentage < 50) {
+                terminal.write("" + creature.mp(), x, y, AsciiPanel.yellow);
+            } else {
+                terminal.write("" + creature.mp(), x, y, AsciiPanel.cyan);
+            }
+
+             */
+            terminal.write("" + creature.mp(), x , y, AsciiPanel.brightCyan);
+            terminal.write( "/", x+3, y,AsciiPanel.white);
+            terminal.write(""+creature.maxMp(), x+3+1, y,AsciiPanel.brightCyan);
+        }
+    }
+
 
 
     @Override
@@ -204,10 +257,12 @@ public class BattleScreen implements Screen {
     public void playerAttack(){
 
         //take the attackers attack value - defenders defense value
-        int amount = Math.max(0, player.attackValue() - enemy.defenseValue());
+        int maxAmount = Math.max(2, player.phyAttack() - enemy.phyDefense());
+        int minAmount = maxAmount/2;
 
-        //random number from 1 to amount of possible damage
-        amount = (int)(Math.random() * amount) + 1;
+        //random number from min amount to max amount of possible damage
+        int amount = rand.nextInt(maxAmount-minAmount)+minAmount;
+        //amount = (int)(Math.random() * amount);
 
         enemy.modifyHp(-amount);
         log(" > You attack the " + enemy.name() + " for " + amount + " damage");
@@ -221,7 +276,7 @@ public class BattleScreen implements Screen {
 
     public void playerDefend(){
         //take the players defend value
-        int amount = Math.max(0, player.defenseValue());
+        int amount = Math.max(0, player.magDefense()/2);
 
         //random number from 1 to amount of possible defense
         amount = (int)(Math.random() * amount) + 1;
@@ -245,8 +300,11 @@ public class BattleScreen implements Screen {
     }
 
     public void enemyAttack(){
-        int amount = Math.max(0, enemy.attackValue() - player.defenseValue());
-        amount = (int) (Math.random() * amount) + 1;
+        int maxAmount = Math.max(2, enemy.phyAttack() - player.phyDefense());
+        int minAmount = maxAmount/2;
+
+        //random number from min amount to max amount of possible damage
+        int amount = rand.nextInt(maxAmount-minAmount )+minAmount;
         player.modifyHp(-amount);
 
         log(" > The " + enemy.name() + " attack " + player.name() + " for " + amount + " damage");
@@ -255,6 +313,7 @@ public class BattleScreen implements Screen {
 
     // Method to display attack log including history
     // Method to display attack log including history
+
     private void displayLog(AsciiPanel terminal) {
         terminal.write("< LOG >", 67-4, 3); // Header for attack log
         terminal.write("-------",67-4,3+1);
@@ -298,62 +357,6 @@ public class BattleScreen implements Screen {
         return lines;
     }
 
-    // Method to add attack log to history
-
-
-    /*
-   public class BattleScreen extends Screen {
-    private Creature player;
-    private Creature enemy;
-    // Other attributes...
-
-    // Constructor and other methods...
-
-    @Override
-    public Screen respondToUserInput(KeyEvent key) {
-        // Player's input handling...
-
-        if (enemy.isDead()) {
-            enemy.leaveCorpse();
-            return null; // Exit the battle if enemy is dead
-        }
-
-        // Enemy's turn
-        enemyTurn();
-
-        if (player.isDead()) {
-            // Handle player defeat
-            return null;
-        }
-
-        return this; // Return the battle screen
-    }
-
-    // Enemy's turn logic
-    private void enemyTurn() {
-        int amount = Math.max(0, enemy.attackValue() - player.defenseValue());
-        amount = (int) (Math.random() * amount) + 1;
-        player.modifyHp(-amount);
-
-        String attackLogMessage = "The " + enemy.name() + " attacks you for " + amount + " damage!";
-        addToAttackLog(attackLogMessage);
-    }
-
-    // Method to add attack log messages to history
-    private void addToAttackLog(String message) {
-        attackLogHistory.add(message);
-        if (attackLogHistory.size() > 10) {
-            attackLogHistory.remove(0); // Keep the attack log limited to 10 messages
-        }
-    }
-
-    // Other methods...
-}
-
-
-
-
-     */
 
 
 }

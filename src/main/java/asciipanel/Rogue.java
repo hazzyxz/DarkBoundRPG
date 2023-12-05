@@ -2,11 +2,11 @@ package asciipanel;
 
 public class Rogue extends Archetype {
     private final int classID = 3;
-    public Rogue(String[] stats) {
-        super(stats);
+    public Rogue() {
+        super();
     }
 
-    public int getClassID() {
+    public int getClassID(int ID) {
         return this.classID;
     }
 

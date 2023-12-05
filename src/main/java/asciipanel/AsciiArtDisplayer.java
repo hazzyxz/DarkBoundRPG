@@ -9,6 +9,8 @@ import java.util.List;
 
 public class AsciiArtDisplayer {
     private String name;
+
+
     // other attributes and methods...
 
     // Method to display ASCII art of the creature from a file using Files.readAllLines()
@@ -36,6 +38,24 @@ public class AsciiArtDisplayer {
                 if (displayFrame) {
                     terminal.write(line, x, y++);
                 }
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the file reading exception as per your requirements
+        }
+    }
+
+    public void displayAsciiArtFromFile(int x, int y, String filePath, AsciiPanel terminal) {
+        try {
+            Path path = Paths.get(filePath);
+            List<String> asciiArt = Files.readAllLines(path);
+
+            int maxWidth = terminal.getWidth(); // Get the terminal's width
+
+            for (String line : asciiArt) {
+                if (line.length() > maxWidth - 40) { // Limit the line length to fit the terminal width
+                    line = line.substring(0, maxWidth - 40); // Trim the line if it's too long
+                }
+                terminal.write(line, x, y++);
             }
         } catch (IOException e) {
             e.printStackTrace(); // Handle the file reading exception as per your requirements
