@@ -13,9 +13,12 @@ public enum Tile {
     //Represents a bounds tile with an 'x' character and bright black color
     BOUNDS('X', AsciiPanel.brightBlack),
 
+    //represent a tile that not yet been seen
+    UNKNOWN(' ', AsciiPanel.white),
+
     //represent a stair tile with '>' and '<' character and white color
-    STAIRS_DOWN('>', AsciiPanel.white),
-    STAIRS_UP('<', AsciiPanel.white);
+    STAIRS_DOWN('<', AsciiPanel.brightYellow),
+    STAIRS_UP('>', AsciiPanel.brightYellow);
 
     private char glyph;
 

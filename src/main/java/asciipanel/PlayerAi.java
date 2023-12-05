@@ -6,13 +6,18 @@ public class PlayerAi extends CreatureAi {
 
     //initialize array list of string call messages
     private List<String> messages;
+    private FieldOfView fov;
+    //
+
 
     // constructor for the PlayerAi class
-    public PlayerAi(Creature creature, List<String> messages) {
+    public PlayerAi(Creature creature, List<String> messages, FieldOfView fov) {
         //calls the constructor of the superclass (CreatureAi) and passes the creature parameter to it
         super(creature);
         //the constructor injection method
         this.messages = messages;
+        //this.fov = new FieldOfView(world);
+        this.fov = fov;
     }
 
     public void onEnter(int x, int y, Tile tile)
@@ -37,6 +42,9 @@ public class PlayerAi extends CreatureAi {
         messages.add(message);
     }
 
+    public boolean canSee(int wx, int wy) {
+        return fov.isVisible(wx, wy);
+    }
 
 
 }

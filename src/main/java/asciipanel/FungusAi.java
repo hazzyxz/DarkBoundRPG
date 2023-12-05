@@ -2,11 +2,11 @@ package asciipanel;
 
 public class FungusAi extends CreatureAi {
 
-    private CreatureFactory factory;
+    private StuffFactory factory;
     private int spreadcount;
 
     // constructor for the FungusAi class
-    public FungusAi(Creature creature, CreatureFactory factory) {
+    public FungusAi(Creature creature, StuffFactory factory) {
 
         //calls the constructor of the superclass (CreatureAi) and passes the creature parameter to it
         super(creature);
@@ -18,7 +18,7 @@ public class FungusAi extends CreatureAi {
     //update method for fungus Ai
     public void onUpdate(){
         //check the condition for spreading
-        if (spreadcount < 5 && Math.random() < 0.01)
+        if (spreadcount < 5 && Math.random() < 0.002)
             spread();
     }
 

@@ -1,5 +1,11 @@
 package asciipanel;
+
+import asciiLib.AsciiPanel;
+
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Creature {
     private World world;
@@ -9,7 +15,11 @@ public class Creature {
     //represent cord y
     public int y;
 
+    private String name;
+    private AsciiPanel BattleScreen;
 
+
+    public String name() { return name; }
     //stores visual representation (glyph) of the creature
     private char glyph;
     //getter for glyph
@@ -27,31 +37,63 @@ public class Creature {
     public int maxHp() { return maxHp; }
     private int hp;
     public int hp() { return hp; }
+
     private int attackValue;
     public int attackValue() { return attackValue; }
+
+    private int maxDefenseValue;
+    public int maxDefenseValue() { return maxDefenseValue; }
     private int defenseValue;
     public int defenseValue() { return defenseValue; }
 
+    private Inventory inventory;
+    public Inventory inventory() { return inventory; }
+
+    private int maxFood;
+    public int maxFood() { return maxFood; }
+
+    private int food;
+    public int food() { return food; }
+
+    private String asciiPath;
+    public String asciiPath() { return asciiPath; }
+
+    private Screen subscreen;
+    private Creature player;
+
+
 
     // later change this and others to incorporate phyattack, magattack ...
-    public Creature(World world, char glyph, Color color, int maxHp, int attack, int defense){
+    public Creature(World world, String name, char glyph, Color color, int maxHp, int attack, int maxDefense, String asciiPath){
         //constructor injection of creature class to set values
 
         this.world = world; //the world
+        this.name = name; //the creature name
         this.glyph = glyph; //the creature's glyph
         this.color = color; //the color of glyph
         this.maxHp = maxHp; //the Max HP of the creature
         this.hp = maxHp; //the Max HP of creature after damaged
         this.attackValue = attack; //the attack value of this creature
-        this.defenseValue = defense; //the defense value of this creature
+        this.maxDefenseValue = maxDefense; //the defense value of this creature
+        this.defenseValue = maxDefense; //the initial defense value of this creature
+        this.inventory = new Inventory(20); //the inventory slot of this creature
+        this.maxFood = 2000; //the max food creature can eat
+        this.food = maxFood / 3 * 2; //the amount of food creature is on start
+        this.asciiPath = asciiPath; //the ascii filepath for creature
+    }
+
+    public void setPlayerClass(Creature player) {
+
     }
 
     private CreatureAi ai;
     public void setCreatureAi(CreatureAi ai) { this.ai = ai; }
 
+    //method to dig wall
     public void dig(int wx, int wy) {
-        //method to dig wall
         world.dig(wx, wy);
+        modifyFood(-5);
+        doAction("dig");
     }
 
     //ai movement method
@@ -68,69 +110,53 @@ public class Creature {
             //represent the potential new coordinates after the movement.
             //returns the type of tile that exists at the new position
             ai.onEnter(x+mx, y+my, tile);
-        else
-            //if it does then call attack method
-            //here can initiate battle screen method call
-            attack(other);
+        else {
+            //attack(other);
+        }
 
-        /*
-        //declare other as creature in the world
-        Creature other = world.creature(x+mx, y+my);
-
-        //check if tile that is entered have monster
-        if(other == null)
-            //x + mx and y + my represent the potential new coordinates after the movement.
-            //world.tile(x + mx, y + my) returns the type of tile that exists at the new position (x + mx, y + my)
-            ai.onEnter(x+mx, y+my, world.tile(x+mx, y+my));
-        else
-            //if it does then call attack method
-            //here can initiate battle screen method call
-            attack(other);
-
-         */
-
+        if (mx==0 && my==0)
+            return;
 
     }
 
-
-    //attack method
-    //change this to incorporate battle screen
-    public void attack(Creature other){
-        //kill creature
-        //call remove method from world class
-        //world.remove(other);
-
-        //damage will soon be change
-        //take the attackers attack value - defenders defense value
-        int amount = Math.max(0, attackValue() - other.defenseValue());
-
-        //random number from 1 to amount of possible damage
-        amount = (int)(Math.random() * amount) + 1;
-
-        //call the modify hp method and passing -amount argument
-        other.modifyHp(-amount);
-
-        //call the notify method while passing the string
-        notify("You attack the '%s' for %d damage.", other.glyph(), amount);
-        other.notify("The '%s' attacks you for %d damage.", glyph, amount);
-
-    }
 
     public void modifyHp(int amount) {
         //hp is minus the amount of damage taken
         hp += amount;
+        isDead();
 
         //if no hp left then remove this creature
-        if (hp < 1) {
-            doAction("die");
+        /*
+        doAction("die");
+        leaveCorpse();
+        world.remove(this);
+         */
+    }
+
+    public void modifyDefense(int amount) {
+        //defense value
+        defenseValue += amount;
+    }
+
+    public void resetDefense(){
+        //hp is minus the amount of damage taken
+        defenseValue = maxDefenseValue;
+    }
+
+    public boolean isDead(){
+        if(hp<1) {
             world.remove(this);
+            return true;
         }
+        return false;
     }
 
     //update method to update creature in world
     public void update(){
         //call update method based on each creature
         ai.onUpdate();
+        //set hunger -1 every turn
+        modifyFood(-1);
     }
 
     //check if creature can enter the tile
@@ -154,7 +180,6 @@ public class Creature {
         // Loop through a square area centered around the creature
         for (int ox = -r; ox < r+1; ox++){
             for (int oy = -r; oy < r+1; oy++){
-                // Skip locations outside the circular area
                 if (ox*ox + oy*oy > r*r)
                     continue;
 
@@ -168,8 +193,8 @@ public class Creature {
                 // Notify the creature about the action
                 if (other == this)
                     other.notify("You " + message + ".", params);
-                else
-                    other.notify(String.format("The '%s' %s.", glyph, makeSecondPerson(message)), params);
+                else if (other.canSee(x, y))
+                    other.notify(String.format("The %s %s.", name, makeSecondPerson(message)), params);
             }
         }
     }
@@ -186,6 +211,87 @@ public class Creature {
         }
 
         return builder.toString().trim();
+    }
+
+    // give creatures a new stat to say how far they can see
+    //set the vision range of 9
+    private int visionRadius = 9;
+    public int visionRadius() { return visionRadius; }
+
+    public boolean canSee(int wx, int wy){
+        return ai.canSee(wx, wy);
+    }
+
+    public Tile tile(int wx, int wy) {
+        return world.tile(wx, wy);
+    }
+
+    //Creatures able to see what other creatures are in the world so the CreatureAi can know
+    public Creature creature(int wx, int wy) {
+        return world.creature(wx, wy);
+    }
+
+    //method for picking up stuff
+
+    public void pickup(){
+        Item item = world.item(x, y);
+        if (inventory.isFull() || item == null){
+            doAction("grab at the ground");
+        } else {
+            doAction("pickup a %s", item.name());
+            world.remove(x, y);
+            inventory.add(item);
+        }
+    }
+
+    //method for dropping stuff
+    public void drop(Item item){
+        doAction("drop a " + item.name());
+        inventory.remove(item);
+        world.addAtEmptySpace(item, x, y);
+    }
+
+    //leave corpse after died
+    public void leaveCorpse(){
+        Item corpse = new Item('%', color, name + " corpse");
+        corpse.modifyFoodValue(maxHp * 3);
+        world.addAtEmptySpace(corpse, x, y);
+    }
+
+    //add food logic into the game
+    public void modifyFood(int amount) {
+        food += amount;
+        if (food > maxFood) {
+            food = maxFood;
+        //kill if hunger = 0
+        } else if (food < 1 && isPlayer()) {
+           // modifyHp(-1000);
+        }
+    }
+    public boolean isPlayer(){
+        return glyph == '@';
+    }
+
+    //method for creature to eat
+    public void eat(Item item){
+        modifyFood(item.foodValue());
+        inventory.remove(item);
+    }
+
+    public List<Point> neighbors8() {
+        List<Point> points = new ArrayList<Point>();
+
+        for (int ox = -1; ox < 2; ox++){
+            for (int oy = -1; oy < 2; oy++){
+                if (ox == 0 && oy == 0)
+                    continue;
+
+                points.add(new Point(x+ox, y+oy));
+            }
+        }
+
+        Collections.shuffle(points);
+        return points;
     }
 
 

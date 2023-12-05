@@ -21,85 +21,43 @@ public class AsciiPanel extends JPanel {
     private static final long serialVersionUID = -4167851861147593092L;
 
 //color
-    /**
-     * The color black (pure black).
-     */
     public static Color black = new Color(0, 0, 0);
 
-    /**
-     * The color red.
-     */
     public static Color red = new Color(128, 0, 0);
 
-    /**
-     * The color green.
-     */
     public static Color green = new Color(0, 128, 0);
 
-    /**
-     * The color yellow.
-     */
     public static Color yellow = new Color(128, 128, 0);
 
-    /**
-     * The color blue.
-     */
+    public static Color orange = new Color(255, 165, 0);
+
+    public static Color darkOrange = new Color(139, 64, 0);
+
     public static Color blue = new Color(0, 0, 128);
 
-    /**
-     * The color magenta.
-     */
     public static Color magenta = new Color(128, 0, 128);
 
-    /**
-     * The color cyan.
-     */
     public static Color cyan = new Color(0, 128, 128);
 
-    /**
-     * The color white (light gray).
-     */
     public static Color white = new Color(192, 192, 192);
 
-    /**
-     * A brighter black (dark gray).
-     */
     public static Color brightBlack = new Color(128, 128, 128);
 
-    /**
-     * A brighter red.
-     */
     public static Color brightRed = new Color(255, 0, 0);
 
-    /**
-     * A brighter green.
-     */
     public static Color brightGreen = new Color(0, 255, 0);
 
-    /**
-     * A brighter yellow.
-     */
     public static Color brightYellow = new Color(255, 255, 0);
 
-    /**
-     * A brighter blue.
-     */
     public static Color brightBlue = new Color(0, 0, 255);
 
-    /**
-     * A brighter magenta.
-     */
     public static Color brightMagenta = new Color(255, 0, 255);
 
-    /**
-     * A brighter cyan.
-     */
     public static Color brightCyan = new Color(0, 255, 255);
 
-    /**
-     * A brighter white (pure white).
-     */
     public static Color brightWhite = new Color(255, 255, 255);
+
+    public static Color darkGray = new Color(40, 40, 40);
 
 //initialize
     private Image offscreenBuffer;
@@ -271,7 +229,7 @@ public class AsciiPanel extends JPanel {
         // Get the screen size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        int width = 1700;//screenSize.width;
+        int width = 800;//screenSize.width;
         int height = 800;//screenSize.height;
 
         // Set the panelSize to match the screen size
@@ -540,6 +498,7 @@ public class AsciiPanel extends JPanel {
         return this;
     }
 
+
     /**
      * Write a character to the cursor's position.
      * This updates the cursor's position.
@@ -793,7 +752,29 @@ public class AsciiPanel extends JPanel {
         if (string.length() > widthInCharacters)
             throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + "." );
 
-        int x = (widthInCharacters - string.length()) / 2;
+        int x = (widthInCharacters - string.length())/2;
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );
+
+        return write(string, x, y, defaultForegroundColor, defaultBackgroundColor);
+    }
+
+    /**
+     * Write a string to the center of the panel at the specified y position.
+     * This updates the cursor's position.
+     * @param string     the string to write
+     * @param y          the distance from the top to begin writing from
+     * @return this for convenient chaining of method calls
+     */
+    public AsciiPanel writeCenter2(String string, int y) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (string.length() > widthInCharacters)
+            throw new IllegalArgumentException("string.length() " + string.length() + " must be less than " + widthInCharacters + "." );
+
+        int x = string.length()/2;
 
         if (y < 0 || y >= heightInCharacters)
             throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")" );

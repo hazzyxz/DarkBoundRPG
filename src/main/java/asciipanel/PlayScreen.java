@@ -16,10 +16,14 @@ public class PlayScreen implements Screen {
 
     //initialize string array list
     private List<String> messages;
+    private FieldOfView fov;
+    //let PlayScreen know what the sub-screen is
+    private Screen subscreen;
+    //determine if player have chosen class
+
+
 
     public void displayOutput(AsciiPanel terminal) {
-        terminal.write("You are having fun.", 1, 1);
-        terminal.writeCenter("-- press [escape] to lose or [enter] to win --", 22);
 
         int left = getScrollX();
         int top = getScrollY();
@@ -32,78 +36,146 @@ public class PlayScreen implements Screen {
         world.update();
 
         //display stats on the play screen
-        String stats = String.format(" %3d/%-3d hp att: %-3d def: %-3d", player.hp(), player.maxHp(), player.attackValue(), player.defenseValue());
+        //, player.defenseValue(), player.attackValue()
+        String stats = String.format(" %3d/%-3dhp hunger: %d/%d%s", player.hp(), player.maxHp(),player.food(),player.maxFood(), hunger());
         terminal.write(stats, 1, 24);
-
 
         //call the displayMessages method
         displayMessages(terminal, messages);
+
+        //display the sub-screen
+        //playScreen will be background screen
+        if (subscreen != null)
+            subscreen.displayOutput(terminal);
     }
 
+
     public Screen respondToUserInput(KeyEvent key) {
-
-        switch (key.getKeyCode()){
-            case KeyEvent.VK_ESCAPE:
-                return new LoseScreen();
-            case KeyEvent.VK_ENTER:
-                return new WinScreen();
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_A:
-                player.moveBy(-1, 0); break;
-            //go left
-
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_D:
-                player.moveBy( 1, 0); break;
-            //go right
-
-            case KeyEvent.VK_UP:
-            case KeyEvent.VK_W:
-                player.moveBy( 0,-1); break;
-            //go up
-
-            case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_S:
-                player.moveBy( 0, 1); break;
-            //go down
-
+        /*
+        movement - WASD/arrowKeys
+        Diagonal movement - press movement keys simultaneously
+        interact/pickup - f
+        drop screen - g
+        eat screen - e
+        */
+        if (subscreen != null) {
+            subscreen = subscreen.respondToUserInput(key);
+        }
+        else {
             /*
-            case KeyEvent.VK_Q:
-                scrollBy(-1,-1); break;
-                //go top left
-            case KeyEvent.VK_E:
-                scrollBy( 1,-1); break;
-                //go top right
-            case KeyEvent.VK_Z:
-                scrollBy(-1, 1); break;
-                //go bot left
-            case KeyEvent.VK_X:
-                scrollBy( 1, 1); break;
-                //go bot right
+            if(!haveClass) {
+                haveClass = true;
+                subscreen = new ChooseClassScreen(player);
+            }
 
              */
-        }
-        if( key.getKeyCode()==KeyEvent.VK_W && key.getKeyCode()==KeyEvent.VK_A){
-            player.moveBy(-1,-1);
-            //go top left
-        }
-        else if( key.getKeyCode()==KeyEvent.VK_W && key.getKeyCode()==KeyEvent.VK_D){
-            player.moveBy(1,-1);
-            //go top right
-        }
-        else if( key.getKeyCode()==KeyEvent.VK_S && key.getKeyCode()==KeyEvent.VK_A){
-            player.moveBy(-1,1);
-            //go bot left
-        }
-        else if( key.getKeyCode()==KeyEvent.VK_S && key.getKeyCode()==KeyEvent.VK_D){
-            player.moveBy(1,1);
-            //go bot right
-        }
-        //press both at the same time to go diagonally
 
+            switch (key.getKeyCode()) {
+                case KeyEvent.VK_F:
+                    if (userIsTryingToExit())
+                        return new PlayScreen();
+                    else if (isEnemyAdjacent(player)) {
+                        Creature enemy = getAdjacentEnemy(player);
+                        if (enemy != null) {
+                            subscreen = new BattleScreen(player, enemy);
+                        }
+                    }
+                    else
+                        player.pickup();
+                    break;
+                case KeyEvent.VK_G: subscreen = new DropScreen(player); break;
+                case KeyEvent.VK_E: subscreen = new EatScreen(player); break;
+                case KeyEvent.VK_H: subscreen = new HelpScreen(); break;
+
+                case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_A:
+                    player.moveBy(-1, 0);
+                    break;
+                //go left
+                case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_D:
+                    player.moveBy(1, 0);
+                    break;
+                //go right
+                case KeyEvent.VK_UP:
+                case KeyEvent.VK_W:
+                    player.moveBy(0, -1);
+                    break;
+                //go up
+                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_S:
+                    player.moveBy(0, 1);
+                    break;
+                //go down
+
+                /*
+                case KeyEvent.VK_Q:
+                    scrollBy(-1,-1); break;
+                    //go top left
+                case KeyEvent.VK_E:
+                    scrollBy( 1,-1); break;
+                    //go top right
+                case KeyEvent.VK_Z:
+                    scrollBy(-1, 1); break;
+                    //go bot left
+                case KeyEvent.VK_X:
+                    scrollBy( 1, 1); break;
+                    //go bot right
+
+                 */
+            }
+            if (key.getKeyCode() == KeyEvent.VK_W && key.getKeyCode() == KeyEvent.VK_A) {
+                player.moveBy(-1, -1);
+                //go top left
+            } else if (key.getKeyCode() == KeyEvent.VK_W && key.getKeyCode() == KeyEvent.VK_D) {
+                player.moveBy(1, -1);
+                //go top right
+            } else if (key.getKeyCode() == KeyEvent.VK_S && key.getKeyCode() == KeyEvent.VK_A) {
+                player.moveBy(-1, 1);
+                //go bot left
+            } else if (key.getKeyCode() == KeyEvent.VK_S && key.getKeyCode() == KeyEvent.VK_D) {
+                player.moveBy(1, 1);
+                //go bot right
+            }
+            //press both at the same time to go diagonally
+        }
+
+        //update world if no sub-screen
+        if (subscreen == null)
+            world.update();
+
+        //if hp<0 enter lose screen
+        if (player.hp() < 1)
+            return new LoseScreen();
 
         return this;
     }
+
+    private boolean isEnemyAdjacent(Creature player) {
+        List<Point> adjacentPoints = player.neighbors8();
+
+        for (Point point : adjacentPoints) {
+            Creature adjacentCreature = world.creature(point.x, point.y);
+            if (adjacentCreature != null && adjacentCreature != player) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Get the adjacent enemy if it exists
+    private Creature getAdjacentEnemy(Creature player) {
+        List<Point> adjacentPoints = player.neighbors8();
+
+        for (Point point : adjacentPoints) {
+            Creature adjacentCreature = world.creature(point.x, point.y);
+            if (adjacentCreature != null && adjacentCreature != player) {
+                return adjacentCreature;
+            }
+        }
+        return null;
+    }
+
 
     private int screenWidth;
     private int screenHeight;
@@ -117,16 +189,23 @@ public class PlayScreen implements Screen {
         messages = new ArrayList<String>();
 
         //calls the create world method
-        createWorld();
+        world = new WorldBuilder(90, 31)
+                //call world make caves method
+                .makeCaves()
+                //call world build method
+                .build();
 
-        CreatureFactory creatureFactory = new CreatureFactory(world);
-        // calls the createCreature method and pass creatureFactory variable
-        createCreatures(creatureFactory);
+        //create FieldOfView instance
+        fov = new FieldOfView(world);
+        StuffFactory stuffFactory = new StuffFactory(world, fov);
+        // calls the createCreature and createItems method and pass stuffFactory variable
+        createCreatures(stuffFactory);
+        createItems(stuffFactory);
 
     }
 
     //create creatures method
-    private void createCreatures(CreatureFactory creatureFactory){
+    private void createCreatures(StuffFactory creatureFactory){
         //create player and player messages
         player = creatureFactory.newPlayer(messages);
 
@@ -134,16 +213,27 @@ public class PlayScreen implements Screen {
         for (int i = 0; i < 8; i++){
             creatureFactory.newFungus();
         }
+
+        //create bat
+        for (int i = 0; i < 10; i++){
+            creatureFactory.newBat();
+        }
     }
+    //create items method
+    private void createItems(StuffFactory factory) {
+
+        for (int i = 0; i < world.width() * world.height() / 20; i++){
+            factory.newRock();
+        }
+        //create a victory item
+        factory.newVictoryItem();
+    }
+
 
     //generate game world with specific dimensions
     //class that provide generating and customizing world
     private void createWorld(){
-        world = new WorldBuilder(90, 31)
-                //call world make caves method
-                .makeCaves()
-                //call world build method
-                .build();
+
     }
 
     public int getScrollX() {
@@ -166,16 +256,25 @@ public class PlayScreen implements Screen {
         //initialise creature array list
         List<Creature> creatures = world.getCreatures();
 
+        fov.update(player.x, player.y, player.visionRadius());
+
 
         //to render the tiles of the world
         for(int x = 0; x < screenWidth ; x++) {
             for(int y = 0; y < screenHeight; y++) {
                 int wx = x + left;
                 int wy = y + top;
-                terminal.write(world.glyph(wx, wy), x, y, world.color(wx, wy));
+
+                //check if player can see and render the tile and creature if true
+                if (player.canSee(wx, wy))
+                    terminal.write(world.glyph(wx, wy), x, y, world.color(wx, wy));
+                else
+                    terminal.write(fov.tile(wx, wy).glyph(), x, y, AsciiPanel.darkGray);
             }
         }
 
+
+        /*
         // loop through creatures, check if in bounds, and display
         for(Creature c : creatures) {
             //check if creatures is within the screen boundary area
@@ -183,6 +282,8 @@ public class PlayScreen implements Screen {
                 terminal.write(c.glyph(), c.x - left, c.y - top, c.color());
             }
         }
+        */
+
     }
 
     private void displayMessages(AsciiPanel terminal, List<String> messages) {
@@ -197,34 +298,59 @@ public class PlayScreen implements Screen {
         messages.clear();
     }
 
+    //empty code(will be remove)
+    private boolean userIsTryingToExit(){
+        return world.tile(player.x, player.y) == Tile.STAIRS_UP;
+    }
+    //victory condition(temporary)
+    /*
+    private Screen userExits(){
+        for (Item item : player.inventory().getItems()){
+            if (item != null && item.name().equals("teddy bear"))
+                return new WinScreen();
+        }
+        //how to diplay text in terminal?
+        return this;
+    }
+     */
+
+    //tell player his hunger bar
+    private String hunger(){
+        if (player.food() < player.maxFood() * 0.1)
+            return "Starving";
+        else if (player.food() < player.maxFood() * 0.2)
+            return "Hungry";
+        else if (player.food() > player.maxFood() * 0.9)
+            return "Stuffed";
+        else if (player.food() > player.maxFood() * 0.8)
+            return "Full";
+        else
+            return "Contempt";
+    }
+
+
 
     /*
-    private void displayTiles(AsciiPanel terminal, int left, int top) {
-        //left and top determining the starting column and row for rendering tiles
+    //check if got adjacent enemy
+    public boolean isEnemyAdjacent(Creature player) {
+        List<Point> adjacentPoints = player.neighbors8();
 
-        //iterate to screen width and height to render tiles
-        for (int x = 0; x < screenWidth; x++){
-            for (int y = 0; y < screenHeight; y++){
-                int wx = x + left;
-                int wy = y + top;
-                //used to determine the corresponding world coordinates
-                //based on the current screen position and offset
+        for (Point point : adjacentPoints) {
+            Creature adjacentCreature = world.creature(point.x, point.y);
 
-                //to show any creature in a world
-                Creature creature = world.creature(wx, wy);
-                if (creature != null)
-                    terminal.write(creature.glyph(), creature.x - left, creature.y - top, creature.color());
-                else
-                    terminal.write(world.glyph(wx, wy), x, y, world.color(wx, wy));
+            if (adjacentCreature != null && adjacentCreature != player) {
+                return true;
             }
-            //method used to render a single tile at the screen position (x, y)
-            // with the glyph and color information obtained from the game world
-            // at the corresponding world coordinates (wx, wy)
-
-
         }
+        return false;
+    }
+
+     */
 
 
-    }*/
+
+
+
+
 
 }

@@ -12,6 +12,8 @@ public class World {
 
     // list for creature
     private List<Creature> creatures;
+    // list for items
+    private Item[][] items;
 
     //getter for array list creatures
     public List<Creature> getCreatures() {
@@ -42,6 +44,8 @@ public class World {
 
         // initialize creature list as an ArrayList
         this.creatures = new ArrayList<Creature>();
+        //initialize item list
+        this.items = new Item[width][height];
 
     }
     //define and stores the tile in game world
@@ -70,13 +74,24 @@ public class World {
 
     public char glyph(int x, int y){
         //takes the same x and y coordinates
-
+        Creature creature = creature(x, y);
+        if (creature != null)
+            return creature.glyph();
+        if (item(x,y) != null)
+            return item(x,y).glyph();
         return tile(x, y).glyph();
         // uses the tile(int x, int y) method to get the tile at those coordinates and
         // then retrieves the character glyph associated with that tile using the glyph() method of the Tile class
     }
 
     public Color color(int x, int y){
+        Creature creature = creature(x, y);
+        if (creature != null)
+            return creature.color();
+
+        if (item(x,y) != null)
+            return item(x,y).color();
+
         return tile(x, y).color();
         //same as glyph() method
         //retrieve the color of those coordinates
@@ -89,30 +104,106 @@ public class World {
             tiles[x][y] = Tile.FLOOR;
     }
 
+    //add creature in an empty tile
     public void addAtEmptyLocation(Creature creature){
         int x;
         int y;
         // initializes x and y variables to store the coordinates of the location where the Creature will be added
 
+        //add player at empty location in left screen side
+        if(creature.isPlayer()){
+            x = 0; // Fixed x coordinate at the first column
+
+            do {
+                y = (int) (Math.random() * height);
+                // Randomly generate y coordinate within the height of the screen
+            } while (!tile(x, y).isGround() || creature(x, y) != null);
+            // Keep generating new y coordinates until an empty location is found
+
+            creature.x = x;
+            creature.y = y;
+            creatures.add(creature);
+        }
+        //add any creature in any
+        else {
+            do {
+                x = (int) (Math.random() * width);
+                y = (int) (Math.random() * height);
+            }
+            while (!tile(x, y).isGround() || creature(x, y) != null);
+            // enters a do-while loop, which will keep generating random coordinates (x,y)
+            // until it finds an empty location in the game world and not fill with creature
+
+            creature.x = x;
+            creature.y = y;
+            // assigns the x and y coordinates to the creature object.
+            creatures.add(creature);
+        }
+    }
+
+    //add item in an empty tile
+    public void addAtEmptyLocation(Item item) {
+        int x;
+        int y;
+
         do {
             x = (int)(Math.random() * width);
             y = (int)(Math.random() * height);
         }
-        while (!tile(x,y).isGround() || creature(x,y) != null);
-        // enters a do-while loop, which will keep generating random coordinates (x,y)
-        // until it finds an empty location in the game world and not fill with creature
+        while (!tile(x,y).isGround() || item(x,y) != null);
 
-        creature.x = x;
-        creature.y = y;
-        // assigns the x and y coordinates to the creature object.
-        creatures.add(creature);
+        items[x][y] = item;
     }
 
-    //method that instant remove the killed creature
+    // way to determine what item is in a location
+    public Item item(int x, int y){
+        return items[x][y];
+    }
+
+    //method that remove the killed creature
     public void remove(Creature other) {
         //remove creature from list of creatures
         creatures.remove(other);
     }
+
+    //method that remove picked item
+    public void remove(int x, int y) {
+        items[x][y] = null;
+    }
+
+    //method will check adjacent tiles for an open space
+    // and repeat until it find one or run out of open spaces
+    public void addAtEmptySpace(Item item, int x, int y){
+        if (item == null)
+            return;
+
+        List<Point> points = new ArrayList<Point>();
+        List<Point> checked = new ArrayList<Point>();
+
+        points.add(new Point(x, y));
+
+        while (!points.isEmpty()){
+            Point p = points.remove(0);
+            checked.add(p);
+
+            if (!tile(p.x, p.y).isGround())
+                continue;
+
+            if (items[p.x][p.y] == null){
+                items[p.x][p.y] = item;
+                Creature c = this.creature(p.x, p.y);
+                if (c != null)
+                    c.notify("A %s lands between your feet.", item.name());
+                return;
+            } else {
+                List<Point> neighbors = p.neighbors8();
+                neighbors.removeAll(checked);
+                points.addAll(neighbors);
+            }
+        }
+    }
+
+
 
     //let creature knows to update itself and start their turn
     public void update(){
@@ -122,7 +213,8 @@ public class World {
         for (Creature creature : toUpdate){
             creature.update();
         }
-    }
 
+
+    }
 
 }

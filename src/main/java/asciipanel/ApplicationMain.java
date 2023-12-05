@@ -1,3 +1,12 @@
+//without adding z-depth but trying to add experimental stuff, ie region, combat screen, etc.
+//incoporating advance battlescreen
+/*
+    to add new creature:-
+    1. create new ai for creature
+    2. create creature constructor in creatureFactory
+    3. update createCreature in playscreen
+    4. change CreatureAi placeholder to fit need for creature behaviour using override
+*/
 package asciipanel;
 
 import asciiLib.AsciiPanel;
@@ -35,6 +44,7 @@ public class ApplicationMain extends JFrame implements KeyListener {
         //clears the terminal, displays the content of the current screen,
         //and then calls super.repaint() to repaint the frame
     }
+
 
     public void keyPressed(KeyEvent e) {
         screen = screen.respondToUserInput(e);
