@@ -83,13 +83,21 @@ public class ChooseClassScreen implements Screen {
         classAscii.displayAsciiArtFromFile(x+1,y, filePath, terminal);
 
         y = y+1;
-        terminal.write(" Health: " + classStats[1], x+20+1, y++, AsciiPanel.red);
-        terminal.write(" Mana: " + classStats[2], x+20+1, y++, AsciiPanel.blue);
+        terminal.write(" Health: ", x+20+1, y, AsciiPanel.brightRed);
+        terminal.write(classStats[1], x+20+1+9, y++, AsciiPanel.brightWhite);
+
+        terminal.write(" Mana: ", x+20+1, y, AsciiPanel.brightCyan);
+        terminal.write(classStats[2], x+20+1+7, y++, AsciiPanel.brightWhite);
+
         terminal.write("" , x+20+1, y++);
-        terminal.write(" Physical: " + classStats[3], x+20+1, y++);
-        terminal.write(" Magical: " + classStats[4], x+20+1, y++);
-        terminal.write(" Armour: " + classStats[5], x+20+1, y++);
-        terminal.write(" Barrier: " + classStats[6], x+20+1, y++);
+        terminal.write(" Physical: " + classStats[3], x+20+1, y);
+        terminal.write(classStats[3], x+20+1+11, y++, AsciiPanel.brightWhite);
+        terminal.write(" Magical: " + classStats[4], x+20+1, y);
+        terminal.write(classStats[4], x+20+1+10, y++, AsciiPanel.brightWhite);
+        terminal.write(" Armour: " + classStats[5], x+20+1, y);
+        terminal.write(classStats[5], x+20+1+9, y++, AsciiPanel.brightWhite);
+        terminal.write(" Barrier: " + classStats[6], x+20+1, y);
+        terminal.write(classStats[6], x+20+1+10, y++, AsciiPanel.brightWhite);
     }
 
     private void displayBox(int x, int y,AsciiPanel terminal){

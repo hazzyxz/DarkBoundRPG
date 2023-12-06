@@ -34,7 +34,7 @@ public class BattleScreen implements Screen {
         this.enemy = enemy;
     }
 
-    int xCenter = 45;
+    private int xCenter = 45;
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
@@ -96,8 +96,8 @@ public class BattleScreen implements Screen {
         //action
         int y = 38;
         int x = 46;
-        terminal.write("< ACTION >",x,y++);
-        terminal.write("----------",x,y++);
+        terminal.write("< ACTION >",x,y++,AsciiPanel.brightBlack);
+        terminal.write("----------",x,y++,AsciiPanel.brightBlack);
         terminal.write("",x,y++);
         terminal.write("[1] to Attack",x,y++);
         terminal.write("[2] to Defend",x,y++);
@@ -107,8 +107,9 @@ public class BattleScreen implements Screen {
 
         y = 38;
         x = 46+20;
-        terminal.write("{ SPELL }",x,y++);
-        terminal.write("---------",x,y++);
+        terminal.write("{ SPELL }",x,y++,AsciiPanel.brightBlack);
+        terminal.write("---------",x,y++,AsciiPanel.brightBlack);
+        terminal.write("",x,y++);
         terminal.write("[Q] to use Spell 1",x,y++);
         terminal.write("[W] to use Spell 2",x,y++);
         terminal.write("[E] to use Spell 3",x,y++);
@@ -214,7 +215,7 @@ public class BattleScreen implements Screen {
                 playerDefend(); // Increase defense value for a turns. cooldown 2 turn
                 defenseCooldown = 3; // Set the cooldown to 3 rounds
             } else {
-                log(" > You can't defend yet. (" + defenseCooldown +" more round)");
+                log(" > You can't defend yet. ( " + defenseCooldown +" more round )");
                 log("");
             }
             //playerDefend(); //increase defense value for 3 turn
@@ -282,7 +283,7 @@ public class BattleScreen implements Screen {
         amount = (int)(Math.random() * amount) + 1;
 
         player.modifyDefense(amount);
-        log(" + You increase your defense for " + amount + " defense");
+        log(" + You increase your armour by " + amount);
         log("");
     }
 
@@ -313,7 +314,52 @@ public class BattleScreen implements Screen {
 
     // Method to display attack log including history
     // Method to display attack log including history
+    private void displayLog(AsciiPanel terminal) {
+        terminal.write("[ LOG ]", 67 - 4, 3,AsciiPanel.brightBlack); // Header for attack log
+        terminal.write("-------", 67 - 4, 3 + 1,AsciiPanel.brightBlack);
 
+        int logY = 6; // Starting Y position for displaying log
+
+        // Display attack log history
+        for (String log : logHistory) {
+            // Wrap long messages
+            List<String> wrappedLines = wrapText(log, 41); // Wrap at x characters (adjust as needed)
+
+            for (String line : wrappedLines) {
+                int xPosition = 46; // Initial X position
+                // Split the line by spaces to check for specific words
+                String[] words = line.split("\\s+");
+                for (String word : words) {
+                    if (word.equalsIgnoreCase(player.name()) || word.equalsIgnoreCase("you")) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.brightGreen); // Display player name in bright green
+                    } else if (word.equalsIgnoreCase(enemy.name())) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.brightRed); // Display enemy name in bright red
+                    }
+                    else if (word.equalsIgnoreCase("health")) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.red);
+                    }
+                    else if (word.equalsIgnoreCase("armour")) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.orange);
+                    }
+                    else if (word.matches("\\d+")){
+                        terminal.write(word, xPosition, logY, AsciiPanel.brightWhite);
+                    }
+                    else if (word.equalsIgnoreCase(">") || word.equalsIgnoreCase("+") ) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.brightBlack);
+                    }
+
+                    else {
+                        terminal.write(word, xPosition, logY, AsciiPanel.white); // Display other words in white
+                    }
+                    xPosition += word.length() + 1; // Move X position for the next word
+                }
+                logY++; // Move to the next line for the next log entry
+            }
+        }
+    }
+
+
+    /*
     private void displayLog(AsciiPanel terminal) {
         terminal.write("< LOG >", 67-4, 3); // Header for attack log
         terminal.write("-------",67-4,3+1);
@@ -331,6 +377,8 @@ public class BattleScreen implements Screen {
 
     }
 
+     */
+
     private void log(String log) {
         logHistory.add(log);
 
@@ -346,17 +394,16 @@ public class BattleScreen implements Screen {
     private List<String> wrapText(String text, int wrapLength) {
         List<String> lines = new ArrayList<>();
         while (text.length() > wrapLength) {
-            int spaceIndex = text.lastIndexOf(' ', wrapLength);
+            int spaceIndex = text.lastIndexOf(" ", wrapLength);
             if (spaceIndex <= 0) {
                 spaceIndex = wrapLength;
             }
             lines.add(text.substring(0, spaceIndex));
             text = text.substring(spaceIndex);
         }
+
         lines.add(text); // Add the remaining or last line
         return lines;
     }
-
-
 
 }

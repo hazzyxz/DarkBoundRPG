@@ -30,6 +30,18 @@ public class StuffFactory {
         return player;
     }
 
+    public Creature newNpc(){
+        // initialize npc in world with green 'N' and its stats
+        Creature npc = new Creature(world, "Npc",'N', AsciiPanel.brightMagenta, 0, 0, 0, 0,0,0,"C:\\Users\\Ahmad Taufiq\\Desktop\\test ascii.txt");
+
+        // adds the npc creature to an empty location in the game world
+        world.addAtEmptyLocation(npc);
+
+        //creates a npc Ai object, which manages the fungus's behavior and interactions
+        new NpcAi(npc, this);
+        return npc;
+    }
+
     //The Creature constructor is used to create fungus creature
     //later change creature factory to incoporate enemy data from .txt
     public Creature newFungus(){

@@ -13,6 +13,7 @@ public class PlayScreen implements Screen {
 
     // initialize a variable named player
     private Creature player;
+    private Creature creature;
 
     //initialize string array list
     private List<String> messages;
@@ -51,7 +52,6 @@ public class PlayScreen implements Screen {
             subscreen.displayOutput(terminal);
     }
 
-
     public Screen respondToUserInput(KeyEvent key) {
         /*
         movement - WASD/arrowKeys
@@ -76,10 +76,13 @@ public class PlayScreen implements Screen {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit())
                         return new PlayScreen();
-                    else if (isEnemyAdjacent(player)) {
-                        Creature enemy = getAdjacentEnemy(player);
-                        if (enemy != null) {
-                            subscreen = new BattleScreen(player, enemy);
+                    else if (isCreatureAdjacent(player)) {
+                        Creature creature = getAdjacentCreature(player);
+                        if (creature != null ) {
+                            if(isEnemyAdjacent(player))
+                                subscreen = new BattleScreen(player, creature);
+                            else if(!isEnemyAdjacent(player))
+                                subscreen = new DialogScreen(player, creature);
                         }
                     }
                     else
@@ -153,7 +156,7 @@ public class PlayScreen implements Screen {
         return this;
     }
 
-    private boolean isEnemyAdjacent(Creature player) {
+    private boolean isCreatureAdjacent(Creature player) {
         List<Point> adjacentPoints = player.neighbors8();
 
         for (Point point : adjacentPoints) {
@@ -165,8 +168,18 @@ public class PlayScreen implements Screen {
         return false;
     }
 
+    private boolean isEnemyAdjacent(Creature player) {
+        List<Point> adjacentPoints = player.neighbors8();
+        for (Point point : adjacentPoints) {
+            if ( world.glyph(point.x, point.y) !='N') {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Get the adjacent enemy if it exists
-    private Creature getAdjacentEnemy(Creature player) {
+    private Creature getAdjacentCreature(Creature player) {
         List<Point> adjacentPoints = player.neighbors8();
 
         for (Point point : adjacentPoints) {
@@ -177,7 +190,6 @@ public class PlayScreen implements Screen {
         }
         return null;
     }
-
 
     private int screenWidth;
     private int screenHeight;
@@ -211,6 +223,8 @@ public class PlayScreen implements Screen {
         //create player and player messages
         playerCharacter.setBaseStats(ArchetypeLoader.loadArchetype(playerCharacter.getClassID(0)));
         player = creatureFactory.newPlayer(messages,playerCharacter);
+
+        creatureFactory.newNpc();
 
         //create fungus
         for (int i = 0; i < 8; i++){

@@ -296,6 +296,7 @@ public class Creature {
         return glyph == '@';
     }
 
+
     //method for creature to eat
     public void eat(Item item){
         modifyFood(item.foodValue());
