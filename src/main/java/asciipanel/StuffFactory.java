@@ -32,7 +32,7 @@ public class StuffFactory {
 
     public Creature newNpc(){
         // initialize npc in world with green 'N' and its stats
-        Creature npc = new Creature(world, "Npc",'N', AsciiPanel.brightMagenta, 0, 0, 0, 0,0,0,"C:\\Users\\Ahmad Taufiq\\Desktop\\test ascii.txt");
+        Creature npc = new Creature(world, "Npc",'N', AsciiPanel.brightMagenta, 1, 1, 1, 1,1,1,"src/main/java/asciipanel/asciiArt/test ascii.txt");
 
         // adds the npc creature to an empty location in the game world
         world.addAtEmptyLocation(npc);
@@ -46,7 +46,7 @@ public class StuffFactory {
     //later change creature factory to incoporate enemy data from .txt
     public Creature newFungus(){
         // initialize fungus in world with green 'f' and its stats
-        Creature fungus = new Creature(world, "fungus",'f', AsciiPanel.brightRed, 100, 10, 10, 10,10,10,"C:\\Users\\Ahmad Taufiq\\Desktop\\test ascii.txt");
+        Creature fungus = new Creature(world, "fungus",'f', AsciiPanel.brightRed, 100, 10, 10, 10,10,10,"src/main/java/asciipanel/asciiArt/test ascii.txt");
 
         // adds the fungus creature to an empty location in the game world
         world.addAtEmptyLocation(fungus);
@@ -62,7 +62,7 @@ public class StuffFactory {
 
     //The Creature constructor is used to create bat creature
     public Creature newBat(){
-        Creature bat = new Creature(world, "bat",'b', AsciiPanel.brightRed, 150, 15, 10, 10, 10, 10,"C:\\Users\\Ahmad Taufiq\\Desktop\\test ascii 2.txt");
+        Creature bat = new Creature(world, "bat",'b', AsciiPanel.brightRed, 150, 15, 10, 10, 10, 10,"src/main/java/asciipanel/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(bat);
         new BatAi(bat);
         return bat;

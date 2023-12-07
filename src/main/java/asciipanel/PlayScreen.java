@@ -171,11 +171,11 @@ public class PlayScreen implements Screen {
     private boolean isEnemyAdjacent(Creature player) {
         List<Point> adjacentPoints = player.neighbors8();
         for (Point point : adjacentPoints) {
-            if ( world.glyph(point.x, point.y) !='N') {
-                return true;
+            if ( world.glyph(point.x, point.y) =='N') {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     // Get the adjacent enemy if it exists
