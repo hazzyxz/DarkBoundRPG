@@ -40,8 +40,10 @@ public class PlayScreen implements Screen {
 
         //display stats on the play screen
         //, player.defenseValue(), player.attackValue()
-        String stats = String.format(" %3d/%-3dhp", player.hp(), player.maxHp());
+        String stats = String.format("Level %d [%-3d/%3d]xp " , player.level(), player.xp(), player.maxXp());
         terminal.write(stats, 41, 2);
+        stats = String.format("[%3d/%-3d]hp" , player.hp(), player.maxHp());
+        terminal.write(stats, 41, 4);
 
         //call the displayMessages method
         displayMessages(terminal, messages);
@@ -352,8 +354,6 @@ public class PlayScreen implements Screen {
             return "Contempt";
     }
 
-
-
     /*
     //check if got adjacent enemy
     public boolean isEnemyAdjacent(Creature player) {
@@ -370,11 +370,5 @@ public class PlayScreen implements Screen {
     }
 
      */
-
-
-
-
-
-
 
 }

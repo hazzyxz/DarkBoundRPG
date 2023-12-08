@@ -63,4 +63,8 @@ public class CreatureAi {
             creature.moveBy(mx, my);
     }
 
+    public void onGainLevel(){
+
+    }
+
 }

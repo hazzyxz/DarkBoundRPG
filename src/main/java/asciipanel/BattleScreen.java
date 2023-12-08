@@ -239,6 +239,8 @@ public class BattleScreen implements Screen {
 
         if(enemy.isDead()) {
             enemy.leaveCorpse();
+            player.gainXp(enemy);
+
             return null;
         }
         if (defenseCooldown > 0) {

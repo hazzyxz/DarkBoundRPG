@@ -69,6 +69,14 @@ public class Creature {
     private int food;
     public int food() { return food; }
 
+    private int maxXp;
+    public int maxXp() { return maxXp; }
+    private int xp;
+    public int xp() { return xp; }
+    private int level;
+    public int level() { return level; }
+
+
     private String asciiPath;
     public String asciiPath() { return asciiPath; }
 
@@ -103,6 +111,11 @@ public class Creature {
         this.inventory = new Inventory(20); //the inventory slot of this creature
         this.maxFood = 2000; //the max food creature can eat
         this.food = maxFood / 3 * 2; //the amount of food creature is on start
+
+        this.level = 1; //initial creature's level
+        this.maxXp = 1000; //initial max xp before level up
+        this.xp = xp; //the amount of xp creature is on start
+
         this.asciiPath = asciiPath; //the ascii filepath for creature
     }
 
@@ -292,6 +305,42 @@ public class Creature {
            // modifyHp(-1000);
         }
     }
+
+    public void modifyXp(int amount) {
+        xp += amount;
+
+        //notify("You %s %d xp.", amount < 0 ? "lose" : "gain", amount);
+        System.out.println(amount + " xp gain");
+        System.out.println(" current xp "+xp);
+        System.out.println(" next level up: "+ (int)(1000*Math.pow(1.1,this.level-1)) + " xp");
+        //(int)(Math.pow(level, 1.5) * 20)
+        while (xp > (int)(1000*Math.pow(1.1,this.level-1))) {
+            xp -= (int)(1000*Math.pow(1.1,this.level-1));
+            level++;
+            System.out.println(" maxXp before"+maxXp);
+            maxXp = (int)(1000*Math.pow(1.1,this.level-1));
+            System.out.println(" maxXp after"+maxXp);
+            System.out.println(" current level "+ level);
+            //doAction("advance to level %d", level);
+            ai.onGainLevel();
+            modifyHp(level * 2);
+        }
+    }
+
+    public void gainXp(Creature other){
+        int amount = other.maxHp
+                + other.phyAttack()
+                + other.magAttack()
+                + other.phyDefense()
+                + other.magDefense()
+                - level * 3;
+                //- level * 4;
+
+        if (amount > 0)
+            modifyXp(amount);
+    }
+
+
     public boolean isPlayer(){
         return glyph == '@';
     }
