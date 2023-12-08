@@ -28,6 +28,7 @@ public class AsciiPanel extends JPanel {
     public static Color green = new Color(0, 128, 0);
 
     public static Color yellow = new Color(128, 128, 0);
+    public static Color darkYellow = new Color(70, 70, 0);
 
     public static Color orange = new Color(255, 165, 0);
 

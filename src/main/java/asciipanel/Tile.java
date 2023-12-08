@@ -5,10 +5,12 @@ import java.awt.Color;
 
 public enum Tile {
     //Represents a floor tile with a yellow character (ASCII 250) and yellow color.
-    FLOOR((char)250, AsciiPanel.yellow),
+    //FLOOR((char)250, AsciiPanel.yellow),
+    FLOOR((char)250, AsciiPanel.darkYellow),
 
     //Represents a wall tile with a yellow character (ASCII 177) and yellow color.
-    WALL((char)177, AsciiPanel.yellow),
+    //WALL((char)177, AsciiPanel.yellow),
+    WALL('#', AsciiPanel.yellow),
 
     //Represents a bounds tile with an 'x' character and bright black color
     BOUNDS('X', AsciiPanel.brightBlack),
@@ -17,8 +19,8 @@ public enum Tile {
     UNKNOWN(' ', AsciiPanel.white),
 
     //represent a stair tile with '>' and '<' character and white color
-    STAIRS_DOWN('<', AsciiPanel.brightYellow),
-    STAIRS_UP('>', AsciiPanel.brightYellow);
+    STAIRS_DOWN('V', AsciiPanel.brightYellow),
+    STAIRS_UP('A', AsciiPanel.brightYellow);
 
     private char glyph;
 

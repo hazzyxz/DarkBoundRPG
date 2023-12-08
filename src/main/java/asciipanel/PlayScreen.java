@@ -40,8 +40,8 @@ public class PlayScreen implements Screen {
 
         //display stats on the play screen
         //, player.defenseValue(), player.attackValue()
-        String stats = String.format(" %3d/%-3dhp hunger: %d/%d%s", player.hp(), player.maxHp(),player.food(),player.maxFood(), hunger());
-        terminal.write(stats, 1, 24);
+        String stats = String.format(" %3d/%-3dhp", player.hp(), player.maxHp());
+        terminal.write(stats, 41, 2);
 
         //call the displayMessages method
         displayMessages(terminal, messages);
@@ -197,16 +197,23 @@ public class PlayScreen implements Screen {
     public PlayScreen(){
         //initialize dimension of play screen
         //change size in AsciiPanel.jar file
-        screenWidth = 80;
-        screenHeight = 24;
+        screenWidth = 40;
+        screenHeight = 40;
         //declare messages as an array list of string
         messages = new ArrayList<String>();
 
-        //calls the create world method
-        world = new WorldBuilder(90, 31)
-                //call world make caves method
-                .makeCaves()
-                //call world build method
+        int width = 40;
+        int height = 40;
+        float initialChance = 0.45f; // higher = more wall in initial map
+        int deathLimit = 3; //num of adjacent tile to decide if the tile is removed
+        int birthLimit = 4;  //num of adjacent tile to decide if the tile is added
+        int repeat = 6; // lower = more jagged
+        int desiredSize = 750; //desired size of the largest region
+
+        world = new WorldBuilder(width, height)
+                //generate game world with specific dimensions
+                //class that provide generating and customizing world
+                .makeCaves2(initialChance,deathLimit,birthLimit,repeat,desiredSize)
                 .build();
 
         //create FieldOfView instance
@@ -309,7 +316,7 @@ public class PlayScreen implements Screen {
         for (int i = 0; i < messages.size(); i++){
             // top + i : Calculate the vertical position for each message based on the top and the index
             // Display the message at the center of the screen
-            terminal.writeCenter(messages.get(i), top + i + 2);
+            terminal.write(messages.get(i), 2 ,top + i + 5);
         }
         // Clear the messages list after displaying them
         messages.clear();
@@ -317,7 +324,7 @@ public class PlayScreen implements Screen {
 
     //empty code(will be remove)
     private boolean userIsTryingToExit(){
-        return world.tile(player.x, player.y) == Tile.STAIRS_UP;
+        return world.tile(player.x, player.y) == Tile.STAIRS_DOWN;
     }
     //victory condition(temporary)
     /*

@@ -112,13 +112,26 @@ public class World {
 
         //add player at empty location in left screen side
         if(creature.isPlayer()){
-            x = 0; // Fixed x coordinate at the first column
+            y = 0; // Fixed y coordinate at the first column
 
             do {
-                y = (int) (Math.random() * height);
-                // Randomly generate y coordinate within the height of the screen
+                x = (int) (Math.random() * height);
+                // Randomly generate x coordinate within the height of the screen
             } while (!tile(x, y).isGround() || creature(x, y) != null);
-            // Keep generating new y coordinates until an empty location is found
+            // Keep generating new x coordinates until an empty location is found
+
+            creature.x = x;
+            creature.y = y;
+            creatures.add(creature);
+        }
+        else if(creature.glyph()=='N'){
+            y = 0; // Fixed y coordinate at the first column
+
+            do {
+                x = (int) (Math.random() * height);
+                // Randomly generate x coordinate within the height of the screen
+            } while (!tile(x, y).isGround() || creature(x, y) != null);
+            // Keep generating new x coordinates until an empty location is found
 
             creature.x = x;
             creature.y = y;
@@ -157,6 +170,9 @@ public class World {
 
     // way to determine what item is in a location
     public Item item(int x, int y){
+        if (x < 0 || x >= width || y < 0 || y >= height) {
+            return null;
+        }
         return items[x][y];
     }
 

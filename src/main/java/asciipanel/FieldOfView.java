@@ -3,7 +3,6 @@ package asciipanel;
 //determine what is in view and to remember what has already been seen
 public class FieldOfView {
     private World world;
-    private int depth;
 
     private boolean[][] visible;
     public boolean isVisible(int x, int y){
