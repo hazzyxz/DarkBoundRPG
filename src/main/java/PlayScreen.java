@@ -63,6 +63,8 @@ public class PlayScreen implements Screen {
         terminal.write(stats, 41, 1);
 
         displayInfo(terminal);
+        displayLegends(terminal);
+        displayHotkey(terminal);
 
         //call the displayMessages method
         displayMessages(terminal, messages);
@@ -230,6 +232,34 @@ public class PlayScreen implements Screen {
         terminal.write("Phy. Defense: "+player.phyDefense(),x,y++);
         terminal.write("",x,y++);
         terminal.write("Mag. Defense: "+player.magDefense(),x,y++);
+    }
+
+    public void displayLegends(AsciiPanel terminal) {
+        int x = 67;
+        int y = 5;
+
+        terminal.write("Legends",x,y++);
+        terminal.write("-------",x,y++);
+        terminal.write(" ",x,y++);
+
+        terminal.write(player.glyph() + " - " + " Player",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("F - " + " Fungus",x,y++);
+    }
+
+    public void displayHotkey(AsciiPanel terminal) {
+        int x = 67;
+        int y = 21;
+
+        terminal.write("Hotkey",x,y++);
+        terminal.write("-------",x,y++);
+        terminal.write(" ",x,y++);
+
+        terminal.write("WASD -- Move",x,y++);
+        terminal.write("",x,y++);
+        terminal.write("F -- Interact",x,y++);
+        terminal.write("",x,y++);
+        terminal.write("Esc -- Menu",x,y++);
     }
 
     private void displayHealth(Creature creature,int x, int y, AsciiPanel terminal){
@@ -400,12 +430,12 @@ public class PlayScreen implements Screen {
     }
 
     private void displayMessages(AsciiPanel terminal, List<String> messages) {
-        int top = screenHeight - messages.size();
-        // Iterate over each message in the list
-        for (int i = 0; i < messages.size(); i++){
-            // top + i : Calculate the vertical position for each message based on the top and the index
+        int top = 41; // Set the initial top position
+        // Iterate over each message in the list in reverse order
+        for (int i = messages.size() - 1; i >= 0; i--) {
+            // top + (messages.size() - 1 - i) : Calculate the vertical position for each message based on the top and the index
             // Display the message at the center of the screen
-            terminal.write(messages.get(i), 2 ,top + i + 5);
+            terminal.write(messages.get(i), 2, top + (messages.size() - 1 - i));
         }
         // Clear the messages list after displaying them
         messages.clear();
