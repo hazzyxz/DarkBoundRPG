@@ -168,14 +168,78 @@ public class Creature {
          */
     }
 
+    public void modifyMaxHp(int amount) {
+        //hp is minus the amount of damage taken
+        maxHp += amount;
+
+        //if no hp left then remove this creature
+        /*
+        doAction("die");
+        leaveCorpse();
+        world.remove(this);
+         */
+    }
+
     public void modifyDefense(int amount) {
         //defense value
-        phyDefense += amount;
+        maxPhyDefense += amount;
+        maxMagDefense += amount;
+    }
+
+    public void modifyAttack(int amount) {
+        //defense value
+        phyAttack += amount;
+        magAttack += amount;
     }
 
     public void resetDefense(){
         //hp is minus the amount of damage taken
         phyDefense = maxPhyDefense;
+    }
+
+    public void modifyFood(int amount) {
+        food += amount;
+        if (food > maxFood) {
+            food = maxFood;
+            //kill if hunger = 0
+        } else if (food < 1 && isPlayer()) {
+            // modifyHp(-1000);
+        }
+    }
+
+    public void modifyXp(int amount) {
+        xp += amount;
+
+        //notify("You %s %d xp.", amount < 0 ? "lose" : "gain", amount);
+        //(int)(Math.pow(level, 1.5) * 20)
+        while (xp > (int)(1000*Math.pow(1.1,this.level-1))) {
+            xp -= (int)(1000*Math.pow(1.1,this.level-1));
+            level++;
+            maxXp = (int)(1000*Math.pow(1.1,this.level-1));
+            //doAction("advance to level %d", level);
+            //ai.onGainLevel();
+            increaseStats();
+            //modifyMaxHp(level * 2);
+        }
+    }
+
+    public void increaseStats(){
+        modifyMaxHp(level * 2);
+        modifyDefense(level);
+        modifyAttack(level);
+    }
+
+    public void gainXp(Creature other){
+        int amount = other.maxHp
+                + other.phyAttack()
+                + other.magAttack()
+                + other.phyDefense()
+                + other.magDefense()
+                - level * 3;
+        //- level * 4;
+
+        if (amount > 0)
+            modifyXp(10000000);
     }
 
     public boolean isDead(){
@@ -208,7 +272,6 @@ public class Creature {
     //take the string and any parameters
     public void notify(String message, Object ... params){
         ai.onNotify(String.format(message, params));
-
     }
 
     //to notify creature of action around them
@@ -296,46 +359,6 @@ public class Creature {
         corpse.modifyFoodValue(maxHp * 3);
         world.addAtEmptySpace(corpse, x, y);
     }
-
-    //add food logic into the game
-    public void modifyFood(int amount) {
-        food += amount;
-        if (food > maxFood) {
-            food = maxFood;
-        //kill if hunger = 0
-        } else if (food < 1 && isPlayer()) {
-           // modifyHp(-1000);
-        }
-    }
-
-    public void modifyXp(int amount) {
-        xp += amount;
-
-        //notify("You %s %d xp.", amount < 0 ? "lose" : "gain", amount);
-        //(int)(Math.pow(level, 1.5) * 20)
-        while (xp > (int)(1000*Math.pow(1.1,this.level-1))) {
-            xp -= (int)(1000*Math.pow(1.1,this.level-1));
-            level++;
-            maxXp = (int)(1000*Math.pow(1.1,this.level-1));
-            //doAction("advance to level %d", level);
-            ai.onGainLevel();
-            modifyHp(level * 2);
-        }
-    }
-
-    public void gainXp(Creature other){
-        int amount = other.maxHp
-                + other.phyAttack()
-                + other.magAttack()
-                + other.phyDefense()
-                + other.magDefense()
-                - level * 3;
-                //- level * 4;
-
-        if (amount > 0)
-            modifyXp(amount);
-    }
-
 
     public boolean isPlayer(){
         return glyph == '@';

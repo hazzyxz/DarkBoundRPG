@@ -23,7 +23,27 @@ public class PlayScreen implements Screen {
 
     Archetype playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
 
+    private int screenWidth;
+    private int screenHeight;
 
+    public PlayScreen(){
+        //initialize dimension of play screen
+        //change size in AsciiPanel.jar file
+        screenWidth = 40;
+        screenHeight = 40;
+        //declare messages as an array list of string
+        messages = new ArrayList<String>();
+
+        createNewWorld();
+
+        //create FieldOfView instance
+        fov = new FieldOfView(world);
+        StuffFactory stuffFactory = new StuffFactory(world, fov);
+        // calls the createCreature and createItems method and pass stuffFactory variable
+        createCreatures(stuffFactory);
+        createItems(stuffFactory);
+
+    }
 
     public void displayOutput(AsciiPanel terminal) {
 
@@ -39,10 +59,10 @@ public class PlayScreen implements Screen {
 
         //display stats on the play screen
         //, player.defenseValue(), player.attackValue()
-        String stats = String.format("Level %d [%-3d/%3d]xp " , player.level(), player.xp(), player.maxXp());
-        terminal.write(stats, 41, 2);
-        stats = String.format("[%3d/%-3d]hp" , player.hp(), player.maxHp());
-        terminal.write(stats, 41, 4);
+        String stats = String.format(" Level %d [%d/%d]xp " , player.level(), player.xp(), player.maxXp());
+        terminal.write(stats, 41, 1);
+
+        displayInfo(terminal);
 
         //call the displayMessages method
         displayMessages(terminal, messages);
@@ -75,8 +95,9 @@ public class PlayScreen implements Screen {
 
             switch (key.getKeyCode()) {
                 case KeyEvent.VK_F:
-                    if (userIsTryingToExit())
+                    if (userIsTryingToExit()){
                         return new PlayScreen();
+                    }
                     else if (isCreatureAdjacent(player)) {
                         Creature creature = getAdjacentCreature(player);
                         if (creature != null ) {
@@ -157,52 +178,131 @@ public class PlayScreen implements Screen {
         return this;
     }
 
-    private boolean isCreatureAdjacent(Creature player) {
-        List<Point> adjacentPoints = player.neighbors8();
-
-        for (Point point : adjacentPoints) {
-            Creature adjacentCreature = world.creature(point.x, point.y);
-            if (adjacentCreature != null && adjacentCreature != player) {
-                return true;
-            }
+    public void displayInfo(AsciiPanel terminal){
+        for (int i = 40; i <= 89 - 1; i++) {
+            terminal.write('-', i, 0, Color.yellow);
         }
-        return false;
+        for (int i = 0; i <= 40; i++) {
+            terminal.write("/", 40, i, Color.yellow);
+        }
+        for (int i = 40; i <= 89 - 1; i++) {
+            terminal.write('-', i, 4, Color.yellow);
+        }
+        for (int i = 5; i <= 40; i++) {
+            terminal.write("|", 40 + 50/2, i, Color.yellow);
+        }
+        for (int i = 0; i <= 40; i++) {
+            terminal.write("\\", 88, i, Color.yellow);
+        }
+        for (int i = 40; i <= 89 - 1; i++) {
+            terminal.write('-', i, 20, Color.yellow);
+        }
+        for (int i = 0; i <= 89 - 1; i++) {
+            terminal.write('-', i, 40, Color.yellow);
+        }
+        terminal.write('+', 40, 0, Color.yellow);
+        terminal.write('+', 88, 0, Color.yellow);
+        terminal.write('+', 40, 4, Color.yellow);
+        terminal.write('+', 88, 4, Color.yellow);
+        terminal.write('+', 40, 20, Color.yellow);
+        terminal.write('+', 88, 20, Color.yellow);
+        terminal.write('+', 0, 40, Color.yellow);
+        terminal.write('+', 40, 40, Color.yellow);
+        terminal.write('+', 40 + 50/2, 40, Color.yellow);
+        terminal.write('+', 88, 40, Color.yellow);
+        terminal.write('+', 40 + 50/2, 20 , Color.yellow);
+        terminal.write('+', 40 + 50/2, 4, Color.yellow);
+
+        String string = String.format(" Level %d [%d/%d]xp " , player.level(), player.xp(), player.maxXp());
+        terminal.write(string,41, 1);
+        terminal.write(" "+player.name(),41,3);
+
+        displayHealth(player, 42,6,terminal);
+        displayMana(player, 42,9,terminal);
+
+        int x = 42;
+        int y = 12;
+
+        terminal.write("Phy. Attack: "+player.phyAttack(),x,y++);
+        terminal.write("",x,y++);
+        terminal.write("Mag. Attack: "+player.magAttack(),x,y++);
+        terminal.write("",x,y++);
+        terminal.write("Phy. Defense: "+player.phyDefense(),x,y++);
+        terminal.write("",x,y++);
+        terminal.write("Mag. Defense: "+player.magDefense(),x,y++);
     }
 
-    private boolean isEnemyAdjacent(Creature player) {
-        List<Point> adjacentPoints = player.neighbors8();
-        for (Point point : adjacentPoints) {
-            if ( world.glyph(point.x, point.y) =='N') {
-                return false;
+    private void displayHealth(Creature creature,int x, int y, AsciiPanel terminal){
+        terminal.write("[HP]", x, y++);
+        int remainingPercentage = creature.hp() * 100 / creature.maxHp();
+        int barLength = 22;
+
+        int barStartX = x-1;
+        int healthBarLength = (remainingPercentage * barLength) / 100;
+
+        for (int i = 0; i < barLength; i++) {
+            if (i < healthBarLength) {
+                terminal.write('/', barStartX + i +1, y, AsciiPanel.brightRed);
+            } else {
+                terminal.write('/', barStartX + i +1, y, AsciiPanel.red);
             }
         }
-        return true;
+
+        /*
+        y--;
+        x = x+5;
+        if (remainingPercentage < 10) {
+            terminal.write("" + creature.hp(), x , y, AsciiPanel.red);
+        }
+        else if (remainingPercentage < 25) {
+            terminal.write("" + creature.hp(), x, y, Color.ORANGE);
+        } else if (remainingPercentage < 50) {
+            terminal.write("" + creature.hp(), x, y, AsciiPanel.yellow);
+        } else {
+            terminal.write("" + creature.hp(), x, y, AsciiPanel.green);
+        }
+
+        terminal.write( "/", x+3, y,AsciiPanel.white);
+        terminal.write(""+creature.maxHp(), x+3+1, y,AsciiPanel.green);
+         */
     }
 
-    // Get the adjacent enemy if it exists
-    private Creature getAdjacentCreature(Creature player) {
-        List<Point> adjacentPoints = player.neighbors8();
+    private void displayMana(Creature creature,int x, int y, AsciiPanel terminal){
+        terminal.write("[MP]", x, y++);
+        int remainingPercentage = creature.hp() * 100 / creature.maxHp();
+        int barLength = 22;
 
-        for (Point point : adjacentPoints) {
-            Creature adjacentCreature = world.creature(point.x, point.y);
-            if (adjacentCreature != null && adjacentCreature != player) {
-                return adjacentCreature;
+        int barStartX = x-1;
+        int healthBarLength = (remainingPercentage * barLength) / 100;
+
+        for (int i = 0; i < barLength; i++) {
+            if (i < healthBarLength) {
+                terminal.write('/', barStartX + i +1, y, AsciiPanel.brightCyan);
+            } else {
+                terminal.write('/', barStartX + i +1, y, AsciiPanel.cyan);
             }
         }
-        return null;
+
+        /*
+        y--;
+        x = x+5;
+        if (remainingPercentage < 10) {
+            terminal.write("" + creature.hp(), x , y, AsciiPanel.red);
+        }
+        else if (remainingPercentage < 25) {
+            terminal.write("" + creature.hp(), x, y, Color.ORANGE);
+        } else if (remainingPercentage < 50) {
+            terminal.write("" + creature.hp(), x, y, AsciiPanel.yellow);
+        } else {
+            terminal.write("" + creature.hp(), x, y, AsciiPanel.green);
+        }
+
+        terminal.write( "/", x+3, y,AsciiPanel.white);
+        terminal.write(""+creature.maxHp(), x+3+1, y,AsciiPanel.green);
+         */
     }
 
-    private int screenWidth;
-    private int screenHeight;
-
-    public PlayScreen(){
-        //initialize dimension of play screen
-        //change size in AsciiPanel.jar file
-        screenWidth = 40;
-        screenHeight = 40;
-        //declare messages as an array list of string
-        messages = new ArrayList<String>();
-
+    public void createNewWorld(){
         int width = 40;
         int height = 40;
         float initialChance = 0.45f; // higher = more wall in initial map
@@ -216,22 +316,16 @@ public class PlayScreen implements Screen {
                 //class that provide generating and customizing world
                 .makeCaves2(initialChance,deathLimit,birthLimit,repeat,desiredSize)
                 .build();
-
-        //create FieldOfView instance
-        fov = new FieldOfView(world);
-        StuffFactory stuffFactory = new StuffFactory(world, fov);
-        // calls the createCreature and createItems method and pass stuffFactory variable
-        createCreatures(stuffFactory);
-        createItems(stuffFactory);
-
+        ChooseClassScreen.worldCount++;
     }
 
     //create creatures method
     private void createCreatures(StuffFactory creatureFactory){
         //create player and player messages
         System.out.println(ChooseClassScreen.worldCount);
-        if(ChooseClassScreen.worldCount==0){
-            ChooseClassScreen.worldCount++;
+
+        if(ChooseClassScreen.worldCount==1){
+
             //playerCharacter.setStats(ArchetypeLoader.loadArchetype(playerCharacter.getClassID(0)));
 
             playerCharacter.setStats(playerCharacter.baseStats(playerCharacter));
@@ -242,7 +336,6 @@ public class PlayScreen implements Screen {
             playerCharacter.setStats(playerCharacter.baseStats(playerCharacter));
             player = creatureFactory.newPlayer(messages,playerCharacter);
         }
-
 
         creatureFactory.newNpc();
 
@@ -256,6 +349,7 @@ public class PlayScreen implements Screen {
             creatureFactory.newBat();
         }
     }
+
     //create items method
     private void createItems(StuffFactory factory) {
 
@@ -264,13 +358,6 @@ public class PlayScreen implements Screen {
         }
         //create a victory item
         factory.newVictoryItem();
-    }
-
-
-    //generate game world with specific dimensions
-    //class that provide generating and customizing world
-    private void createWorld(){
-
     }
 
     public int getScrollX() {
@@ -310,17 +397,6 @@ public class PlayScreen implements Screen {
             }
         }
 
-
-        /*
-        // loop through creatures, check if in bounds, and display
-        for(Creature c : creatures) {
-            //check if creatures is within the screen boundary area
-            if((c.x >= left && c.x < left + screenWidth) && (c.y >= top && c.y < top + screenHeight)) {
-                terminal.write(c.glyph(), c.x - left, c.y - top, c.color());
-            }
-        }
-        */
-
     }
 
     private void displayMessages(AsciiPanel terminal, List<String> messages) {
@@ -335,7 +411,6 @@ public class PlayScreen implements Screen {
         messages.clear();
     }
 
-    //empty code(will be remove)
     private boolean userIsTryingToExit(){
         return world.tile(player.x, player.y) == Tile.STAIRS_DOWN;
     }
@@ -351,6 +426,42 @@ public class PlayScreen implements Screen {
     }
      */
 
+    private boolean isCreatureAdjacent(Creature player) {
+        List<Point> adjacentPoints = player.neighbors8();
+
+        for (Point point : adjacentPoints) {
+            Creature adjacentCreature = world.creature(point.x, point.y);
+            if (adjacentCreature != null && adjacentCreature != player) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isEnemyAdjacent(Creature player) {
+        List<Point> adjacentPoints = player.neighbors8();
+        for (Point point : adjacentPoints) {
+            if ( world.glyph(point.x, point.y) =='N') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Get the adjacent enemy if it exists
+    private Creature getAdjacentCreature(Creature player) {
+        List<Point> adjacentPoints = player.neighbors8();
+
+        for (Point point : adjacentPoints) {
+            Creature adjacentCreature = world.creature(point.x, point.y);
+            if (adjacentCreature != null && adjacentCreature != player) {
+                return adjacentCreature;
+            }
+        }
+        return null;
+    }
+
+    /*
     //tell player his hunger bar
     private String hunger(){
         if (player.food() < player.maxFood() * 0.1)
@@ -365,6 +476,7 @@ public class PlayScreen implements Screen {
             return "Contempt";
     }
 
+     */
 
 
     /*
