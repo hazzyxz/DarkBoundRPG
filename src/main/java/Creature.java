@@ -145,12 +145,17 @@ public class Creature {
             //represent the potential new coordinates after the movement.
             //returns the type of tile that exists at the new position
             ai.onEnter(x+mx, y+my, tile);
-        else {
+        else if(other == player){
+            //subscreen = new BattleScreen(player, creature);
             //attack(other);
         }
 
         if (mx==0 && my==0)
             return;
+
+    }
+
+    public void attack(Creature creature){
 
     }
 
@@ -239,7 +244,7 @@ public class Creature {
         //- level * 4;
 
         if (amount > 0)
-            modifyXp(10000000);
+            modifyXp(amount);
     }
 
     public boolean isDead(){

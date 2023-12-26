@@ -95,7 +95,7 @@ public class DialogScreen implements Screen {
         // x=43, y=32 character
         npcAscii.displayAsciiArtFromFile(6, 10, npc.asciiPath(), isNpcTurn, terminal);
 
-        terminal.write("Press [W] to continue ..." , 2,38);
+        terminal.write("Press [1] to continue ..." , 2,38);
 
         /*
         //action
@@ -217,8 +217,42 @@ public class DialogScreen implements Screen {
     public Screen respondToUserInput(KeyEvent key) {
         //log(" You have encounter an npc ", false);
 
+        /*
+        if (key.getKeyCode() == KeyEvent.VK_1){
+            if (dialogCount < dialog.length) {
+                npcDialog();
+                this.dialogCount++;
+                System.out.println(dialogCount);
+            } else {
+                npc.removeCreature();
+                return null;
+            }
+        }
+        else if(key.getKeyCode() == KeyEvent.VK_5)
+            return null;
+        else
+            return this;
+
+         */
+        /*
         switch (key.getKeyCode()) {
-            case KeyEvent.VK_W:
+            case KeyEvent.VK_1:
+                npcDialog();
+                System.out.println(dialogCount);
+                respondToUserInput(key);
+                break;
+                //selectAndDisplayDialogResponse("1");
+                //log(" > Who are you?",true);
+            case KeyEvent.VK_5:
+                return null;
+            default:
+                return this;
+        }
+
+         */
+
+        switch (key.getKeyCode()) {
+            case KeyEvent.VK_1:
                 if (dialogCount < dialog.length) {
                     npcDialog();
                     break;

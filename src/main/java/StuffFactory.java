@@ -19,7 +19,7 @@ public class StuffFactory {
         // initialize player in world with white '@' and its stats
         // World represents the game world to which the creature belongs
         // player character is represented by the '@' glyph and is displayed in bright white color
-        Creature player = new Creature(world, "Sissyphus",'@', AsciiPanel.brightWhite, playerCharacter.getHealthPoints(), playerCharacter.getManaPoints(), playerCharacter.getPhysicalAttack(), playerCharacter.getMagicalAttack(), playerCharacter.getPhysicalDefense(), playerCharacter.getMagicalDefense(), "C:\\Users\\Ahmad Taufiq\\Desktop\\test ascii.txt");
+        Creature player = new Creature(world, playerCharacter.archetypeName, '@', AsciiPanel.brightWhite, playerCharacter.getHealthPoints(), playerCharacter.getManaPoints(), playerCharacter.getPhysicalAttack(), playerCharacter.getMagicalAttack(), playerCharacter.getPhysicalDefense(), playerCharacter.getMagicalDefense(), "C:\\Users\\Ahmad Taufiq\\Desktop\\test ascii.txt");
 
         // adds the player character to an empty location in the game world
         world.addAtEmptyLocation(player);
@@ -66,6 +66,41 @@ public class StuffFactory {
         world.addAtEmptyLocation(bat);
         new BatAi(bat);
         return bat;
+    }
+
+    public Creature newGoblin(){
+        Creature goblin = new Creature(world, "Goblin",'g',AsciiPanel.brightRed,40,1,10,1,5,2,"src/main/java/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(goblin);
+        new GoblinAi(goblin);
+        return goblin;
+    }
+
+    public Creature newSkeleton(){
+        Creature skeleton = new Creature(world, "Skeleton",'s',AsciiPanel.brightRed,60,1,12,1,7,3,"src/main/java/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(skeleton);
+        new GoblinAi(skeleton);
+        return skeleton;
+    }
+
+    public Creature newWitch(){
+        Creature witch = new Creature(world, "Witch",'w',AsciiPanel.brightRed,50,80,8,20,6,12,"src/main/java/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(witch);
+        new GoblinAi(witch);
+        return witch;
+    }
+
+    public Creature newOrc(){
+        Creature orc = new Creature(world, "Orc",'O',AsciiPanel.brightRed,70,1,15,1,9,4,"src/main/java/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(orc);
+        new GoblinAi(orc);
+        return orc;
+    }
+
+    public Creature newHarpy(){
+        Creature harpy = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,60,20,14,10,8,8,"src/main/java/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(harpy);
+        new BatAi(harpy);
+        return harpy;
     }
 
     // a rock item

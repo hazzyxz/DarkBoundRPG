@@ -54,9 +54,6 @@ public class PlayScreen implements Screen {
 
         terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
 
-        //tell world to update all creature in world after user input
-        world.update();
-
         //display stats on the play screen
         //, player.defenseValue(), player.attackValue()
         String stats = String.format(" Level %d [%d/%d]xp " , player.level(), player.xp(), player.maxXp());
@@ -83,8 +80,10 @@ public class PlayScreen implements Screen {
         drop screen - g
         eat screen - e
         */
+
         if (subscreen != null) {
             subscreen = subscreen.respondToUserInput(key);
+
         }
         else {
             /*
@@ -94,6 +93,14 @@ public class PlayScreen implements Screen {
             }
 
              */
+            if (isCreatureAdjacent(player)) {
+                Creature creature = getAdjacentCreature(player);
+                if (creature != null) {
+                    if (isEnemyAdjacent(player)) {
+                        subscreen = new BattleScreen(player, creature);
+                    }
+                }
+            }
 
             switch (key.getKeyCode()) {
                 case KeyEvent.VK_F:
@@ -103,10 +110,12 @@ public class PlayScreen implements Screen {
                     else if (isCreatureAdjacent(player)) {
                         Creature creature = getAdjacentCreature(player);
                         if (creature != null ) {
-                            if(isEnemyAdjacent(player))
-                                subscreen = new BattleScreen(player, creature);
-                            else if(!isEnemyAdjacent(player))
+                            if(isEnemyAdjacent(player)) {
+                                //subscreen = new BattleScreen(player, creature);
+                            }
+                            else if(!isEnemyAdjacent(player)) {
                                 subscreen = new DialogScreen(player, creature);
+                            }
                         }
                     }
                     else
@@ -169,9 +178,13 @@ public class PlayScreen implements Screen {
             //press both at the same time to go diagonally
         }
 
+        /*
         //update world if no sub-screen
-        if (subscreen == null)
+        if (subscreen == null) {
             world.update();
+        }
+
+         */
 
         //if hp<0 enter lose screen
         if (player.hp() < 1)
@@ -369,14 +382,28 @@ public class PlayScreen implements Screen {
 
         creatureFactory.newNpc();
 
+
         //create fungus
         for (int i = 0; i < 8; i++){
             creatureFactory.newFungus();
         }
-
+        /*
         //create bat
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 7; i++){
             creatureFactory.newBat();
+        }
+         */
+        for (int i = 0; i < 6; i++){
+            creatureFactory.newGoblin();
+        }
+        for (int i = 0; i < 6; i++){
+            creatureFactory.newWitch();
+        }
+        for (int i = 0; i < 6; i++){
+            creatureFactory.newOrc();
+        }
+        for (int i = 0; i < 6; i++){
+            creatureFactory.newHarpy();
         }
     }
 
@@ -458,14 +485,21 @@ public class PlayScreen implements Screen {
 
     private boolean isCreatureAdjacent(Creature player) {
         List<Point> adjacentPoints = player.neighbors8();
+        int count=0;
 
         for (Point point : adjacentPoints) {
             Creature adjacentCreature = world.creature(point.x, point.y);
             if (adjacentCreature != null && adjacentCreature != player) {
-                return true;
+                count++;
+
             }
         }
-        return false;
+
+        if(count > 1)
+            return false;
+        else {
+            return true;
+        }
     }
 
     private boolean isEnemyAdjacent(Creature player) {

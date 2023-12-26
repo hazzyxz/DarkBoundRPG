@@ -256,14 +256,23 @@ public class BattleScreen implements Screen {
     }
 
     public void playerAttack(){
+        int amount;
 
-        //take the attackers attack value - defenders defense value
-        int maxAmount = Math.max(2, player.phyAttack() - enemy.phyDefense());
-        int minAmount = maxAmount/2;
-
-        //random number from min amount to max amount of possible damage
-        int amount = rand.nextInt(maxAmount-minAmount)+minAmount;
-        //amount = (int)(Math.random() * amount);
+        switch (player.name()){
+            case "Warrior":
+            case "Rogue":
+            case "Archer":
+                amount = (int) (0.25*player.phyAttack() );
+                amount -= enemy.phyDefense();
+                break;
+            case "Mage":
+                amount = (int) (0.25 * player.magAttack());
+                amount -= enemy.magDefense();
+                break;
+            default:
+                amount = (int) (0.25 * (player.phyAttack()+ player.magAttack())/2);
+                amount -= (enemy.phyDefense() + enemy.magDefense())/2;
+        }
 
         enemy.modifyHp(-amount);
         log(" > You attack the " + enemy.name() + " for " + amount + " damage");
