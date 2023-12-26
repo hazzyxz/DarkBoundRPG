@@ -214,7 +214,6 @@ public class BattleScreen implements Screen {
                 defenseCooldown = 3; // Set the cooldown to 3 rounds
             } else {
                 log(" > You can't defend yet. ( " + defenseCooldown +" more round )");
-                log("");
             }
             //playerDefend(); //increase defense value for 3 turn
         }
@@ -223,7 +222,6 @@ public class BattleScreen implements Screen {
                 playerHeal();
             else {
                 log(" > You can only heal once per game ");
-                log("");
             }
         }
         else if (key.getKeyCode() == KeyEvent.VK_5)
@@ -276,7 +274,6 @@ public class BattleScreen implements Screen {
 
         enemy.modifyHp(-amount);
         log(" > You attack the " + enemy.name() + " for " + amount + " damage");
-        log("");
 
         //call the notify method while passing the string
         //notify("You attack the '%s' for %d damage.", other.name(), amount);
@@ -293,7 +290,6 @@ public class BattleScreen implements Screen {
 
         player.modifyDefense(amount);
         log(" + You increase your armour by " + amount);
-        log("");
     }
 
     public void playerHeal(){
@@ -305,21 +301,26 @@ public class BattleScreen implements Screen {
 
         player.modifyHp(amount);
         log(" + You increase your health for " + amount + " Hp");
-        log("");
         canHeal = false;
     }
 
     public void enemyAttack(){
-        int maxAmount = Math.max(2, enemy.phyAttack() - player.phyDefense());
-        int minAmount = maxAmount/2;
+        int amount;
+
+        amount = (int) (0.25 * enemy.phyAttack());
+        amount -= player.phyDefense();
 
         //random number from min amount to max amount of possible damage
-        int amount = rand.nextInt(maxAmount-minAmount )+minAmount;
+        //int amount = rand.nextInt(maxAmount-minAmount )+minAmount;
+        amount = Math.max(5,amount);
         player.modifyHp(-amount);
 
         log(" > The " + enemy.name() + " attack " + player.name() + " for " + amount + " damage");
-        log("");
     }
+
+
+
+    private int lines;
 
     // Method to display attack log including history
     // Method to display attack log including history
@@ -328,14 +329,17 @@ public class BattleScreen implements Screen {
         terminal.write("-------", 67 - 4, 3 + 1,AsciiPanel.brightBlack);
 
         int logY = 6; // Starting Y position for displaying log
+        lines = logY;
 
         // Display attack log history
         for (String log : logHistory) {
+            int xPosition = 46; // Initial X position
+
             // Wrap long messages
             List<String> wrappedLines = wrapText(log, 41); // Wrap at x characters (adjust as needed)
 
             for (String line : wrappedLines) {
-                int xPosition = 46; // Initial X position
+
                 // Split the line by spaces to check for specific words
                 String[] words = line.split("\\s+");
                 for (String word : words) {
@@ -363,38 +367,20 @@ public class BattleScreen implements Screen {
                     xPosition += word.length() + 1; // Move X position for the next word
                 }
                 logY++; // Move to the next line for the next log entry
+                lines++;
             }
+            logY++; // Extra space between logs
+            lines++;
         }
     }
-
-
-    /*
-    private void displayLog(AsciiPanel terminal) {
-        terminal.write("< LOG >", 67-4, 3); // Header for attack log
-        terminal.write("-------",67-4,3+1);
-
-        int logY = 6; // Starting Y position for displaying log
-
-        // Display attack log history
-        for (String log : logHistory) {
-            // Wrap long messages
-            List<String> wrappedLines = wrapText(log, 41); // Wrap at 96 characters (adjust as needed)
-            for (String line : wrappedLines) {
-                terminal.write(line, 46, logY++, AsciiPanel.white); // Display the wrapped log message
-            }
-        }
-
-    }
-
-     */
 
     private void log(String log) {
+        //logHistory.add(log);
         logHistory.add(log);
 
-
-        // Ensure the attack log history maintains a maximum size (e.g., 10 logs)
-        if (logHistory.size() > 22) {
-            logHistory.remove(0); // Remove the oldest log if the list exceeds the maximum size
+        // Ensure the log history maintains a maximum size
+        if (logHistory.size() > 0 && lines > 30+3 ) {//22
+            logHistory.remove(0); // Remove the oldest log until it reaches the maximum size
         }
 
     }
