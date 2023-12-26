@@ -178,13 +178,11 @@ public class PlayScreen implements Screen {
             //press both at the same time to go diagonally
         }
 
-        /*
         //update world if no sub-screen
         if (subscreen == null) {
             world.update();
         }
 
-         */
 
         //if hp<0 enter lose screen
         if (player.hp() < 1)
