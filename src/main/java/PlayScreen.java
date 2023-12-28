@@ -165,6 +165,12 @@ public class PlayScreen implements Screen {
                 case KeyEvent.VK_P:
                     saveToSaveFile();
                     break;
+
+                case KeyEvent.VK_ESCAPE:
+                    saveToSaveFile();
+                    System.exit(0);
+                    break;
+
                 //go down
 
                 /*
@@ -279,6 +285,8 @@ public class PlayScreen implements Screen {
         terminal.write("F -- Interact",x,y++);
         terminal.write("",x,y++);
         terminal.write("P -- Save Game",x,y++);
+        terminal.write("",x,y++);
+        terminal.write("ESC -- Save & Exit",x,y++);
     }
 
     private void displayHealth(Creature creature,int x, int y, AsciiPanel terminal){
