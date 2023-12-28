@@ -83,7 +83,7 @@ public class StuffFactory {
     }
 
     public Creature newWitch(){
-        Creature witch = new Creature(world, "Witch",'w',AsciiPanel.brightRed,50,50, 80,80,8,20,6,12, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/test ascii 2.txt");
+        Creature witch = new Creature(world, "Witch",'w',AsciiPanel.brightRed,50,50, 80,80,8,20,6,12, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/witch.txt");
         world.addAtEmptyLocation(witch);
         new GoblinAi(witch);
         return witch;
