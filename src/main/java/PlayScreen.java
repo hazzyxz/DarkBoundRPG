@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,11 @@ public class PlayScreen implements Screen {
     private Screen subscreen;
     //determine if player have chosen class
 
-    Archetype playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
+    Archetype playerCharacter;
 
     private int screenWidth;
     private int screenHeight;
+    private Connection connection = null;
 
     public PlayScreen(){
         //initialize dimension of play screen
@@ -105,6 +107,7 @@ public class PlayScreen implements Screen {
             switch (key.getKeyCode()) {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit()){
+                        saveToQuickSave();
                         return new PlayScreen();
                     }
                     else if (isCreatureAdjacent(player)) {
@@ -143,6 +146,10 @@ public class PlayScreen implements Screen {
                 case KeyEvent.VK_DOWN:
                 case KeyEvent.VK_S:
                     player.moveBy(0, 1);
+                    break;
+
+                case KeyEvent.VK_P:
+                    saveToSaveFile();
                     break;
                 //go down
 
@@ -310,7 +317,7 @@ public class PlayScreen implements Screen {
 
     private void displayMana(Creature creature,int x, int y, AsciiPanel terminal){
         terminal.write("[MP]", x, y++);
-        int remainingPercentage = creature.hp() * 100 / creature.maxHp();
+        int remainingPercentage = creature.mp() * 100 / creature.maxMp();
         int barLength = 22;
 
         int barStartX = x-1;
@@ -365,17 +372,84 @@ public class PlayScreen implements Screen {
         //create player and player messages
         System.out.println(ChooseClassScreen.worldCount);
 
-        if(ChooseClassScreen.worldCount==1){
+        // if world 1 and cont false = new game | create character from base stats
+        if(ChooseClassScreen.worldCount==1 && !StartScreen.cont){
+            // create the archetype class
+            playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
 
-            //playerCharacter.setStats(ArchetypeLoader.loadArchetype(playerCharacter.getClassID(0)));
-
-            playerCharacter.setStats(playerCharacter.baseStats(playerCharacter));
+            // Set the base stats to the archetype
+            playerCharacter.setStats(ArchetypeLoader.loadArchetype(ChooseClassScreen.classChoice));
+            // Create a player object with stats from archetype
             player = creatureFactory.newPlayer(messages,playerCharacter);
-
         }
-        else {
-            playerCharacter.setStats(playerCharacter.baseStats(playerCharacter));
+
+        // if world 1 and cont true = continue game from FileSave
+        else if (ChooseClassScreen.worldCount == 1 && StartScreen.cont) {
+            String[] statFromSave = new String[11];
+            try {
+                // Establish connection to database
+                connection = DriverManager.getConnection("jdbc:sqlite:FileSave.db");
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
+                ResultSet rs = statement.executeQuery("select * from player");
+
+                // Load data from database
+                statFromSave[0] = rs.getString("name");
+                statFromSave[1] = rs.getString("maxhp");
+                statFromSave[2] = rs.getString("hp");
+                statFromSave[3] = rs.getString("maxmp");
+                statFromSave[4] = rs.getString("mp");
+                statFromSave[5] = rs.getString("phyattack");
+                statFromSave[6] = rs.getString("magattack");
+                statFromSave[7] = rs.getString("phydef");
+                statFromSave[8] = rs.getString("magdef");
+                statFromSave[9] = rs.getString("level");
+                statFromSave[10] = rs.getString("xp");
+
+                rs.close();
+            }
+            catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+
+            playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
+            playerCharacter.setStats(statFromSave);
             player = creatureFactory.newPlayer(messages,playerCharacter);
+            StartScreen.cont = false;
+        }
+        // if not world 1 = continue game from QuickSave
+        else if (ChooseClassScreen.worldCount > 1){
+            String[] statFromSave = new String[11];
+            try {
+                // Establish connection to database
+                connection = DriverManager.getConnection("jdbc:sqlite:QuickSave.db");
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
+                ResultSet rs = statement.executeQuery("select * from player");
+
+                // Load data from database
+                statFromSave[0] = rs.getString("name");
+                statFromSave[1] = rs.getString("maxhp");
+                statFromSave[2] = rs.getString("hp");
+                statFromSave[3] = rs.getString("maxmp");
+                statFromSave[4] = rs.getString("mp");
+                statFromSave[5] = rs.getString("phyattack");
+                statFromSave[6] = rs.getString("magattack");
+                statFromSave[7] = rs.getString("phydef");
+                statFromSave[8] = rs.getString("magdef");
+                statFromSave[9] = rs.getString("level");
+                statFromSave[10] = rs.getString("xp");
+
+                rs.close();
+            }
+            catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+
+            playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
+            playerCharacter.setStats(statFromSave);
+            player = creatureFactory.newPlayer(messages,playerCharacter);
+            StartScreen.cont = false;
         }
 
         creatureFactory.newNpc();
@@ -521,6 +595,40 @@ public class PlayScreen implements Screen {
             }
         }
         return null;
+    }
+
+    private void saveToSaveFile() {
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:FileSave.db");
+            Statement statement = connection.createStatement();
+            // statement.setQueryTimeout(30);
+
+            statement.executeUpdate("drop table if exists player");
+            statement.executeUpdate("create table player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer)");
+
+            String insertCommand = "insert into player values('"+player.name()+"',"+Integer.toString(player.maxHp())+","+Integer.toString(player.hp())+","+Integer.toString(player.maxMp())+","+Integer.toString(player.mp())+","+Integer.toString(player.phyAttack())+","+Integer.toString(player.magAttack())+","+Integer.toString(player.maxPhyDefense())+","+Integer.toString(player.maxMagDefense())+","+Integer.toString(player.level())+","+Integer.toString(player.xp())+")";
+            statement.executeUpdate(insertCommand);
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private void saveToQuickSave() {
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:QuickSave.db");
+            Statement statement = connection.createStatement();
+            // statement.setQueryTimeout(30);
+
+            statement.executeUpdate("drop table if exists player");
+            statement.executeUpdate("create table player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer)");
+
+            String insertCommand = "insert into player values('"+player.name()+"',"+Integer.toString(player.maxHp())+","+Integer.toString(player.hp())+","+Integer.toString(player.maxMp())+","+Integer.toString(player.mp())+","+Integer.toString(player.phyAttack())+","+Integer.toString(player.magAttack())+","+Integer.toString(player.maxPhyDefense())+","+Integer.toString(player.maxMagDefense())+","+Integer.toString(player.level())+","+Integer.toString(player.xp())+")";
+            statement.executeUpdate(insertCommand);
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /*

@@ -57,6 +57,11 @@ public class Creature {
     private int magDefense;
     public int magDefense() { return magDefense; }
 
+    private boolean[] statusEffect;
+    public boolean[] StatusEffect() {
+        return statusEffect;
+    }
+
 
     private Inventory inventory;
     public Inventory inventory() { return inventory; }
@@ -84,7 +89,7 @@ public class Creature {
 
 
     // later change this and others to incorporate phyattack, magattack ...
-    public Creature(World world, String name, char glyph, Color color, int maxHp, int maxMp, int phyAttack, int magAttack, int maxPhyDefense, int maxMagDefense, String asciiPath){
+    public Creature(World world, String name, char glyph, Color color, int maxHp, int hp, int maxMp, int mp, int phyAttack, int magAttack, int maxPhyDefense, int maxMagDefense, boolean[] statusEffect, int[] lvl, String asciiPath){
         //constructor injection of creature class to set values
 
         this.world = world; //the world
@@ -94,9 +99,9 @@ public class Creature {
         this.color = color; //the color of glyph
 
         this.maxHp = maxHp; //the Max HP of the creature
-        this.hp = maxHp; //the Max HP of creature after damaged
+        this.hp = hp; //the Max HP of creature after damaged
         this.maxMp = maxMp;
-        this.mp = maxMp;
+        this.mp = mp;
 
         this.phyAttack = phyAttack; //the attack value of this creature
         this.magAttack = magAttack;
@@ -106,19 +111,17 @@ public class Creature {
         this.maxMagDefense = maxMagDefense; //the defense value of this creature
         this.magDefense = maxMagDefense;
 
+        this.statusEffect = statusEffect;
+
         this.inventory = new Inventory(20); //the inventory slot of this creature
         this.maxFood = 2000; //the max food creature can eat
         this.food = maxFood / 3 * 2; //the amount of food creature is on start
 
-        this.level = 1; //initial creature's level
-        this.maxXp = 1000; //initial max xp before level up
-        this.xp = xp; //the amount of xp creature is on start
+        this.level = lvl[0]; // creature's level
+        this.maxXp = (int)(1000*Math.pow(1.1,lvl[0]-1)); //max xp before level up
+        this.xp = lvl[1]; //the amount of xp of creature
 
         this.asciiPath = asciiPath; //the ascii filepath for creature
-    }
-
-    public void setPlayerClass(Creature player) {
-
     }
 
     private CreatureAi ai;
