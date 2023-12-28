@@ -100,7 +100,7 @@ public class BattleScreen implements Screen {
         terminal.write("[1] Attack",x,y++);
         terminal.write("[2] Defend",x,y++);
         terminal.write("[3] Heal",x,y++);
-        terminal.write("[4] Run",x,y++);
+        terminal.write("[4] Escape",x,y++);
 
         y = 38;
         x = 46+20;
