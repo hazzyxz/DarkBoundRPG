@@ -1,4 +1,6 @@
 import asciiPanel.AsciiPanel;
+
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,6 +56,24 @@ public class AsciiArtDisplayer {
                     line = line.substring(0, maxWidth - 40); // Trim the line if it's too long
                 }
                 terminal.write(line, x, y++);
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the file reading exception as per your requirements
+        }
+    }
+
+    public void displayAsciiArtFromFile(int x, int y, String filePath, Color color, AsciiPanel terminal) {
+        try {
+            Path path = Paths.get(filePath);
+            List<String> asciiArt = Files.readAllLines(path);
+
+            int maxWidth = terminal.getWidth(); // Get the terminal's width
+
+            for (String line : asciiArt) {
+                if (line.length() > maxWidth - 40) { // Limit the line length to fit the terminal width
+                    line = line.substring(0, maxWidth - 40); // Trim the line if it's too long
+                }
+                terminal.write(line, x, y++,color);
             }
         } catch (IOException e) {
             e.printStackTrace(); // Handle the file reading exception as per your requirements

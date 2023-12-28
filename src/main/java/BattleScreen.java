@@ -88,8 +88,8 @@ public class BattleScreen implements Screen {
         displayMana(player,2,42,isPlayer,terminal);
 
         //Ascii Art
-        // x=43, y=32 character
-        enemyAscii.displayAsciiArtFromFile(6,10, enemy.asciiPath(), isEnemyAttacking, terminal);
+        // x=43, y=24 character
+        enemyAscii.displayAsciiArtFromFile(1,10, enemy.asciiPath(), isEnemyAttacking, terminal);
 
         //action
         int y = 38;

@@ -1,6 +1,5 @@
 import asciiPanel.AsciiPanel;
 
-
 import java.awt.event.KeyEvent;
 
 public class StartScreen implements Screen {
@@ -9,10 +8,20 @@ public class StartScreen implements Screen {
     // private boolean haveClass = false;
     public static boolean cont;
 
+
     //Creature player = new Creature(world, '@', AsciiPanel.brightWhite, 100, 20, 5);
     public void displayOutput(AsciiPanel terminal) {
-        terminal.writeCenter("DarkBoundRPG", 1);
-        terminal.writeCenter("-- press any key to start --", 16);
+        AsciiArtDisplayer asciiDisplay = new AsciiArtDisplayer();
+        //terminal.write("DarkBoundRPG",1, 3);
+
+        int y =20;
+        terminal.writeCenter("[1] Start", y++);
+        terminal.writeCenter(" ", y++);
+        terminal.writeCenter("    [2] Continue ", y++);
+        terminal.writeCenter(" ", y++);
+        terminal.writeCenter("[3] Quit ", y++);
+        asciiDisplay.displayAsciiArtFromFile(7,5,"src/main/java/asciiArt/title.txt",AsciiPanel.brightWhite,terminal);
+        asciiDisplay.displayAsciiArtFromFile(0,33,"src/main/java/asciiArt/klcc.txt",AsciiPanel.brightBlack, terminal);
 
     }
 
@@ -27,9 +36,15 @@ public class StartScreen implements Screen {
             case KeyEvent.VK_2:
                 cont = true;
                 return new PlayScreen();
+
+            case KeyEvent.VK_3:
+                System.exit(0);
+
         }
 
         //initiate class screen
         return this;//enter on any key
     }
+
+
 }

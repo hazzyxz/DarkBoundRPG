@@ -104,6 +104,20 @@ public class PlayScreen implements Screen {
                 }
             }
 
+            if (key.getKeyCode() == KeyEvent.VK_W && key.getKeyCode() == KeyEvent.VK_A) {
+                player.moveBy(-1, -1);
+                //go top left
+            } else if (key.getKeyCode() == KeyEvent.VK_W && key.getKeyCode() == KeyEvent.VK_D) {
+                player.moveBy(1, -1);
+                //go top right
+            } else if (key.getKeyCode() == KeyEvent.VK_S && key.getKeyCode() == KeyEvent.VK_A) {
+                player.moveBy(-1, 1);
+                //go bot left
+            } else if (key.getKeyCode() == KeyEvent.VK_S && key.getKeyCode() == KeyEvent.VK_D) {
+                player.moveBy(1, 1);
+                //go bot right
+            }
+            //press both at the same time to go diagonally
             switch (key.getKeyCode()) {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit()){
@@ -169,20 +183,7 @@ public class PlayScreen implements Screen {
 
                  */
             }
-            if (key.getKeyCode() == KeyEvent.VK_W && key.getKeyCode() == KeyEvent.VK_A) {
-                player.moveBy(-1, -1);
-                //go top left
-            } else if (key.getKeyCode() == KeyEvent.VK_W && key.getKeyCode() == KeyEvent.VK_D) {
-                player.moveBy(1, -1);
-                //go top right
-            } else if (key.getKeyCode() == KeyEvent.VK_S && key.getKeyCode() == KeyEvent.VK_A) {
-                player.moveBy(-1, 1);
-                //go bot left
-            } else if (key.getKeyCode() == KeyEvent.VK_S && key.getKeyCode() == KeyEvent.VK_D) {
-                player.moveBy(1, 1);
-                //go bot right
-            }
-            //press both at the same time to go diagonally
+
         }
 
         //update world if no sub-screen
@@ -277,7 +278,7 @@ public class PlayScreen implements Screen {
         terminal.write("",x,y++);
         terminal.write("F -- Interact",x,y++);
         terminal.write("",x,y++);
-        terminal.write("Esc -- Menu",x,y++);
+        terminal.write("P -- Save Game",x,y++);
     }
 
     private void displayHealth(Creature creature,int x, int y, AsciiPanel terminal){
@@ -409,7 +410,7 @@ public class PlayScreen implements Screen {
                 rs.close();
             }
             catch (SQLException e) {
-                System.err.println(e.getMessage());
+                //System.err.println(e.getMessage());
             }
 
             playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
@@ -443,7 +444,7 @@ public class PlayScreen implements Screen {
                 rs.close();
             }
             catch (SQLException e) {
-                System.err.println(e.getMessage());
+                //System.err.println(e.getMessage());
             }
 
             playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
@@ -454,11 +455,6 @@ public class PlayScreen implements Screen {
 
         creatureFactory.newNpc();
 
-
-        //create fungus
-        for (int i = 0; i < 8; i++){
-            creatureFactory.newFungus();
-        }
         /*
         //create bat
         for (int i = 0; i < 7; i++){
@@ -468,13 +464,13 @@ public class PlayScreen implements Screen {
         for (int i = 0; i < 6; i++){
             creatureFactory.newGoblin();
         }
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < 5; i++){
             creatureFactory.newWitch();
         }
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < 4; i++){
             creatureFactory.newOrc();
         }
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < 5; i++){
             creatureFactory.newHarpy();
         }
     }
@@ -610,7 +606,7 @@ public class PlayScreen implements Screen {
             statement.executeUpdate(insertCommand);
         }
         catch (SQLException e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
         }
     }
 
@@ -627,7 +623,7 @@ public class PlayScreen implements Screen {
             statement.executeUpdate(insertCommand);
         }
         catch (SQLException e) {
-            System.err.println(e.getMessage());
+           // System.err.println(e.getMessage());
         }
     }
 
