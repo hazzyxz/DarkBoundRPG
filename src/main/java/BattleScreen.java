@@ -97,20 +97,19 @@ public class BattleScreen implements Screen {
         terminal.write("< ACTION >",x,y++,AsciiPanel.brightBlack);
         terminal.write("----------",x,y++,AsciiPanel.brightBlack);
         terminal.write("",x,y++);
-        terminal.write("[1] to Attack",x,y++);
-        terminal.write("[2] to Defend",x,y++);
-        terminal.write("[3] to Heal",x,y++);
-        terminal.write("[4] to use Item",x,y++);
-        terminal.write("[5] to Run",x,y++);
+        terminal.write("[1] Attack",x,y++);
+        terminal.write("[2] Defend",x,y++);
+        terminal.write("[3] Heal",x,y++);
+        terminal.write("[4] Run",x,y++);
 
         y = 38;
         x = 46+20;
         terminal.write("{ SPELL }",x,y++,AsciiPanel.brightBlack);
         terminal.write("---------",x,y++,AsciiPanel.brightBlack);
         terminal.write("",x,y++);
-        terminal.write("[Q] to use Spell 1",x,y++);
-        terminal.write("[W] to use Spell 2",x,y++);
-        terminal.write("[E] to use Spell 3",x,y++);
+        terminal.write("[Q] use Spell 1",x,y++);
+        terminal.write("[W] use Spell 2",x,y++);
+        terminal.write("[E] use Spell 3",x,y++);
 
         //log
         displayLog(terminal);
@@ -224,7 +223,7 @@ public class BattleScreen implements Screen {
                 log(" > You can only heal once per game ");
             }
         }
-        else if (key.getKeyCode() == KeyEvent.VK_5)
+        else if (key.getKeyCode() == KeyEvent.VK_4)
             return null;
         else
             return this;
