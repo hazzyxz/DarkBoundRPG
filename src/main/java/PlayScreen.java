@@ -250,13 +250,13 @@ public class PlayScreen implements Screen {
         int x = 42;
         int y = 12;
 
-        terminal.write("Phy. Attack: "+player.phyAttack(),x,y++);
+        terminal.write("Physical: "+player.phyAttack(),x,y++);
         terminal.write("",x,y++);
-        terminal.write("Mag. Attack: "+player.magAttack(),x,y++);
+        terminal.write("Magical: "+player.magAttack(),x,y++);
         terminal.write("",x,y++);
-        terminal.write("Phy. Defense: "+player.phyDefense(),x,y++);
+        terminal.write("Armour: "+player.phyDefense(),x,y++);
         terminal.write("",x,y++);
-        terminal.write("Mag. Defense: "+player.magDefense(),x,y++);
+        terminal.write("Barrier: "+player.magDefense(),x,y++);
     }
 
     public void displayLegends(AsciiPanel terminal) {
@@ -390,6 +390,8 @@ public class PlayScreen implements Screen {
             playerCharacter.setStats(ArchetypeLoader.loadArchetype(ChooseClassScreen.classChoice));
             // Create a player object with stats from archetype
             player = creatureFactory.newPlayer(messages,playerCharacter);
+
+            creatureFactory.newNpc();
         }
 
         // if world 1 and cont true = continue game from FileSave
@@ -416,6 +418,7 @@ public class PlayScreen implements Screen {
                 statFromSave[10] = rs.getString("xp");
 
                 rs.close();
+
             }
             catch (SQLException e) {
                 //System.err.println(e.getMessage());
@@ -460,8 +463,6 @@ public class PlayScreen implements Screen {
             player = creatureFactory.newPlayer(messages,playerCharacter);
             StartScreen.cont = false;
         }
-
-        creatureFactory.newNpc();
 
         /*
         //create bat
