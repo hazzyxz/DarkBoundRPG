@@ -9,7 +9,7 @@ import asciiPanel.AsciiPanel;
 public class PlayScreen implements Screen {
     //doing also the same by accessing the screen group and giving different function
 
-    private World world;
+    public World world;
 
     // initialize a variable named player
     private Creature player;
@@ -68,6 +68,7 @@ public class PlayScreen implements Screen {
         //call the displayMessages method
         displayMessages(terminal, messages);
 
+
         //display the sub-screen
         //playScreen will be background screen
         if (subscreen != null)
@@ -122,7 +123,8 @@ public class PlayScreen implements Screen {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit()){
                         saveToQuickSave();
-                        return new PlayScreen2();
+                        return nextPlayScreen();
+                        //return new PlayScreen2();
                     }
                     else if (isCreatureAdjacent(player)) {
                         Creature creature = getAdjacentCreature(player);
@@ -204,6 +206,10 @@ public class PlayScreen implements Screen {
             return new LoseScreen();
 
         return this;
+    }
+
+    public Screen nextPlayScreen(){
+        return new PlayScreen2();
     }
 
     public void displayInfo(AsciiPanel terminal){
@@ -288,6 +294,17 @@ public class PlayScreen implements Screen {
         terminal.write("P -- Quick-save",x,y++);
         terminal.write("",x,y++);
         terminal.write("ESC -- Save & Exit",x,y++);
+
+        terminal.write("World 1 but "+ChooseClassScreen.worldCount,42,21);
+    }
+
+    public void displayWorlds(AsciiPanel terminal) {
+        int x = 42;
+        int y = 21;
+
+
+
+        terminal.write("World 1 but "+ChooseClassScreen.worldCount,42,21);
     }
 
     private void displayHealth(Creature creature,int x, int y, AsciiPanel terminal){
@@ -363,7 +380,7 @@ public class PlayScreen implements Screen {
     public void createNewWorld(){
         int width = 40;
         int height = 40;
-        float initialChance = 0.45f; // higher = more wall in initial map
+        float initialChance = 0.47f; // higher = more wall in initial map
         int deathLimit = 3; //num of adjacent tile to decide if the tile is removed
         int birthLimit = 4;  //num of adjacent tile to decide if the tile is added
         int repeat = 6; // lower = more jagged

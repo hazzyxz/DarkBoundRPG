@@ -144,6 +144,8 @@ public class ChooseClassScreen implements Screen {
             return this;
         }
 
+        worldCount = 0;
+
         //inititate playscreen (world)
         return new PlayScreen();
 

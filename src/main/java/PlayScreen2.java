@@ -122,7 +122,7 @@ public class PlayScreen2 implements Screen {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit()){
                         saveToQuickSave();
-                        return new PlayScreen();
+                        return nextPlayScreen();
                     }
                     else if (isCreatureAdjacent(player)) {
                         Creature creature = getAdjacentCreature(player);
@@ -203,6 +203,10 @@ public class PlayScreen2 implements Screen {
             return new LoseScreen();
 
         return this;
+    }
+
+    public Screen nextPlayScreen(){
+        return new PlayScreen3();
     }
 
     public void displayInfo(AsciiPanel terminal){
@@ -287,6 +291,8 @@ public class PlayScreen2 implements Screen {
         terminal.write("P -- Save Game",x,y++);
         terminal.write("",x,y++);
         terminal.write("ESC -- Save & Exit",x,y++);
+
+        terminal.write("World 2 but "+ChooseClassScreen.worldCount,42,21);
     }
 
     private void displayHealth(Creature creature,int x, int y, AsciiPanel terminal){

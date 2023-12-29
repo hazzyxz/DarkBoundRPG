@@ -223,8 +223,15 @@ public class BattleScreen implements Screen {
                 log(" > You can only heal once per game ");
             }
         }
-        else if (key.getKeyCode() == KeyEvent.VK_4)
-            return null;
+        else if (key.getKeyCode() == KeyEvent.VK_4) {
+            if(canPlayerRun())
+                return null;
+            else {
+                log(" : Fail to escape");
+                enemyTurn();
+                return this;
+            }
+        }
         else
             return this;
 
@@ -252,6 +259,18 @@ public class BattleScreen implements Screen {
         isEnemyAttacking = !isEnemyAttacking;
         enemyAttack();
         player.resetDefense();
+    }
+
+    public boolean canPlayerRun(){
+        int player =(int) (Math.random() * 6)+1;
+        log(" : Player roll a "+player+ " to escape");
+        if(player == 6){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
     public void playerAttack(){
@@ -295,10 +314,12 @@ public class BattleScreen implements Screen {
 
     public void playerHeal(){
         //take the players remaining hp
-        int amount = (int) (0.35 * player.hp());
+        int amount = (int) (0.15 * player.hp());
 
         //random number from 1 to amount of possible lost hp
         //amount = (int)(Math.random() * amount) + 1;
+        if(player.hp()+amount>player.maxHp())
+            amount = player.maxHp()- player.hp();
 
         player.modifyHp(amount);
         log(" + You increase your health for " + amount + " Hp");
