@@ -22,7 +22,7 @@ public class StartScreen implements Screen {
         terminal.writeCenter("[3] Quit ", y++);
         asciiDisplay.displayAsciiArtFromFile(7,5,"src/main/java/asciiArt/title.txt",AsciiPanel.brightWhite,terminal);
         asciiDisplay.displayAsciiArtFromFile(0,33,"src/main/java/asciiArt/klcc.txt",AsciiPanel.brightBlack, terminal);
-
+        terminal.write("DarkBoundRPGtm/c2023 FromSoftware,Inc.",1,49,AsciiPanel.white);//28 center
     }
 
     public Screen respondToUserInput(KeyEvent key) {

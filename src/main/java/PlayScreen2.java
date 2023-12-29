@@ -6,7 +6,7 @@ import java.util.List;
 
 import asciiPanel.AsciiPanel;
 
-public class PlayScreen implements Screen {
+public class PlayScreen2 implements Screen {
     //doing also the same by accessing the screen group and giving different function
 
     private World world;
@@ -28,7 +28,7 @@ public class PlayScreen implements Screen {
     private int screenHeight;
     private Connection connection = null;
 
-    public PlayScreen(){
+    public PlayScreen2(){
         //initialize dimension of play screen
         //change size in AsciiPanel.jar file
         screenWidth = 40;
@@ -122,7 +122,7 @@ public class PlayScreen implements Screen {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit()){
                         saveToQuickSave();
-                        return new PlayScreen2();
+                        return new PlayScreen();
                     }
                     else if (isCreatureAdjacent(player)) {
                         Creature creature = getAdjacentCreature(player);
@@ -141,7 +141,6 @@ public class PlayScreen implements Screen {
                 case KeyEvent.VK_G: subscreen = new DropScreen(player); break;
                 case KeyEvent.VK_E: subscreen = new EatScreen(player); break;
                 case KeyEvent.VK_H: subscreen = new HelpScreen(); break;
-                case KeyEvent.VK_L: player.modifyXp(1000); break;
 
                 case KeyEvent.VK_LEFT:
                 case KeyEvent.VK_A:
@@ -285,7 +284,7 @@ public class PlayScreen implements Screen {
         terminal.write("",x,y++);
         terminal.write("F -- Interact",x,y++);
         terminal.write("",x,y++);
-        terminal.write("P -- Quick-save",x,y++);
+        terminal.write("P -- Save Game",x,y++);
         terminal.write("",x,y++);
         terminal.write("ESC -- Save & Exit",x,y++);
     }
@@ -633,7 +632,7 @@ public class PlayScreen implements Screen {
             statement.executeUpdate(insertCommand);
         }
         catch (SQLException e) {
-           // System.err.println(e.getMessage());
+            // System.err.println(e.getMessage());
         }
     }
 

@@ -162,7 +162,6 @@ public class Creature {
 
     }
 
-
     public void modifyHp(int amount) {
         //hp is minus the amount of damage taken
         hp += amount;
@@ -190,8 +189,8 @@ public class Creature {
 
     public void modifyDefense(int amount) {
         //defense value
-        maxPhyDefense += amount;
-        maxMagDefense += amount;
+        phyDefense += amount;
+        magDefense += amount;
     }
 
     public void modifyAttack(int amount) {
@@ -203,6 +202,7 @@ public class Creature {
     public void resetDefense(){
         //hp is minus the amount of damage taken
         phyDefense = maxPhyDefense;
+        magDefense = maxMagDefense;
     }
 
     public void modifyFood(int amount) {

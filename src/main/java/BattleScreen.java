@@ -242,6 +242,8 @@ public class BattleScreen implements Screen {
             defenseCooldown--;
         }
 
+
+
         // For example, returning null to exit the battle screen
         return this;
     }
@@ -281,22 +283,22 @@ public class BattleScreen implements Screen {
     }
 
     public void playerDefend(){
-        //take the players defend value
-        int amount = Math.max(0, player.magDefense()/2);
+        //take the players 35% of defend value
+        int amount =(int) (Math.max(0, (player.magDefense()+player.phyDefense())*0.35/2));
 
-        //random number from 1 to amount of possible defense
+        //random number from 1 to amount of possible value
         amount = (int)(Math.random() * amount) + 1;
 
         player.modifyDefense(amount);
-        log(" + You increase your armour by " + amount);
+        log(" + You increase your Armour and Barrier by " + amount);
     }
 
     public void playerHeal(){
-        //take the players lost hp
-        int amount = player.maxHp() - player.hp();
+        //take the players remaining hp
+        int amount = (int) (0.35 * player.hp());
 
         //random number from 1 to amount of possible lost hp
-        amount = (int)(Math.random() * amount) + 1;
+        //amount = (int)(Math.random() * amount) + 1;
 
         player.modifyHp(amount);
         log(" + You increase your health for " + amount + " Hp");
@@ -306,11 +308,16 @@ public class BattleScreen implements Screen {
     public void enemyAttack(){
         int amount;
 
-        amount = (int) (0.25 * enemy.phyAttack());
-        amount -= player.phyDefense();
+        //take the largest between phyatt or magatt
+        amount = Math.max(enemy.magAttack(),enemy.phyAttack());
 
-        //random number from min amount to max amount of possible damage
-        //int amount = rand.nextInt(maxAmount-minAmount )+minAmount;
+        //if phy att then phy def
+        if(amount == enemy.phyAttack())
+            amount -= player.phyDefense();
+        else
+            amount -= player.magDefense();
+
+        //either 5 0r other
         amount = Math.max(5,amount);
         player.modifyHp(-amount);
 
@@ -324,8 +331,8 @@ public class BattleScreen implements Screen {
     // Method to display attack log including history
     // Method to display attack log including history
     private void displayLog(AsciiPanel terminal) {
-        terminal.write("[ LOG ]", 67 - 4, 3,AsciiPanel.brightBlack); // Header for attack log
-        terminal.write("-------", 67 - 4, 3 + 1,AsciiPanel.brightBlack);
+        terminal.write("[ LOG ]", 67 - 4, 3, AsciiPanel.brightBlack); // Header for attack log
+        terminal.write("-------", 67 - 4, 3 + 1, AsciiPanel.brightBlack);
 
         int logY = 6; // Starting Y position for displaying log
         lines = logY;
@@ -338,40 +345,45 @@ public class BattleScreen implements Screen {
             List<String> wrappedLines = wrapText(log, 41); // Wrap at x characters (adjust as needed)
 
             for (String line : wrappedLines) {
-
-                // Split the line by spaces to check for specific words
                 String[] words = line.split("\\s+");
+
                 for (String word : words) {
-                    if (word.equalsIgnoreCase(player.name()) || word.equalsIgnoreCase("you")) {
-                        terminal.write(word, xPosition, logY, AsciiPanel.brightGreen); // Display player name in bright green
-                    } else if (word.equalsIgnoreCase(enemy.name())) {
-                        terminal.write(word, xPosition, logY, AsciiPanel.brightRed); // Display enemy name in bright red
-                    }
-                    else if (word.equalsIgnoreCase("health")) {
-                        terminal.write(word, xPosition, logY, AsciiPanel.red);
-                    }
-                    else if (word.equalsIgnoreCase("armour")) {
-                        terminal.write(word, xPosition, logY, Color.orange);
-                    }
-                    else if (word.matches("\\d+")){
-                        terminal.write(word, xPosition, logY, AsciiPanel.brightWhite);
-                    }
-                    else if (word.equalsIgnoreCase(">") || word.equalsIgnoreCase("+") ) {
-                        terminal.write(word, xPosition, logY, AsciiPanel.brightBlack);
+                    if (xPosition + word.length() >= terminal.getWidth()) {
+                        // Move to the next line if the word exceeds the terminal width
+                        xPosition = 46; // Reset X position
+                        logY++; // Move to the next line
                     }
 
-                    else {
-                        terminal.write(word, xPosition, logY, AsciiPanel.white); // Display other words in white
+                    // Write the word at the calculated position
+                    if (word.equalsIgnoreCase(player.name()) || word.equalsIgnoreCase("you")) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.brightGreen);
+                    } else if (word.equalsIgnoreCase(enemy.name())) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.brightRed);
+                    } else if (word.equalsIgnoreCase("health")) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.red);
+                    } else if (word.equalsIgnoreCase("armour")) {
+                        terminal.write(word, xPosition, logY, Color.orange);
+                    } else if (word.matches("\\d+")) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.brightWhite);
+                    } else if (word.equalsIgnoreCase(">") || word.equalsIgnoreCase("+")) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.brightBlack);
+                    } else {
+                        terminal.write(word, xPosition, logY, AsciiPanel.white);
                     }
+
                     xPosition += word.length() + 1; // Move X position for the next word
                 }
+
                 logY++; // Move to the next line for the next log entry
                 lines++;
+                xPosition = 49; // Reset X position for a new line
             }
+
             logY++; // Extra space between logs
             lines++;
         }
     }
+
 
     private void log(String log) {
         //logHistory.add(log);
@@ -387,17 +399,23 @@ public class BattleScreen implements Screen {
     // Method to wrap text into multiple lines
     private List<String> wrapText(String text, int wrapLength) {
         List<String> lines = new ArrayList<>();
-        while (text.length() > wrapLength) {
+
+        while (!text.isEmpty()) {
+            if (text.length() <= wrapLength) {
+                lines.add(text);
+                break;
+            }
+
             int spaceIndex = text.lastIndexOf(" ", wrapLength);
             if (spaceIndex <= 0) {
                 spaceIndex = wrapLength;
             }
             lines.add(text.substring(0, spaceIndex));
-            text = text.substring(spaceIndex);
+            text = text.substring(spaceIndex).trim(); // Resetting text for the next line
         }
 
-        lines.add(text); // Add the remaining or last line
         return lines;
     }
+
 
 }

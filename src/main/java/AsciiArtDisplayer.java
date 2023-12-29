@@ -70,6 +70,7 @@ public class AsciiArtDisplayer {
             int maxWidth = terminal.getWidth(); // Get the terminal's width
 
             for (String line : asciiArt) {
+
                 if (line.length() > maxWidth - 40) { // Limit the line length to fit the terminal width
                     line = line.substring(0, maxWidth - 40); // Trim the line if it's too long
                 }
@@ -79,24 +80,6 @@ public class AsciiArtDisplayer {
             e.printStackTrace(); // Handle the file reading exception as per your requirements
         }
     }
-    /*
-    public void displayAsciiArtFromFile(int x, int y, String filePath, AsciiPanel terminal) {
-        try {
-            Path path = Paths.get(filePath);
-            List<String> asciiArt = Files.readAllLines(path);
-
-            for (String line : asciiArt) {
-                if (line.length() > 60) { // Limit the line length to fit the terminal width
-                    line = line.substring(0, 60); // Trim the line if it's too long
-                }
-                terminal.write(line, x, y++);
-            }
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the file reading exception as per your requirements
-        }
-    }
-
-     */
 
 }
 

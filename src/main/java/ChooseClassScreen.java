@@ -137,6 +137,8 @@ public class ChooseClassScreen implements Screen {
         } else if (keyCode == KeyEvent.VK_5) {
             // Set the player class to paladin and return to the previous screen
             classChoice = 5;
+        } else if (keyCode == KeyEvent.VK_ESCAPE) {
+            return new StartScreen();
         }
         else{
             return this;
