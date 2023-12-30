@@ -34,7 +34,7 @@ public class ChooseClassScreen implements Screen {
 
         int x = 5;
         int y = 5;
-        terminal.write("WARRIOR",x+7,y+11);
+        terminal.write("[1] WARRIOR",x+7-2,y+11);
         String[] warrior = ArchetypeLoader.loadArchetype(1);
         displayClassStat(warrior,x,y, "src/main/java/asciiArt/warriorAscii.txt",terminal);
         //19 x, 10 y
@@ -42,25 +42,25 @@ public class ChooseClassScreen implements Screen {
 
         x = 50;
         y = 5;
-        terminal.write("MAGE",x+9,y+11);
+        terminal.write("[2] MAGE",x+9-2,y+11);
         String[] mage = ArchetypeLoader.loadArchetype(2);
         displayClassStat(mage,x,y, "src/main/java/asciiArt/warriorAscii.txt",terminal);
 
         x = 5;
         y = 20;
-        terminal.write("ROGUE",x+8,y+11);
+        terminal.write("[3] ROGUE",x+8-2,y+11);
         String[] rogue = ArchetypeLoader.loadArchetype(3);
         displayClassStat(rogue,x,y, "src/main/java/asciiArt/warriorAscii.txt",terminal);
 
         x = 50;
         y = 20;
-        terminal.write("PALADIN",x+7,y+11);
+        terminal.write("[4] PALADIN",x+7-2,y+11);
         String[] paladin = ArchetypeLoader.loadArchetype(4);
         displayClassStat(paladin,x,y, "src/main/java/asciiArt/warriorAscii.txt",terminal);
 
         x = 27;
         y = 35;
-        terminal.write("ARCHER",x+8,y+11);
+        terminal.write("[5] ARCHER",x+8-2,y+11);
         String[] archer = ArchetypeLoader.loadArchetype(5);
         displayClassStat(archer,x,y, "src/main/java/asciiArt/warriorAscii.txt",terminal);
 

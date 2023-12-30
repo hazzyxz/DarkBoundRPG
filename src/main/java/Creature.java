@@ -148,9 +148,8 @@ public class Creature {
             //represent the potential new coordinates after the movement.
             //returns the type of tile that exists at the new position
             ai.onEnter(x+mx, y+my, tile);
-        else if(other == player){
-            //subscreen = new BattleScreen(player, creature);
-            //attack(other);
+        else if(other != null){
+
         }
 
         if (mx==0 && my==0)
@@ -158,7 +157,7 @@ public class Creature {
 
     }
 
-    public void attack(Creature creature){
+    public void attack(Creature other){
 
     }
 
@@ -227,27 +226,30 @@ public class Creature {
             //doAction("advance to level %d", level);
             //ai.onGainLevel();
             increaseStats();
+            doAction("gain a level!");
             //modifyMaxHp(level * 2);
         }
     }
 
     public void increaseStats(){
+        doAction("feel a power surging through");
         modifyMaxHp(level * 2);
         modifyDefense(level);
         modifyAttack(level);
     }
 
-    public void gainXp(Creature other){
-        int amount = other.maxHp
-                + other.phyAttack()
-                + other.magAttack()
-                + other.phyDefense()
-                + other.magDefense()
+    public void gainXp(Creature creature){
+        int amount = creature.maxHp
+                + creature.phyAttack()
+                + creature.magAttack()
+                + creature.phyDefense()
+                + creature.magDefense()
                 - level * 3;
-        //- level * 4;
 
-        if (amount > 0)
+        if (amount > 0) {
             modifyXp(amount);
+            doAction("gain %d xp from killing a %s",amount,creature.name);
+        }
     }
 
     public boolean isDead(){

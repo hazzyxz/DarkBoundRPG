@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import asciiPanel.AsciiPanel;
@@ -12,8 +13,8 @@ public class PlayScreen implements Screen {
     public World world;
 
     // initialize a variable named player
-    private Creature player;
-    private Creature creature;
+    protected Creature player;
+    protected Creature creature;
 
     //initialize string array list
     private List<String> messages;
@@ -44,7 +45,6 @@ public class PlayScreen implements Screen {
         // calls the createCreature and createItems method and pass stuffFactory variable
         createCreatures(stuffFactory);
         createItems(stuffFactory);
-
     }
 
     public void displayOutput(AsciiPanel terminal) {
@@ -166,6 +166,7 @@ public class PlayScreen implements Screen {
                     break;
 
                 case KeyEvent.VK_P:
+                    player.doAction("quick-save");
                     saveToSaveFile();
                     break;
 
@@ -299,11 +300,6 @@ public class PlayScreen implements Screen {
     }
 
     public void displayWorlds(AsciiPanel terminal) {
-        int x = 42;
-        int y = 21;
-
-
-
         terminal.write("World 1 but "+ChooseClassScreen.worldCount,42,21);
     }
 
@@ -551,6 +547,7 @@ public class PlayScreen implements Screen {
 
     }
 
+    /*
     private void displayMessages(AsciiPanel terminal, List<String> messages) {
         int top = 41; // Set the initial top position
         // Iterate over each message in the list in reverse order
@@ -562,6 +559,29 @@ public class PlayScreen implements Screen {
         // Clear the messages list after displaying them
         messages.clear();
     }
+     */
+
+    private void displayMessages(AsciiPanel terminal, List<String> messages) {
+        int top = 42; // Set the initial top position
+        boolean isFirstMessage = true; // Flag to track the first message
+
+        for (int i = messages.size() - 1; i >= 0; i--) {
+            String currentMessage = messages.get(i);
+
+            if (isFirstMessage) {
+                terminal.write("> "+currentMessage+" <", 2, top + (messages.size() - 1 - i));
+                isFirstMessage = false; // Update the flag after displaying the first message
+            } else {
+                terminal.write(currentMessage, 4, top + (messages.size() - 1 - i),AsciiPanel.brightBlack);
+            }
+
+            if (messages.size() >= 8) {
+                messages.remove((messages.size() - 1 - i));
+            }
+        }
+    }
+
+
 
     private boolean userIsTryingToExit(){
         return world.tile(player.x, player.y) == Tile.STAIRS_DOWN;

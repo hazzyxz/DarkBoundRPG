@@ -7,7 +7,7 @@ public class PlayScreen3 extends PlayScreen {
 
     public PlayScreen3(){
         super();
-
+        player.doAction("enter Playscreen 3");
     }
 
     @Override

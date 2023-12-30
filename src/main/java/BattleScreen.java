@@ -17,12 +17,13 @@ public class BattleScreen implements Screen {
 
     private int defenseCooldown = 0; // Track the remaining cooldown rounds for defense
     private int round = 0;
+    private int randEncounter = (int) (Math.random()*4);
+    private int randType = (int) (Math.random()*7);
 
 
     private List<String> logHistory; // List to store log history
 
     AsciiArtDisplayer enemyAscii = new AsciiArtDisplayer();
-    Random rand = new Random();
 
     public BattleScreen(Creature player, Creature enemy) {
 
@@ -76,8 +77,9 @@ public class BattleScreen implements Screen {
 
 
         //content profile
-        int nameCenter = xCenter-(6 + enemy.name().length())/2;
-        terminal.write(">> " + enemy.name() + " <<",2,4,Color.red);
+        String str = String.format("You"+ encounter[randEncounter] + "a" + type[randType] + enemy.name());
+        terminal.write(str,xCenter - str.length()/2,1,AsciiPanel.white);
+        terminal.write(">> " + enemy.name() + " <<",2,4,AsciiPanel.brightRed);
         boolean isPlayer = false;
         displayHealth(enemy,2,6, isPlayer,terminal);
         displayMana(enemy,2,8,isPlayer,terminal);
@@ -201,7 +203,26 @@ public class BattleScreen implements Screen {
         }
     }
 
+    private String[] encounter =
+            {
+                    " encounter ",
+                    " ambush ",
+                    " engage with ",
+                    " attack ",
+                    " clashing with"
+            };
 
+    private String[] type =
+            {
+                    " wild ",
+                    " feral ",
+                    " mad ",
+                    " dangerous ",
+                    " big ",
+                    " hostile ",
+                    " rabid ",
+                    " agile "
+            };
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
@@ -224,10 +245,12 @@ public class BattleScreen implements Screen {
             }
         }
         else if (key.getKeyCode() == KeyEvent.VK_4) {
-            if(canPlayerRun())
+            if(canPlayerRun()) {
+                player.doAction("manage to run away..");
                 return null;
+            }
             else {
-                log(" : Fail to escape");
+                log(" : Fail a saving throw!! Back is turn away from the enemy");
                 enemyTurn();
                 return this;
             }
@@ -249,8 +272,6 @@ public class BattleScreen implements Screen {
             defenseCooldown--;
         }
 
-
-
         // For example, returning null to exit the battle screen
         return this;
     }
@@ -264,7 +285,7 @@ public class BattleScreen implements Screen {
     public boolean canPlayerRun(){
         int player =(int) (Math.random() * 6)+1;
         log(" : Player roll a "+player+ " to escape");
-        if(player == 6){
+        if(player == 4){
             return true;
         }
         else{
@@ -383,7 +404,7 @@ public class BattleScreen implements Screen {
                     } else if (word.equalsIgnoreCase("health")) {
                         terminal.write(word, xPosition, logY, AsciiPanel.red);
                     } else if (word.equalsIgnoreCase("armour")) {
-                        terminal.write(word, xPosition, logY, Color.orange);
+                        terminal.write(word, xPosition, logY, AsciiPanel.yellow);
                     } else if (word.matches("\\d+")) {
                         terminal.write(word, xPosition, logY, AsciiPanel.brightWhite);
                     } else if (word.equalsIgnoreCase(">") || word.equalsIgnoreCase("+")) {
@@ -397,7 +418,7 @@ public class BattleScreen implements Screen {
 
                 logY++; // Move to the next line for the next log entry
                 lines++;
-                xPosition = 49; // Reset X position for a new line
+                xPosition = 48; // Reset X position for a new line
             }
 
             logY++; // Extra space between logs
@@ -411,7 +432,7 @@ public class BattleScreen implements Screen {
         logHistory.add(log);
 
         // Ensure the log history maintains a maximum size
-        if (logHistory.size() > 0 && lines > 30+3 ) {//22
+        if (logHistory.size() > 0 && lines > 30+2 ) {//22
             logHistory.remove(0); // Remove the oldest log until it reaches the maximum size
         }
 
