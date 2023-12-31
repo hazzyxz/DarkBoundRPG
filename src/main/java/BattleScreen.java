@@ -15,12 +15,13 @@ public class BattleScreen implements Screen {
     private boolean canHeal = true; //heal 1 per game
 
     private int defenseCooldown = 0; // Track the remaining cooldown rounds for defense
+    private boolean isPlayerDefending = false;
     private int spell1Cooldown = 0;
     private int spell2Cooldown = 0; // Track cooldown of spells
     private int spell3Cooldown = 0;
-    private int spell1Uptime = 0;
-    private int spell2Uptime = 0;
-    private int spell3Uptime = 0;
+    private int spell1Uptime = -1;
+    private int spell2Uptime = -1; // Track the uptime of special effects of spells
+    private int spell3Uptime = -1;
     private int round = 0;
     private int randEncounter = (int) (Math.random()*4);
     private int randType = (int) (Math.random()*7);
@@ -235,8 +236,9 @@ public class BattleScreen implements Screen {
             playerAttack();
         else if (key.getKeyCode() == KeyEvent.VK_2) {
             if (defenseCooldown == 0) {
-                playerDefend(); // Increase defense value for a turns. cooldown 2 turn
+                isPlayerDefending = true;
                 defenseCooldown = 3; // Set the cooldown to 3 rounds
+                log(" > You defend! Damage received is reduced");
             } else {
                 log(" > You can't defend yet. ( " + defenseCooldown +" more round )");
             }
@@ -268,7 +270,6 @@ public class BattleScreen implements Screen {
             }
             else {
                 log(" > You can't cast that yet. ( " + spell1Cooldown + " more round )");
-                return this;
             }
         }
         else if (key.getKeyCode() == KeyEvent.VK_W) {
@@ -276,7 +277,6 @@ public class BattleScreen implements Screen {
                 castSpell(player.spellList().get(1));
             else {
                 log(" > You can't cast that yet. ( " + spell2Cooldown + " more round )");
-                return this;
             }
         }
         else if (key.getKeyCode() == KeyEvent.VK_E) {
@@ -284,7 +284,6 @@ public class BattleScreen implements Screen {
                 castSpell(player.spellList().get(2));
             else {
                 log(" > You can't cast that yet. ( " + spell3Cooldown + " more round )");
-                return this;
             }
         }
         else
@@ -297,12 +296,25 @@ public class BattleScreen implements Screen {
         if(enemy.isDead()) {
             enemy.leaveCorpse();
             player.gainXp(enemy);
+            removeSpell1Effect(player,enemy);
+            removeSpell2Effect(player,enemy);
+            removeSpell3Effect(player,enemy);
 
             return null;
         }
+
+        // Check for spell uptime, remove any at zero
+        if (spell1Uptime == 0)
+            removeSpell1Effect(player, enemy);
+        if (spell2Uptime == 0)
+            removeSpell2Effect(player, enemy);
+        if (spell3Uptime == 0)
+            removeSpell3Effect(player, enemy);
+
         if (defenseCooldown > 0) {
             defenseCooldown--;
         }
+
         if (spell1Cooldown > 0) {
             spell1Cooldown--;
         }
@@ -313,6 +325,17 @@ public class BattleScreen implements Screen {
             spell3Cooldown--;
         }
 
+        if (spell1Uptime > 0) {
+            spell1Uptime--;
+        }
+        if (spell2Uptime > 0) {
+            spell2Uptime--;
+        }
+        if (spell3Uptime > 0) {
+            spell3Uptime--;
+        }
+
+
         // For example, returning null to exit the battle screen
         return this;
     }
@@ -320,7 +343,6 @@ public class BattleScreen implements Screen {
     public void enemyTurn(){
         isEnemyAttacking = !isEnemyAttacking;
         enemyAttack();
-        player.resetDefense();
     }
 
     public boolean canPlayerRun(){
@@ -408,12 +430,15 @@ public class BattleScreen implements Screen {
         spell.cast(player,enemy);
         switch (spellSlot) {
             case 1:
+                spell1Uptime = spell.uptime();
                 spell1Cooldown = spell.cooldown();
                 break;
             case 2:
+                spell2Uptime = spell.uptime();
                 spell2Cooldown = spell.cooldown();
                 break;
             case 3:
+                spell3Uptime = spell.uptime();
                 spell3Cooldown = spell.cooldown();
                 break;
         }
@@ -422,12 +447,44 @@ public class BattleScreen implements Screen {
         // Do the effects of spell
         if (spell.phyDamage >0) {
             enemy.modifyHp(-spell.phyDamage());
+            System.out.println(spell.phyDamage());
             log(" > You hit the " + enemy.name() + " for " + spell.phyDamage() + " damage");
         }
-        if (spell.phyDefend()>0)
+        if (spell.phyDefend()>0) {
             player.modifyPhyDefense(spell.phyDefend());
+            log(" + You increase your Armour by " + spell.phyDefend());
+        }
+        if (spell.magDefend()>0) {
+            player.modifyMagDefense(spell.magDefend);
+            log(" + You increase your Barrier by " + spell.magDefend());
+        }
+
     }
 
+    private void removeSpell1Effect(Creature player, Creature enemy) {
+        switch(player.spellList().get(0)) {
+            case "Regal Roar":
+                player.resetPhyDefense();
+                spell1Uptime = -1;
+                break;
+        }
+    }
+
+    private void removeSpell2Effect(Creature player, Creature enemy) {
+        switch(player.spellList().get(1)) {
+
+        }
+    }
+
+    private void removeSpell3Effect(Creature player, Creature enemy) {
+        switch(player.spellList().get(2)) {
+            case "Great Phalanx":
+                player.resetPhyDefense();
+                player.resetMagDefense();
+                spell3Uptime = -1;
+                break;
+        }
+    }
 
     public void enemyAttack(){
         int amount;
@@ -443,6 +500,10 @@ public class BattleScreen implements Screen {
 
         //either 5 0r other
         amount = Math.max(5,amount);
+        if (isPlayerDefending) {
+            amount = (int) (0.85 * amount);
+            isPlayerDefending = false;
+        }
         player.modifyHp(-amount);
 
         log(" > The " + enemy.name() + " attack " + player.name() + " for " + amount + " damage");
