@@ -415,7 +415,6 @@ public class PlayScreen implements Screen {
 
             // Load stats from database
             playerCharacter.setStats(save.loadFromFileSave());
-
             // Create a player creature from stats
             player = creatureFactory.newPlayer(messages,playerCharacter);
             StartScreen.cont = false;

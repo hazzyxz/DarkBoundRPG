@@ -11,6 +11,7 @@ public class SaveFunction {
             connection = DriverManager.getConnection("jdbc:sqlite:FileSave.db");
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
+            statement.executeUpdate("create table if not exists player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer, spell1 string, spell2 string, spell3 string)");
             ResultSet rs = statement.executeQuery("select * from player");
 
             // Load data from database
@@ -29,11 +30,24 @@ public class SaveFunction {
             statFromSave[12] = rs.getString("spell2");
             statFromSave[13] = rs.getString("spell3");
 
+            if (statFromSave[0] == null) {
+                System.exit(0);
+            }
+
             // IMPORTANT: close connection. BUG: if not closed, game freezes
             rs.close();
         }
         catch (SQLException e) {
             System.err.println(e.getMessage());
+        }
+        finally {
+            try {
+                if (connection != null)
+                    connection.close();
+            }
+            catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
         }
 
         return statFromSave;
@@ -64,10 +78,23 @@ public class SaveFunction {
             statFromSave[12] = rs.getString("spell2");
             statFromSave[13] = rs.getString("spell3");
 
+            if (statFromSave[0] == null) {
+                System.exit(0);
+            }
+
             rs.close();
         }
         catch (SQLException e) {
             System.err.println(e.getMessage());
+        }
+        finally {
+            try {
+                if (connection != null)
+                    connection.close();
+            }
+            catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
         }
         return statFromSave;
     }
