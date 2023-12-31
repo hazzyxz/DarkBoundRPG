@@ -255,6 +255,17 @@ public class BattleScreen implements Screen {
                 return this;
             }
         }
+        else if (key.getKeyCode() == KeyEvent.VK_4)
+            return null;
+        else if (key.getKeyCode() == KeyEvent.VK_Q) {
+            useSpell(new RegalRoar());
+        }
+        else if (key.getKeyCode() == KeyEvent.VK_W) {
+            useSpell(new FuriousStrike());
+        }
+        else if (key.getKeyCode() == KeyEvent.VK_E) {
+            useSpell(new FuriousStrike());
+        }
         else
             return this;
 
@@ -301,7 +312,7 @@ public class BattleScreen implements Screen {
             case "Warrior":
             case "Rogue":
             case "Archer":
-                amount = (int) (0.25*player.phyAttack() );
+                amount = (int) (0.25*player.phyAttack());
                 amount -= enemy.phyDefense();
                 break;
             case "Mage":
@@ -347,6 +358,19 @@ public class BattleScreen implements Screen {
         canHeal = false;
     }
 
+    private void useSpell(Spell spell) {
+        // Cast the spell
+        spell.cast(player,enemy);
+        log(spell.message);
+
+        if (spell.damage>0) {
+            enemy.modifyHp(-spell.damage());
+            log(" > You hit the " + enemy.name() + " for " + spell.damage() + " damage");
+        }
+        if (spell.defend())
+            playerDefend();
+    }
+
     public void enemyAttack(){
         int amount;
 
@@ -373,8 +397,8 @@ public class BattleScreen implements Screen {
     // Method to display attack log including history
     // Method to display attack log including history
     private void displayLog(AsciiPanel terminal) {
-        terminal.write("[ LOG ]", 67 - 4, 3, AsciiPanel.brightBlack); // Header for attack log
-        terminal.write("-------", 67 - 4, 3 + 1, AsciiPanel.brightBlack);
+        terminal.write("[ LOG ]", 67 - 4, 3,AsciiPanel.brightBlack); // Header for attack log
+        terminal.write("-------", 67 - 4, 3 + 1,AsciiPanel.brightBlack);
 
         int logY = 6; // Starting Y position for displaying log
         lines = logY;
@@ -404,7 +428,7 @@ public class BattleScreen implements Screen {
                     } else if (word.equalsIgnoreCase("health")) {
                         terminal.write(word, xPosition, logY, AsciiPanel.red);
                     } else if (word.equalsIgnoreCase("armour")) {
-                        terminal.write(word, xPosition, logY, AsciiPanel.yellow);
+                        terminal.write(word, xPosition, logY, Color.orange);
                     } else if (word.matches("\\d+")) {
                         terminal.write(word, xPosition, logY, AsciiPanel.brightWhite);
                     } else if (word.equalsIgnoreCase(">") || word.equalsIgnoreCase("+")) {
@@ -418,7 +442,7 @@ public class BattleScreen implements Screen {
 
                 logY++; // Move to the next line for the next log entry
                 lines++;
-                xPosition = 48; // Reset X position for a new line
+                xPosition = 49; // Reset X position for a new line
             }
 
             logY++; // Extra space between logs

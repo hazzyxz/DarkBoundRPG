@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Archetype {
     protected String archetypeName;
     protected int[] stats = new int[8];
-    protected boolean[] statusEffect;
+    protected boolean[] statusEffect;  // Poison, Silence, Stun, Blind
     protected int[] lvl = new int[2]; // 1. Level 2. XP
     protected int experiencePoints;
     protected ArrayList<String> spells;
