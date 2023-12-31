@@ -240,6 +240,8 @@ public class Creature {
             maxXp = (int)(100*Math.pow(1.1,this.level-1));
             //doAction("advance to level %d", level);
             //ai.onGainLevel();
+            this.hp = maxHp;
+            this.mp = maxMp;
             increaseStats();
             doAction("gain a level!");
             //modifyMaxHp(level * 2);

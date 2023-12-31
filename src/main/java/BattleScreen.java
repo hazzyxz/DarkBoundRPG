@@ -12,7 +12,7 @@ public class BattleScreen implements Screen {
 
 
     private boolean isEnemyAttacking = false;//for turn based combat
-    private boolean canHeal = true; //heal 1 per game
+    private int canHeal = 1; //heal 1 per game, 1 = true
 
     private int defenseCooldown = 0; // Track the remaining cooldown rounds for defense
     private int spell1Cooldown = 0;
@@ -105,8 +105,12 @@ public class BattleScreen implements Screen {
         terminal.write("----------",x,y++,AsciiPanel.brightBlack);
         terminal.write("",x,y++);
         terminal.write("[1] Attack",x,y++);
-        terminal.write("[2] Defend",x,y++);
-        terminal.write("[3] Heal",x,y++);
+        str = "[2] Defend";
+        terminal.write(str,x,y);
+        terminal.write("<"+defenseCooldown+"/2>cd",58,y++,AsciiPanel.brightBlack);
+        str = "[3] Heal";
+        terminal.write(str,x,y);
+        terminal.write("<"+canHeal+"/1>",58,y++,AsciiPanel.brightBlack);
         terminal.write("[4] Escape",x,y++);
 
         y = 38;
@@ -161,9 +165,10 @@ public class BattleScreen implements Screen {
              */
             x = x+barLength+5;
 
-            terminal.write("" + creature.hp(), x , y, AsciiPanel.brightRed);
-            terminal.write( "/", x+3, y,AsciiPanel.white);
-            terminal.write(""+creature.maxHp(), x+3+1, y,AsciiPanel.brightRed);
+            String str = String.format("%d",creature.hp());
+            terminal.write(str,x,y,AsciiPanel.brightRed);
+            terminal.write( "/", x+str.length(), y,AsciiPanel.white);
+            terminal.write(""+creature.maxHp(), x+str.length()+1, y,AsciiPanel.brightRed);
         }
     }
 
@@ -202,9 +207,10 @@ public class BattleScreen implements Screen {
             }
 
              */
-            terminal.write("" + creature.mp(), x , y, AsciiPanel.brightCyan);
-            terminal.write( "/", x+3, y,AsciiPanel.white);
-            terminal.write(""+creature.maxMp(), x+3+1, y,AsciiPanel.brightCyan);
+            String str = String.format("%d",creature.mp());
+            terminal.write(str,x,y,AsciiPanel.brightCyan);
+            terminal.write( "/", x+str.length(), y,AsciiPanel.white);
+            terminal.write(""+creature.maxMp(), x+str.length()+1, y,AsciiPanel.brightCyan);
         }
     }
 
@@ -243,7 +249,7 @@ public class BattleScreen implements Screen {
             //playerDefend(); //increase defense value for 3 turn
         }
         else if (key.getKeyCode() == KeyEvent.VK_3) {
-            if(canHeal)
+            if(canHeal==1)
                 playerHeal();
             else {
                 log(" > You can only heal once per game ");
@@ -386,7 +392,7 @@ public class BattleScreen implements Screen {
 
         player.modifyHp(amount);
         log(" + You increase your health for " + amount + " Hp");
-        canHeal = false;
+        canHeal = 0;
     }
 
     private void castSpell(String spellName) {
@@ -487,6 +493,8 @@ public class BattleScreen implements Screen {
                         terminal.write(word, xPosition, logY, AsciiPanel.red);
                     } else if (word.equalsIgnoreCase("armour")) {
                         terminal.write(word, xPosition, logY, Color.orange);
+                    } else if (word.equalsIgnoreCase("barrier")) {
+                        terminal.write(word, xPosition, logY, AsciiPanel.cyan);
                     } else if (word.matches("\\d+")) {
                         terminal.write(word, xPosition, logY, AsciiPanel.brightWhite);
                     } else if (word.equalsIgnoreCase(">") || word.equalsIgnoreCase("+")) {
