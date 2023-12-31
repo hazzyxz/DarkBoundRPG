@@ -1,4 +1,4 @@
-Warrior [Veteran of War: Skills center around physical damage and both defenses]
+Warrior [Frontier Phalanx: Skills center around physical damage and both defenses]
 Regal Roar
 - Level Requirement: 5
 - Description: Release a deafening roar, increases physical defense for 2 rounds.
@@ -9,7 +9,7 @@ Furious Strike
 - Description: Unleashes a powerful attack, dealing damage proportional to physical attack and defense.
 - Cool Down: 4 rounds
 
-Great Shield of War
+Great Phalanx
 - Level Requirement: 30
 - Description: The Warrior creates an impenetrable barrier with their shield, increasing both defenses for 5 rounds.
 - Cool Down: 6 rounds
@@ -26,24 +26,24 @@ Fireball
 - Description: Hurls a fiery projectile at the target, dealing magical damage.
 - Cool Down: 4 rounds
 
-Flow of the Void
+Flow of Void
 - Level Requirement: 30
-- Description: The Mage releases a burst of darkness, blinding the enemy for 4 rounds.
+- Description: The Mage releases energy from the void, blinding the enemy for 4 rounds.
 - Cool Down: 6 rounds
 
 
 Rogue [Assassin of Dark: Skills center around status effects]
-Suppress
+Silent Domain
 - Level Requirement: 5
-- Description: Deletes all noise around temporarily, silencing the enemy for 2 rounds.
+- Description: Deletes all noises around temporarily, silencing the enemy for 2 rounds.
 - Cool Down: 3 rounds
 
 Backstab
 - Level Requirement: 10
-- Description: Backstabs the enemy, causing physical damage and stunning them for 1 round.
+- Description: Sneak behind the enemy and stabs them, causing physical damage and stunning them for 1 round.
 - Cool Down: 4 rounds
 
-Daggers of Dark
+Dark Daggers
 - Level Requirement: 30
 - Description: The Rogue throws 5 invisible daggers, each dagger hit deal physical damage and poisons the enemy for 2 extra rounds.
 - Cool Down: 6 rounds
@@ -53,16 +53,16 @@ Paladin [Holy Knight: Skills center around healing and defenses]
 Divine Shield
 - Level Requirement: 5
 - Description: Creates a small barrier, increasing both defenses.
-- Cool Down: 6 rounds
+- Cool Down: 2 rounds
 
 Holy Smite
 - Level Requirement: 10
 - Description: Smashes the target with divine light, dealing both damage and slight heal.
 - Cool Down: 4 rounds
 
-Blessings of the Ancient
+Ancient Blessings
 - Level Requirement: 30
-- Description: The Paladin pray for good health and fortune, recover the ability to heal and increases its potency.
+- Description: The Paladin pray for good health and fortune, recover the ability to heal and increases healing potency.
 - Cool down: 6 rounds
 
 
@@ -77,7 +77,7 @@ Coated Arrows
 - Description: Fires a flurry of arrows at the target, dealing damage and poisons the enemy for 2 rounds.
 - Cool Down: 4 rounds
 
-Arrow of Artemis
+Artemis' Arrow
 - Level Requirement: 30
 - Description: The Archer shoots a great arrow that pierces the enemy, dealing physical damage ignoring physical defense.
 - Cool Down: 6 rounds

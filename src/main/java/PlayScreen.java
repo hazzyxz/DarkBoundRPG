@@ -14,6 +14,7 @@ public class PlayScreen implements Screen {
     // initialize a variable named player
     protected Creature player;
     protected Creature creature;
+    protected SaveFunction save = new SaveFunction();
 
     //initialize string array list
     private List<String> messages;
@@ -121,7 +122,7 @@ public class PlayScreen implements Screen {
             switch (key.getKeyCode()) {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit()){
-                        saveToQuickSave();
+                        save.saveToQuickSave(player);
                         return nextPlayScreen();
                         //return new PlayScreen2();
                     }
@@ -166,11 +167,11 @@ public class PlayScreen implements Screen {
 
                 case KeyEvent.VK_P:
                     player.doAction("quick-save");
-                    saveToSaveFile();
+                    save.saveToFileSave(player);
                     break;
 
                 case KeyEvent.VK_ESCAPE:
-                    saveToSaveFile();
+                    save.saveToFileSave(player);
                     System.exit(0);
                     break;
 
@@ -413,7 +414,7 @@ public class PlayScreen implements Screen {
             playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
 
             // Load stats from database
-            playerCharacter.setStats(loadFromFileSave());
+            playerCharacter.setStats(save.loadFromFileSave());
 
             // Create a player creature from stats
             player = creatureFactory.newPlayer(messages,playerCharacter);
@@ -423,7 +424,7 @@ public class PlayScreen implements Screen {
         else if (ChooseClassScreen.worldCount > 1){
             playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
 
-            playerCharacter.setStats(loadFromQuickSave());
+            playerCharacter.setStats(save.loadFromQuickSave());
             player = creatureFactory.newPlayer(messages,playerCharacter);
             StartScreen.cont = false;
         }
@@ -590,104 +591,6 @@ public class PlayScreen implements Screen {
         return null;
     }
 
-    private String[] loadFromFileSave() {
-        String[] statFromSave = new String[11];
-
-        try {
-            // Establish connection to database
-            connection = DriverManager.getConnection("jdbc:sqlite:FileSave.db");
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery("select * from player");
-
-            // Load data from database
-            statFromSave[0] = rs.getString("name");
-            statFromSave[1] = rs.getString("maxhp");
-            statFromSave[2] = rs.getString("hp");
-            statFromSave[3] = rs.getString("maxmp");
-            statFromSave[4] = rs.getString("mp");
-            statFromSave[5] = rs.getString("phyattack");
-            statFromSave[6] = rs.getString("magattack");
-            statFromSave[7] = rs.getString("phydef");
-            statFromSave[8] = rs.getString("magdef");
-            statFromSave[9] = rs.getString("level");
-            statFromSave[10] = rs.getString("xp");
-
-            // IMPORTANT: close connection. BUG: if not closed, game freezes
-            rs.close();
-        }
-        catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-
-        return statFromSave;
-    }
-
-    private String[] loadFromQuickSave() {
-        String[] statFromSave = new String[11];
-        try {
-            // Establish connection to database
-            connection = DriverManager.getConnection("jdbc:sqlite:QuickSave.db");
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery("select * from player");
-
-            // Load data from database
-            statFromSave[0] = rs.getString("name");
-            statFromSave[1] = rs.getString("maxhp");
-            statFromSave[2] = rs.getString("hp");
-            statFromSave[3] = rs.getString("maxmp");
-            statFromSave[4] = rs.getString("mp");
-            statFromSave[5] = rs.getString("phyattack");
-            statFromSave[6] = rs.getString("magattack");
-            statFromSave[7] = rs.getString("phydef");
-            statFromSave[8] = rs.getString("magdef");
-            statFromSave[9] = rs.getString("level");
-            statFromSave[10] = rs.getString("xp");
-
-            rs.close();
-        }
-        catch (SQLException e) {
-            //System.err.println(e.getMessage());
-        }
-
-
-        return statFromSave;
-    }
-
-    private void saveToFileSave() {
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:FileSave.db");
-            Statement statement = connection.createStatement();
-            // statement.setQueryTimeout(30);
-
-            statement.executeUpdate("drop table if exists player");
-            statement.executeUpdate("create table player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer)");
-
-            String insertCommand = "insert into player values('"+player.name()+"',"+Integer.toString(player.maxHp())+","+Integer.toString(player.hp())+","+Integer.toString(player.maxMp())+","+Integer.toString(player.mp())+","+Integer.toString(player.phyAttack())+","+Integer.toString(player.magAttack())+","+Integer.toString(player.maxPhyDefense())+","+Integer.toString(player.maxMagDefense())+","+Integer.toString(player.level())+","+Integer.toString(player.xp())+")";
-            statement.executeUpdate(insertCommand);
-        }
-        catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    private void saveToQuickSave() {
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:QuickSave.db");
-            Statement statement = connection.createStatement();
-            // statement.setQueryTimeout(30);
-
-            statement.executeUpdate("drop table if exists player");
-            statement.executeUpdate("create table player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer)");
-
-            String insertCommand = "insert into player values('"+player.name()+"',"+Integer.toString(player.maxHp())+","+Integer.toString(player.hp())+","+Integer.toString(player.maxMp())+","+Integer.toString(player.mp())+","+Integer.toString(player.phyAttack())+","+Integer.toString(player.magAttack())+","+Integer.toString(player.maxPhyDefense())+","+Integer.toString(player.maxMagDefense())+","+Integer.toString(player.level())+","+Integer.toString(player.xp())+")";
-            statement.executeUpdate(insertCommand);
-        }
-        catch (SQLException e) {
-           System.err.println(e.getMessage());
-        }
-    }
 
     /*
     //tell player his hunger bar

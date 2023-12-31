@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Archetype {
     protected String archetypeName;
@@ -24,8 +25,12 @@ public class Archetype {
         this.stats[5] = Integer.parseInt(baseStats[6]);//mag attack
         this.stats[6] = Integer.parseInt(baseStats[7]);//phy defense
         this.stats[7] = Integer.parseInt(baseStats[8]);//mag defense
-        this.lvl[0] = Integer.parseInt(baseStats[9]);
-        this.lvl[1] = Integer.parseInt(baseStats[10]);
+        this.lvl[0] = Integer.parseInt(baseStats[9]); // level
+        this.lvl[1] = Integer.parseInt(baseStats[10]); // xp
+        this.spells = new ArrayList<>();
+        this.spells.add(baseStats[11]);
+        this.spells.add(baseStats[12]);
+        this.spells.add(baseStats[13]);
         this.statusEffect = new boolean[]{false, false, false, false};
     }
 

@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class BattleScreen implements Screen {
@@ -16,6 +15,12 @@ public class BattleScreen implements Screen {
     private boolean canHeal = true; //heal 1 per game
 
     private int defenseCooldown = 0; // Track the remaining cooldown rounds for defense
+    private int spell1Cooldown = 0;
+    private int spell2Cooldown = 0; // Track cooldown of spells
+    private int spell3Cooldown = 0;
+    private int spell1Uptime = 0;
+    private int spell2Uptime = 0;
+    private int spell3Uptime = 0;
     private int round = 0;
     private int randEncounter = (int) (Math.random()*4);
     private int randType = (int) (Math.random()*7);
@@ -109,9 +114,9 @@ public class BattleScreen implements Screen {
         terminal.write("{ SPELL }",x,y++,AsciiPanel.brightBlack);
         terminal.write("---------",x,y++,AsciiPanel.brightBlack);
         terminal.write("",x,y++);
-        terminal.write("[Q] use Spell 1",x,y++);
-        terminal.write("[W] use Spell 2",x,y++);
-        terminal.write("[E] use Spell 3",x,y++);
+        terminal.write("[Q] "+player.spellList().get(0),x,y++);
+        terminal.write("[W] "+player.spellList().get(1),x,y++);
+        terminal.write("[E] "+player.spellList().get(2),x,y++);
 
         //log
         displayLog(terminal);
@@ -258,13 +263,29 @@ public class BattleScreen implements Screen {
         else if (key.getKeyCode() == KeyEvent.VK_4)
             return null;
         else if (key.getKeyCode() == KeyEvent.VK_Q) {
-            useSpell(new RegalRoar());
+            if (spell1Cooldown == 0) {
+                castSpell(player.spellList().get(0));
+            }
+            else {
+                log(" > You can't cast that yet. ( " + spell1Cooldown + " more round )");
+                return this;
+            }
         }
         else if (key.getKeyCode() == KeyEvent.VK_W) {
-            useSpell(new FuriousStrike());
+            if (spell2Cooldown == 0)
+                castSpell(player.spellList().get(1));
+            else {
+                log(" > You can't cast that yet. ( " + spell2Cooldown + " more round )");
+                return this;
+            }
         }
         else if (key.getKeyCode() == KeyEvent.VK_E) {
-            useSpell(new FuriousStrike());
+            if (spell3Cooldown == 0)
+                castSpell(player.spellList().get(2));
+            else {
+                log(" > You can't cast that yet. ( " + spell3Cooldown + " more round )");
+                return this;
+            }
         }
         else
             return this;
@@ -281,6 +302,15 @@ public class BattleScreen implements Screen {
         }
         if (defenseCooldown > 0) {
             defenseCooldown--;
+        }
+        if (spell1Cooldown > 0) {
+            spell1Cooldown--;
+        }
+        if (spell2Cooldown > 0) {
+            spell2Cooldown--;
+        }
+        if (spell3Cooldown > 0) {
+            spell3Cooldown--;
         }
 
         // For example, returning null to exit the battle screen
@@ -340,7 +370,8 @@ public class BattleScreen implements Screen {
         //random number from 1 to amount of possible value
         amount = (int)(Math.random() * amount) + 1;
 
-        player.modifyDefense(amount);
+        player.modifyPhyDefense(amount);
+        player.modifyMagDefense(amount);
         log(" + You increase your Armour and Barrier by " + amount);
     }
 
@@ -358,18 +389,45 @@ public class BattleScreen implements Screen {
         canHeal = false;
     }
 
-    private void useSpell(Spell spell) {
+    private void castSpell(String spellName) {
+        switch(spellName) {
+            case "Regal Roar":
+                useSpell(new RegalRoar(), 1);
+                break;
+            case "Furious Strike":
+                useSpell(new FuriousStrike() ,2);
+                break;
+            case "Great Phalanx":
+                useSpell(new GreatPhalanx(),3);
+                break;
+        }
+    }
+
+    private void useSpell(Spell spell, int spellSlot) {
         // Cast the spell
         spell.cast(player,enemy);
+        switch (spellSlot) {
+            case 1:
+                spell1Cooldown = spell.cooldown();
+                break;
+            case 2:
+                spell2Cooldown = spell.cooldown();
+                break;
+            case 3:
+                spell3Cooldown = spell.cooldown();
+                break;
+        }
         log(spell.message);
 
-        if (spell.damage>0) {
-            enemy.modifyHp(-spell.damage());
-            log(" > You hit the " + enemy.name() + " for " + spell.damage() + " damage");
+        // Do the effects of spell
+        if (spell.phyDamage >0) {
+            enemy.modifyHp(-spell.phyDamage());
+            log(" > You hit the " + enemy.name() + " for " + spell.phyDamage() + " damage");
         }
-        if (spell.defend())
-            playerDefend();
+        if (spell.phyDefend()>0)
+            player.modifyPhyDefense(spell.phyDefend());
     }
+
 
     public void enemyAttack(){
         int amount;

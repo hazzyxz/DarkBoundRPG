@@ -79,6 +79,10 @@ public class Creature {
     private int level;
     public int level() { return level; }
 
+    private ArrayList<String> spellList;
+    public ArrayList<String> spellList() {
+        return spellList;
+    }
 
     private String asciiPath;
     public String asciiPath() { return asciiPath; }
@@ -89,7 +93,7 @@ public class Creature {
 
 
     // later change this and others to incorporate phyattack, magattack ...
-    public Creature(World world, String name, char glyph, Color color, int maxHp, int hp, int maxMp, int mp, int phyAttack, int magAttack, int maxPhyDefense, int maxMagDefense, boolean[] statusEffect, int[] lvl, String asciiPath){
+    public Creature(World world, String name, char glyph, Color color, int maxHp, int hp, int maxMp, int mp, int phyAttack, int magAttack, int maxPhyDefense, int maxMagDefense, boolean[] statusEffect, int[] lvl, ArrayList<String> spells, String asciiPath){
         //constructor injection of creature class to set values
 
         this.world = world; //the world
@@ -118,8 +122,15 @@ public class Creature {
         this.food = maxFood / 3 * 2; //the amount of food creature is on start
 
         this.level = lvl[0]; // creature's level
-        this.maxXp = (int)(1000*Math.pow(1.1,lvl[0]-1)); //max xp before level up
+        this.maxXp = (int)(100*Math.pow(1.1,lvl[0]-1)); //max xp before level up
         this.xp = lvl[1]; //the amount of xp of creature
+
+        if (!spells.isEmpty()) {
+            this.spellList = new ArrayList<>();
+            this.spellList.add(spells.get(0));
+            this.spellList.add(spells.get(1));
+            this.spellList.add(spells.get(2));
+        }
 
         this.asciiPath = asciiPath; //the ascii filepath for creature
     }
@@ -186,9 +197,13 @@ public class Creature {
          */
     }
 
-    public void modifyDefense(int amount) {
+    public void modifyPhyDefense(int amount) {
         //defense value
         phyDefense += amount;
+    }
+
+    public void modifyMagDefense(int amount) {
+        //defense value
         magDefense += amount;
     }
 
@@ -219,10 +234,10 @@ public class Creature {
 
         //notify("You %s %d xp.", amount < 0 ? "lose" : "gain", amount);
         //(int)(Math.pow(level, 1.5) * 20)
-        while (xp > (int)(1000*Math.pow(1.1,this.level-1))) {
-            xp -= (int)(1000*Math.pow(1.1,this.level-1));
+        while (xp > (int)(100*Math.pow(1.1,this.level-1))) {
+            xp -= (int)(100*Math.pow(1.1,this.level-1));
             level++;
-            maxXp = (int)(1000*Math.pow(1.1,this.level-1));
+            maxXp = (int)(100*Math.pow(1.1,this.level-1));
             //doAction("advance to level %d", level);
             //ai.onGainLevel();
             increaseStats();
@@ -232,10 +247,53 @@ public class Creature {
     }
 
     public void increaseStats(){
+        if (this.level >= 5)
+            spellList.set(0, getClassSpell1());
+        if (this.level >= 10)
+            spellList.set(1, getClassSpell2());
+        if (this.level >= 30)
+            spellList.set(2, getClassSpell3());
         doAction("feel a power surging through");
         modifyMaxHp(level * 2);
-        modifyDefense(level);
+        modifyPhyDefense(level);
+        modifyMagDefense(level);
         modifyAttack(level);
+    }
+
+    private String getClassSpell1() {
+        switch(name) {
+            case "Mage":
+                return "Magic Barrier";
+            case "Rogue":
+            case "Paladin":
+            case "Archer":
+            default:
+                return "Regal Roar";
+        }
+    }
+
+    private String getClassSpell2() {
+        switch(name) {
+            case "Mage":
+                return "Fireball";
+            case "Rogue":
+            case "Paladin":
+            case "Archer":
+            default:
+                return "Furious Strike";
+        }
+    }
+
+    private String getClassSpell3() {
+        switch(name) {
+            case "Mage":
+                return "Flow of Void";
+            case "Rogue":
+            case "Paladin":
+            case "Archer":
+            default:
+                return "Great Phalanx";
+        }
     }
 
     public void gainXp(Creature creature){

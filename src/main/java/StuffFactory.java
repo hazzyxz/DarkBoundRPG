@@ -1,9 +1,12 @@
 import asciiPanel.AsciiPanel;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class StuffFactory {
     private World world;
     private FieldOfView fov;
+    private ArrayList<String> empty = new ArrayList<>();
 
     Archetype playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
 
@@ -19,7 +22,7 @@ public class StuffFactory {
         // initialize player in world with white '@' and its stats
         // World represents the game world to which the creature belongs
         // player character is represented by the '@' glyph and is displayed in bright white color
-        Creature player = new Creature(world, playerCharacter.archetypeName, '@', AsciiPanel.brightWhite,playerCharacter.getMaxHealthPoints(), playerCharacter.getHealthPoints(),playerCharacter.getMaxManaPoints(), playerCharacter.getManaPoints(), playerCharacter.getPhysicalAttack(), playerCharacter.getMagicalAttack(), playerCharacter.getPhysicalDefense(), playerCharacter.getMagicalDefense(), playerCharacter.getStatusEffect(),playerCharacter.getLevel(), "C:\\Users\\Ahmad Taufiq\\Desktop\\test ascii.txt");
+        Creature player = new Creature(world, playerCharacter.archetypeName, '@', AsciiPanel.brightWhite,playerCharacter.getMaxHealthPoints(), playerCharacter.getHealthPoints(),playerCharacter.getMaxManaPoints(), playerCharacter.getManaPoints(), playerCharacter.getPhysicalAttack(), playerCharacter.getMagicalAttack(), playerCharacter.getPhysicalDefense(), playerCharacter.getMagicalDefense(), playerCharacter.getStatusEffect(),playerCharacter.getLevel(), playerCharacter.spells, "C:\\Users\\Ahmad Taufiq\\Desktop\\test ascii.txt");
 
         // adds the player character to an empty location in the game world
         world.addAtEmptyLocation(player);
@@ -32,7 +35,7 @@ public class StuffFactory {
 
     public Creature newNpc(){
         // initialize npc in world with green 'N' and its stats
-        Creature npc = new Creature(world, "Damsel",'N', AsciiPanel.brightMagenta, 1, 1, 1, 1, 1, 1,1,1, new boolean[]{false, false, false, false}, new int[]{1, 0}, "src/main/java/asciiArt/test ascii.txt");
+        Creature npc = new Creature(world, "Damsel",'N', AsciiPanel.brightMagenta, 1, 1, 1, 1, 1, 1,1,1, new boolean[]{false, false, false, false}, new int[]{1, 0}, empty,"src/main/java/asciiArt/test ascii.txt");
 
         // adds the npc creature to an empty location in the game world
         world.addAtEmptyLocation(npc);
@@ -46,7 +49,7 @@ public class StuffFactory {
     //later change creature factory to incoporate enemy data from .txt
     public Creature newFungus(){
         // initialize fungus in world with green 'f' and its stats
-        Creature fungus = new Creature(world, "fungus",'f', AsciiPanel.brightRed, 100, 100, 10, 10, 10,10,10, 10, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/test ascii.txt");
+        Creature fungus = new Creature(world, "fungus",'f', AsciiPanel.brightRed, 100, 100, 10, 10, 10,10,10, 10, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"src/main/java/asciiArt/test ascii.txt");
 
         // adds the fungus creature to an empty location in the game world
         world.addAtEmptyLocation(fungus);
@@ -62,42 +65,42 @@ public class StuffFactory {
 
     //The Creature constructor is used to create bat creature
     public Creature newBat(){
-        Creature bat = new Creature(world, "bat",'b', AsciiPanel.brightRed, 150, 150, 15, 15, 10, 10, 10, 10, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/test ascii 2.txt");
+        Creature bat = new Creature(world, "bat",'b', AsciiPanel.brightRed, 150, 150, 15, 15, 10, 10, 10, 10, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"src/main/java/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(bat);
         new BatAi(bat);
         return bat;
     }
 
     public Creature newGoblin(){
-        Creature goblin = new Creature(world, "Goblin",'g',AsciiPanel.brightRed,40, 40, 1,1,10,1,5,2, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/test ascii 2.txt");
+        Creature goblin = new Creature(world, "Goblin",'g',AsciiPanel.brightRed,40, 40, 1,1,10,1,5,2, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"src/main/java/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(goblin);
         new GoblinAi(goblin);
         return goblin;
     }
 
     public Creature newSkeleton() {
-        Creature skeleton = new Creature(world, "Skeleton",'s',AsciiPanel.brightRed,60, 60, 1,1,12,1,7,3, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/test ascii 2.txt");
+        Creature skeleton = new Creature(world, "Skeleton",'s',AsciiPanel.brightRed,60, 60, 1,1,12,1,7,3, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"src/main/java/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(skeleton);
         new GoblinAi(skeleton);
         return skeleton;
     }
 
     public Creature newWitch(){
-        Creature witch = new Creature(world, "Witch",'w',AsciiPanel.brightRed,50,50, 80,80,8,20,6,12, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/witch.txt");
+        Creature witch = new Creature(world, "Witch",'w',AsciiPanel.brightRed,50,50, 80,80,8,20,6,12, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"src/main/java/asciiArt/witch.txt");
         world.addAtEmptyLocation(witch);
         new GoblinAi(witch);
         return witch;
     }
 
     public Creature newOrc(){
-        Creature orc = new Creature(world, "Orc",'O',AsciiPanel.brightRed,70, 70, 1,1,15,1,9,4, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/test ascii 2.txt");
+        Creature orc = new Creature(world, "Orc",'O',AsciiPanel.brightRed,70, 70, 1,1,15,1,9,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"src/main/java/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(orc);
         new GoblinAi(orc);
         return orc;
     }
 
     public Creature newHarpy(){
-        Creature harpy = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,60, 60, 20,20,14,10,8,8, new boolean[]{false, false, false, false}, new int[]{1, 0},"src/main/java/asciiArt/test ascii 2.txt");
+        Creature harpy = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,60, 60, 20,20,14,10,8,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"src/main/java/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(harpy);
         new BatAi(harpy);
         return harpy;
