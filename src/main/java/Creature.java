@@ -202,9 +202,19 @@ public class Creature {
         phyDefense += amount;
     }
 
+    public void modifyMaxPhyDefense(int amount) {
+        //defense value
+        maxPhyDefense += amount;
+    }
+
     public void modifyMagDefense(int amount) {
         //defense value
         magDefense += amount;
+    }
+
+    public void modifyMaxMagDefense(int amount) {
+        //defense value
+        maxMagDefense += amount;
     }
 
     public void modifyAttack(int amount) {
@@ -213,9 +223,13 @@ public class Creature {
         magAttack += amount;
     }
 
-    public void resetDefense(){
+    public void resetPhyDefense(){
         //hp is minus the amount of damage taken
         phyDefense = maxPhyDefense;
+    }
+
+    public void resetMagDefense(){
+        //hp is minus the amount of damage taken
         magDefense = maxMagDefense;
     }
 
@@ -243,6 +257,8 @@ public class Creature {
             this.hp = maxHp;
             this.mp = maxMp;
             increaseStats();
+            this.hp = this.maxHp;
+            this.mp = this.maxMp;
             doAction("gain a level!");
             //modifyMaxHp(level * 2);
         }
@@ -258,7 +274,9 @@ public class Creature {
         doAction("feel a power surging through");
         modifyMaxHp(level * 2);
         modifyPhyDefense(level);
+        modifyMaxPhyDefense(level);
         modifyMagDefense(level);
+        modifyMaxMagDefense(level);
         modifyAttack(level);
     }
 

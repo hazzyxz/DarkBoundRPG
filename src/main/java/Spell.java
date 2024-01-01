@@ -3,6 +3,10 @@ public abstract class Spell {
     public int cooldown() {
         return this.cooldown;
     }
+    protected int uptime;
+    public int uptime() {
+        return this.uptime;
+    }
     protected int phyDamage = 0;
     public int phyDamage() {
         return this.phyDamage;

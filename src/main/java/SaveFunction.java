@@ -30,6 +30,7 @@ public class SaveFunction {
             statFromSave[12] = rs.getString("spell2");
             statFromSave[13] = rs.getString("spell3");
 
+
             if (statFromSave[0] == null) {
                 System.exit(0);
             }
