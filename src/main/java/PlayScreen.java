@@ -172,8 +172,8 @@ public class PlayScreen implements Screen {
 
                 case KeyEvent.VK_ESCAPE:
                     save.saveToFileSave(player);
-                    System.exit(0);
-                    break;
+                    ChooseClassScreen.worldCount = 0;
+                    return new StartScreen();
 
                 //go down
 
@@ -415,6 +415,7 @@ public class PlayScreen implements Screen {
 
             // Load stats from database
             playerCharacter.setStats(save.loadFromFileSave());
+
             // Create a player creature from stats
             player = creatureFactory.newPlayer(messages,playerCharacter);
             StartScreen.cont = false;
@@ -422,8 +423,9 @@ public class PlayScreen implements Screen {
         // if not world 1 = continue game from QuickSave
         else if (ChooseClassScreen.worldCount > 1){
             playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
-
+            
             playerCharacter.setStats(save.loadFromQuickSave());
+
             player = creatureFactory.newPlayer(messages,playerCharacter);
             StartScreen.cont = false;
         }

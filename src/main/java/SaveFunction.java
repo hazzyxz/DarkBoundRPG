@@ -10,8 +10,7 @@ public class SaveFunction {
             // Establish connection to database
             connection = DriverManager.getConnection("jdbc:sqlite:FileSave.db");
             Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-            statement.executeUpdate("create table if not exists player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer, spell1 string, spell2 string, spell3 string)");
+            statement.setQueryTimeout(5);
             ResultSet rs = statement.executeQuery("select * from player");
 
             // Load data from database
@@ -60,7 +59,7 @@ public class SaveFunction {
             // Establish connection to database
             connection = DriverManager.getConnection("jdbc:sqlite:QuickSave.db");
             Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
+            statement.setQueryTimeout(5);
             ResultSet rs = statement.executeQuery("select * from player");
 
             // Load data from database
@@ -104,10 +103,10 @@ public class SaveFunction {
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:FileSave.db");
             Statement statement = connection.createStatement();
-            // statement.setQueryTimeout(30);
+            statement.setQueryTimeout(5);
 
             statement.executeUpdate("drop table if exists player");
-            statement.executeUpdate("create table player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer, spell1 string, spell2 string, spell3 string)");
+            statement.executeUpdate("create table if not exists player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer, spell1 string, spell2 string, spell3 string)");
 
             String insertCommand = "insert into player values('"+player.name()+"',"+Integer.toString(player.maxHp())+","+Integer.toString(player.hp())+","+Integer.toString(player.maxMp())+","+Integer.toString(player.mp())+","+Integer.toString(player.phyAttack())+","+Integer.toString(player.magAttack())+","+Integer.toString(player.maxPhyDefense())+","+Integer.toString(player.maxMagDefense())+","+Integer.toString(player.level())+","+Integer.toString(player.xp())+",'"+player.spellList().get(0)+"','"+player.spellList().get(1)+"','"+player.spellList().get(2)+"')";
             statement.executeUpdate(insertCommand);
@@ -121,7 +120,7 @@ public class SaveFunction {
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:QuickSave.db");
             Statement statement = connection.createStatement();
-            // statement.setQueryTimeout(30);
+            statement.setQueryTimeout(5);
 
             statement.executeUpdate("drop table if exists player");
             statement.executeUpdate("create table player(name string, maxhp integer, hp integer, maxmp integer, mp integer, phyattack integer, magattack integer, phydef integer, magdef integer, level integer, xp integer, spell1 string, spell2 string, spell3 string)");
