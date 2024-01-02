@@ -95,7 +95,7 @@ public class DialogScreen implements Screen {
 
         //Ascii Art
         // x=43, y=32 character
-        npcAscii.displayAsciiArtFromFile(6, 10, npc.asciiPath(), isNpcTurn, terminal);
+        npcAscii.displayAsciiArtFromFile(1, 10, npc.asciiPath(), isNpcTurn, terminal);
 
         terminal.write("Press [1] to continue ..." , 2,38);
 

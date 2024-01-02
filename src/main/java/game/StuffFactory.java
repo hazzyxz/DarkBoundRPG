@@ -37,7 +37,7 @@ public class StuffFactory {
 
     public Creature newNpc(){
         // initialize npc in world with green 'N' and its stats
-        Creature npc = new Creature(world, "Damsel",'N', AsciiPanel.brightMagenta, 1, 1, 1, 1, 1, 1,1,1, new boolean[]{false, false, false, false}, new int[]{1, 0}, empty,"/asciiArt/test ascii.txt");
+        Creature npc = new Creature(world, "Damsel",'N', AsciiPanel.brightMagenta, 1, 1, 1, 1, 1, 1,1,1, new boolean[]{false, false, false, false}, new int[]{1, 0}, empty,"/asciiArt/npc.txt");
 
         // adds the npc creature to an empty location in the game world
         world.addAtEmptyLocation(npc);
