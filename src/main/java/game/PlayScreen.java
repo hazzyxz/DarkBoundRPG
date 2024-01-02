@@ -439,7 +439,7 @@ public class PlayScreen implements Screen {
         }
          */
         for (int i = 0; i < 6; i++){
-            creatureFactory.newGoblin();
+            creatureFactory.newFungus();
         }
         for (int i = 0; i < 5; i++){
             creatureFactory.newWitch();

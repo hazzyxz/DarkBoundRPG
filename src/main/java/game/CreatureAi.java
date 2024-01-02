@@ -1,6 +1,5 @@
 package game;
 
-import asciiPanel.AsciiPanel;
 public class CreatureAi {
     protected Creature creature;
     //stores a reference to the Creature object
@@ -67,5 +66,34 @@ public class CreatureAi {
     public void onGainLevel(){
 
     }
+
+    public void onTurn(Creature other){
+        attack(other);
+    }
+
+    public void attack(Creature other){
+        int amount;
+
+        //take the largest between phyatt or magatt
+        amount = Math.max(creature.magAttack(),creature.phyAttack());
+
+        //if phy att then phy def
+        if(amount == creature.phyAttack())
+            amount -= other.phyDefense();
+        else
+            amount -= other.magDefense();
+
+        amount = Math.max(5,amount);
+
+        if (BattleScreen.isPlayerDefending) {
+            amount = (int) (0.85 * amount);
+            BattleScreen.isPlayerDefending = false;
+        }
+
+        other.modifyHp(-amount);
+
+        BattleScreen.log(" > The " + creature.name() + " attack " + other.name() + " for " + amount + " damage");
+    }
+
 
 }

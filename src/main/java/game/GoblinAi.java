@@ -1,6 +1,6 @@
 package game;
 
-public class GoblinAi extends CreatureAi {
+class GoblinAi extends CreatureAi {
 
     public GoblinAi(Creature creature) {
         super(creature);
@@ -11,3 +11,4 @@ public class GoblinAi extends CreatureAi {
         wander();
     }
 }
+

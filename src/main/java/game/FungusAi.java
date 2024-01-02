@@ -41,4 +41,15 @@ public class FungusAi extends CreatureAi {
         creature.doAction("spawn a child");
     }
 
+    @Override
+    public void onTurn(Creature other) {
+        attack(other);
+        healSelf();
+    }
+
+    private void healSelf() {
+        creature.modifyHp(2);
+        BattleScreen.log(" > The " + creature.name() + " heals itself for 2 hp");
+    }
+
 }

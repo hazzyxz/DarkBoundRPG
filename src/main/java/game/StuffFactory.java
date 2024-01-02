@@ -83,29 +83,38 @@ public class StuffFactory {
     public Creature newSkeleton() {
         Creature skeleton = new Creature(world, "Skeleton",'s',AsciiPanel.brightRed,60, 60, 1,1,12,1,7,3, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(skeleton);
-        new GoblinAi(skeleton);
+        new SkeletonAi(skeleton);
         return skeleton;
     }
 
     public Creature newWitch(){
         Creature witch = new Creature(world, "Witch",'w',AsciiPanel.brightRed,50,50, 80,80,8,20,6,12, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/witch.txt");
         world.addAtEmptyLocation(witch);
-        new GoblinAi(witch);
+        new WitchAi(witch);
         return witch;
     }
 
     public Creature newOrc(){
         Creature orc = new Creature(world, "Orc",'O',AsciiPanel.brightRed,70, 70, 1,1,15,1,9,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(orc);
-        new GoblinAi(orc);
+        new OrcAi(orc);
         return orc;
     }
 
     public Creature newHarpy(){
+
         Creature harpy = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,60, 60, 20,20,14,10,8,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
         world.addAtEmptyLocation(harpy);
-        new BatAi(harpy);
+        new HarpyAi(harpy);
         return harpy;
+    }
+
+    //create new harpy 2 with increased stat from harpy
+    public Creature newHarpy2(){
+        Creature harpy2 = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,80, 80, 25,25,16,12,10,10, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(harpy2);
+        new BatAi(harpy2);
+        return harpy2;
     }
 
     // a rock item

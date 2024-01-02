@@ -138,7 +138,24 @@ public class Creature {
     }
 
     private CreatureAi ai;
-    public void setCreatureAi(CreatureAi ai) { this.ai = ai; }
+    public void setCreatureAi(CreatureAi ai) {
+        this.ai = ai;
+    }
+
+    public void creatureTurn(Creature other){
+        ai.onTurn(other);
+    }
+
+    /*
+    public int attack(Creature other){
+        int amount = ai.attack(other);
+        //either 5 0r other
+
+        amount = Math.max(5,amount);
+
+        return amount;
+    }
+     */
 
     //method to dig wall
     public void dig(int wx, int wy) {
@@ -167,10 +184,6 @@ public class Creature {
 
         if (mx==0 && my==0)
             return;
-
-    }
-
-    public void attack(Creature other){
 
     }
 

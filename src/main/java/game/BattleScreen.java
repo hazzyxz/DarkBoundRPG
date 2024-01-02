@@ -17,7 +17,7 @@ public class BattleScreen implements Screen {
     private int canHeal = 1; //heal 1 per game, 1 = true
 
     private int defenseCooldown = 0; // Track the remaining cooldown rounds for defense
-    private boolean isPlayerDefending = false;
+    protected static boolean isPlayerDefending = false;
     private int spell1Cooldown = 0;
     private int spell2Cooldown = 0; // Track cooldown of spells
     private int spell3Cooldown = 0;
@@ -29,7 +29,7 @@ public class BattleScreen implements Screen {
     private int randType = (int) (Math.random()*7);
 
 
-    private List<String> logHistory; // List to store log history
+    private static List<String> logHistory; // List to store log history
 
     AsciiArtDisplayer enemyAscii = new AsciiArtDisplayer();
 
@@ -350,7 +350,8 @@ public class BattleScreen implements Screen {
 
     public void enemyTurn(){
         isEnemyAttacking = !isEnemyAttacking;
-        enemyAttack();
+        enemy.creatureTurn(player);
+        //enemyAttack();
     }
 
     public boolean canPlayerRun(){
@@ -390,6 +391,8 @@ public class BattleScreen implements Screen {
         //call the notify method while passing the string
         //notify("You attack the '%s' for %d damage.", other.name(), amount);
         //other.notify("The '%s' attacks you for %d damage.", name, amount);
+
+
 
     }
 
@@ -495,6 +498,21 @@ public class BattleScreen implements Screen {
     }
 
     public void enemyAttack(){
+
+        /*
+        int amount = enemy.attack(player);
+
+        if (isPlayerDefending) {
+            amount = (int) (0.8 * amount);
+            isPlayerDefending = false;
+        }
+
+        player.modifyHp(-amount);
+
+        log(" > The " + enemy.name() + " attack " + player.name() + " for " + amount + " damage");
+         */
+
+        /*
         int amount;
 
         //take the largest between phyatt or magatt
@@ -515,11 +533,12 @@ public class BattleScreen implements Screen {
         player.modifyHp(-amount);
 
         log(" > The " + enemy.name() + " attack " + player.name() + " for " + amount + " damage");
+         */
     }
 
 
 
-    private int lines;
+    private static int lines;
 
     // Method to display attack log including history
     // Method to display attack log including history
@@ -580,7 +599,7 @@ public class BattleScreen implements Screen {
     }
 
 
-    private void log(String log) {
+    protected static void log(String log) {
         //logHistory.add(log);
         logHistory.add(log);
 
