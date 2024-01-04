@@ -86,6 +86,73 @@ public class Creature {
         return spellList;
     }
 
+    private int spell1Cooldown;
+    public int spell1Cooldown() {
+        return spell1Cooldown;
+    }
+    public void setSpell1Cooldown(int value) {
+        spell1Cooldown = value;
+    }
+    public void modifySpell1Cooldown (int value) {
+        spell1Cooldown += value;
+    }
+
+    private int spell2Cooldown;
+    public int spell2Cooldown() {
+        return spell2Cooldown;
+    }
+    public void setSpell2Cooldown(int value) {
+        spell2Cooldown = value;
+    }
+    public void modifySpell2Cooldown (int value) {
+        spell2Cooldown += value;
+    }
+
+    private int spell3Cooldown;
+    public int spell3Cooldown() {
+        return spell3Cooldown;
+    }
+    public void setSpell3Cooldown(int value) {
+        spell3Cooldown = value;
+    }
+    public void modifySpell3Cooldown (int value) {
+        spell3Cooldown += value;
+    }
+
+    private int spell1Uptime;
+    public int spell1Uptime() {
+        return spell1Uptime;
+    }
+    public void setSpell1Uptime(int value) {
+        spell1Uptime = value;
+    }
+    public void modifySpell1Uptime(int value) {
+        spell1Uptime += value;
+    }
+
+    private int spell2Uptime;
+    public int spell2Uptime() {
+        return spell2Uptime;
+    }
+    public void setSpell2Uptime(int value) {
+        spell2Uptime = value;
+    }
+    public void modifySpell2Uptime(int value) {
+        spell2Uptime += value;
+    }
+
+    private int spell3Uptime;
+    public int spell3Uptime() {
+        return spell3Uptime;
+    }
+    public void setSpell3Uptime(int value) {
+        spell3Uptime = value;
+    }
+    public void modifySpell3Uptime(int value) {
+        spell3Uptime += value;
+    }
+
+
     private String asciiPath;
     public String asciiPath() { return asciiPath; }
 
@@ -133,6 +200,10 @@ public class Creature {
             this.spellList.add(spells.get(1));
             this.spellList.add(spells.get(2));
         }
+
+        this.spell1Cooldown = 0;
+        this.spell2Cooldown = 0;
+        this.spell3Cooldown = 0;
 
         this.asciiPath = asciiPath; //the ascii filepath for creature
     }
@@ -212,6 +283,14 @@ public class Creature {
          */
     }
 
+    public void modifyMp(int amount) {
+        mp += amount;
+    }
+
+    public void modifyMaxMp(int amount) {
+        maxMp += amount;
+    }
+
     public void modifyPhyDefense(int amount) {
         //defense value
         phyDefense += amount;
@@ -287,7 +366,8 @@ public class Creature {
         if (this.level >= 30)
             spellList.set(2, getClassSpell3());
         doAction("feel a power surging through");
-        modifyMaxHp(level * 2);
+        modifyMaxHp(level);
+        modifyMaxMp(level);
         modifyPhyDefense(level);
         modifyMaxPhyDefense(level);
         modifyMagDefense(level);
@@ -298,7 +378,7 @@ public class Creature {
     private String getClassSpell1() {
         switch(name) {
             case "Mage":
-                return "Magic Barrier";
+                return "Magic Shield";
             case "Rogue":
             case "Paladin":
             case "Archer":

@@ -1,22 +1,22 @@
 package game;
 
-public class RegalRoar extends Spell {
+public class MagicShield extends Spell {
     public void cast(Creature creature, Creature other) {
         manaCost = 10;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
             uptime = 2 + 1; // not include the round spell is cast
             cooldown = 2 + 1; // not include the round spell is cast
-            phyDefend = (int) (0.25 * creature.phyDefense());
-            creature.modifyPhyDefense(phyDefend);
-            message.add(" > You cast Regal Roar!");
-            message.add(" + You increase your Armour by " + phyDefend);
+            magDefend = (int) (0.25 * creature.magDefense());
+            creature.modifyMagDefense(magDefend);
+            message.add(" > You cast Magic Barrier");
+            message.add(" + You increase your Barrier by " + magDefend);
         }
         else
             message.add(" > Not enough mana!");
     }
 
     public void removeEffect(Creature player, Creature enemy) {
-        player.resetPhyDefense();
+        player.resetMagDefense();
     }
 }

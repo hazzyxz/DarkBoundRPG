@@ -18,12 +18,6 @@ public class BattleScreen implements Screen {
 
     private int defenseCooldown = 0; // Track the remaining cooldown rounds for defense
     protected static boolean isPlayerDefending = false;
-    private int spell1Cooldown = 0;
-    private int spell2Cooldown = 0; // Track cooldown of spells
-    private int spell3Cooldown = 0;
-    private int spell1Uptime = -1;
-    private int spell2Uptime = -1; // Track the uptime of special effects of spells
-    private int spell3Uptime = -1;
     private int round = 0;
     private int randEncounter = (int) (Math.random()*4);
     private int randType = (int) (Math.random()*7);
@@ -240,6 +234,9 @@ public class BattleScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        // Check for spell uptime, remove any at zero
+        checkSpellUptime(player,enemy);
+
         if (key.getKeyCode() == KeyEvent.VK_1)
             playerAttack();
         else if (key.getKeyCode() == KeyEvent.VK_2) {
@@ -273,29 +270,34 @@ public class BattleScreen implements Screen {
         else if (key.getKeyCode() == KeyEvent.VK_4)
             return null;
         else if (key.getKeyCode() == KeyEvent.VK_Q) {
-            if (spell1Cooldown == 0) {
-                castSpell(player.spellList().get(0));
+            if (player.spellList().get(0).equals("Locked")){
+                log(" > You can't cast that yet.");
+            }
+            if (player.spell1Cooldown() == 0) {
+                castSpell(player.spellList().get(0), player, enemy);
             }
             else {
-                log(" > You can't cast that yet. ( " + spell1Cooldown + " more round )");
+                log(" > You can't cast that yet. ( " + player.spell1Cooldown() + " more round )");
             }
         }
         else if (key.getKeyCode() == KeyEvent.VK_W) {
-            if (spell2Cooldown == 0)
-                castSpell(player.spellList().get(1));
+            if (player.spell2Cooldown() == 0  )
+                castSpell(player.spellList().get(1),player,enemy);
             else {
-                log(" > You can't cast that yet. ( " + spell2Cooldown + " more round )");
+                log(" > You can't cast that yet. ( " + player.spell2Cooldown() + " more round )");
             }
         }
         else if (key.getKeyCode() == KeyEvent.VK_E) {
-            if (spell3Cooldown == 0)
-                castSpell(player.spellList().get(2));
+            if (player.spell3Cooldown() == 0)
+                castSpell(player.spellList().get(2),player,enemy);
             else {
-                log(" > You can't cast that yet. ( " + spell3Cooldown + " more round )");
+                log(" > You can't cast that yet. ( " + player.spell3Cooldown() + " more round )");
             }
         }
         else
             return this;
+
+
 
         //isEnemyAttacking = !isEnemyAttacking;
         enemyTurn();
@@ -304,43 +306,42 @@ public class BattleScreen implements Screen {
         if(enemy.isDead()) {
             enemy.leaveCorpse();
             player.gainXp(enemy);
-            removeSpell1Effect(player,enemy);
-            removeSpell2Effect(player,enemy);
-            removeSpell3Effect(player,enemy);
+
+            // Remove all effects on the player
+            removeSpellEffect(player.spellList().get(0), player, enemy);
+            removeSpellEffect(player.spellList().get(1), player, enemy);
+            removeSpellEffect(player.spellList().get(2), player, enemy);
+
+            // Reset all spell cooldown
+            player.setSpell1Cooldown(0);
+            player.setSpell2Cooldown(0);
+            player.setSpell3Cooldown(0);
 
             return null;
         }
-
-        // Check for spell uptime, remove any at zero
-        if (spell1Uptime == 0)
-            removeSpell1Effect(player, enemy);
-        if (spell2Uptime == 0)
-            removeSpell2Effect(player, enemy);
-        if (spell3Uptime == 0)
-            removeSpell3Effect(player, enemy);
 
         if (defenseCooldown > 0) {
             defenseCooldown--;
         }
 
-        if (spell1Cooldown > 0) {
-            spell1Cooldown--;
+        if (player.spell1Cooldown() > 0) {
+            player.modifySpell1Cooldown(-1);
         }
-        if (spell2Cooldown > 0) {
-            spell2Cooldown--;
+        if (player.spell2Cooldown() > 0) {
+            player.modifySpell2Cooldown(-1);
         }
-        if (spell3Cooldown > 0) {
-            spell3Cooldown--;
+        if (player.spell3Cooldown() > 0) {
+            player.modifySpell3Cooldown(-1);
         }
 
-        if (spell1Uptime > 0) {
-            spell1Uptime--;
+        if (player.spell1Uptime() > 0) {
+            player.modifySpell1Uptime(-1);
         }
-        if (spell2Uptime > 0) {
-            spell2Uptime--;
+        if (player.spell2Uptime() > 0) {
+            player.modifySpell2Uptime(-1);
         }
-        if (spell3Uptime > 0) {
-            spell3Uptime--;
+        if (player.spell3Uptime() > 0) {
+            player.modifySpell3Uptime(-1);
         }
 
 
@@ -422,79 +423,86 @@ public class BattleScreen implements Screen {
         canHeal = 0;
     }
 
-    private void castSpell(String spellName) {
+    private void castSpell(String spellName, Creature creature, Creature other) {
         switch(spellName) {
             case "Regal Roar":
-                useSpell(new RegalRoar(), 1);
+                useSpell(new RegalRoar(), 1, creature, other);
                 break;
             case "Furious Strike":
-                useSpell(new FuriousStrike() ,2);
+                useSpell(new FuriousStrike() ,2, creature, other);
                 break;
             case "Great Phalanx":
-                useSpell(new GreatPhalanx(),3);
+                useSpell(new GreatPhalanx(),3, creature, other);
                 break;
+
+            case "Magic Shield":
+                useSpell(new MagicShield(),1, creature, other);
+                break;
+            case "Fireball":
+                useSpell(new Fireball(), 2, creature, other);
         }
     }
 
-    private void useSpell(Spell spell, int spellSlot) {
+    private void useSpell(Spell spell, int spellSlot, Creature creature, Creature other) {
         // Cast the spell
-        spell.cast(player,enemy);
+        spell.cast(creature,other);
+
         switch (spellSlot) {
             case 1:
-                spell1Uptime = spell.uptime();
-                spell1Cooldown = spell.cooldown();
+                creature.setSpell1Uptime(spell.uptime);
+                creature.setSpell1Cooldown(spell.cooldown());
                 break;
             case 2:
-                spell2Uptime = spell.uptime();
-                spell2Cooldown = spell.cooldown();
+                creature.setSpell2Uptime(spell.uptime);
+                creature.setSpell2Cooldown(spell.cooldown());
                 break;
             case 3:
-                spell3Uptime = spell.uptime();
-                spell3Cooldown = spell.cooldown();
+                creature.setSpell3Uptime(spell.uptime);
+                creature.setSpell3Cooldown(spell.cooldown());
                 break;
         }
-        log(spell.message);
 
-        // Do the effects of spell
-        if (spell.phyDamage >0) {
-            enemy.modifyHp(-spell.phyDamage());
-            System.out.println(spell.phyDamage());
-            log(" > You hit the " + enemy.name() + " for " + spell.phyDamage() + " damage");
-        }
-        if (spell.phyDefend()>0) {
-            player.modifyPhyDefense(spell.phyDefend());
-            log(" + You increase your Armour by " + spell.phyDefend());
-        }
-        if (spell.magDefend()>0) {
-            player.modifyMagDefense(spell.magDefend);
-            log(" + You increase your Barrier by " + spell.magDefend());
-        }
 
+        for (String line : spell.message()) {
+            log(line);
+        }
     }
 
-    private void removeSpell1Effect(Creature player, Creature enemy) {
-        switch(player.spellList().get(0)) {
+    private void checkSpellUptime(Creature creature, Creature other) {
+        if (!creature.spellList().isEmpty()) {
+            if (creature.spell1Uptime() == 0) {
+                removeSpellEffect(creature.spellList().get(0), creature, other);
+            }
+            if (creature.spell2Uptime() == 0) {
+                removeSpellEffect(creature.spellList().get(1), creature, other);
+            }
+            if (creature.spell3Uptime() == 0) {
+                removeSpellEffect(creature.spellList().get(2), creature, other);
+            }
+        }
+    }
+
+    private void removeSpellEffect(String spellName, Creature creature, Creature other) {
+        switch(spellName) {
             case "Regal Roar":
-                player.resetPhyDefense();
-                spell1Uptime = -1;
+                removeEffect(new RegalRoar(), creature, other);
+                creature.setSpell1Uptime(-1);
                 break;
-        }
-    }
-
-    private void removeSpell2Effect(Creature player, Creature enemy) {
-        switch(player.spellList().get(1)) {
-
-        }
-    }
-
-    private void removeSpell3Effect(Creature player, Creature enemy) {
-        switch(player.spellList().get(2)) {
             case "Great Phalanx":
-                player.resetPhyDefense();
-                player.resetMagDefense();
-                spell3Uptime = -1;
+                removeEffect(new GreatPhalanx(), creature, other);
+                creature.setSpell3Uptime(-1);
+                break;
+
+            case "Magic Shield":
+                removeEffect(new MagicShield(), creature, other);
+                creature.setSpell1Uptime(-1);
                 break;
         }
+    }
+
+
+    private void removeEffect(Spell spell, Creature creature, Creature other) {
+        spell.removeEffect(creature,other);
     }
 
     public void enemyAttack(){
@@ -511,8 +519,6 @@ public class BattleScreen implements Screen {
 
         log(" > The " + enemy.name() + " attack " + player.name() + " for " + amount + " damage");
          */
-
-        /*
         int amount;
 
         //take the largest between phyatt or magatt
@@ -533,7 +539,7 @@ public class BattleScreen implements Screen {
         player.modifyHp(-amount);
 
         log(" > The " + enemy.name() + " attack " + player.name() + " for " + amount + " damage");
-         */
+
     }
 
 

@@ -1,11 +1,19 @@
 package game;
 
-public class GreatPhalanx extends Spell{
-    void cast(Creature player, Creature enemy) {
-        this.uptime = 5 + 1;
-        this.cooldown = 6 + 1;
-        this.phyDefend = (int) (0.75*player.phyDefense());
-        this.magDefend = (int) (0.75*player.magDefense());
-        this.message = " > You cast Great Phalanx!";
+public class GreatPhalanx extends Spell {
+    void cast(Creature creature, Creature other) {
+        manaCost = 50;
+        if (manaCost() <= creature.mp()) {
+            creature.modifyMp(-manaCost());
+            uptime = 5;
+            cooldown = 6 + 1;
+            phyDefend = (int) (0.75 * creature.phyDefense());
+            magDefend = (int) (0.75 * creature.magDefense());
+            message.add(" > You cast Great Phalanx!");
+            message.add(" + You increase your Armour by " + phyDefend);
+            message.add(" + You increase your Barrier by " + magDefend);
+        }
+        else
+            message.add(" > Not enough mana!");
     }
 }
