@@ -6,12 +6,12 @@ Regal Roar
 
 Furious Strike
 - Level Requirement: 10
-- Description: Unleashes a powerful attack, dealing damage proportional to physical attack and defense.
+- Description: Unleashes a powerful attack, dealing damage proportional to physical attack and both defenses.
 - Cool Down: 4 rounds
 
 Great Phalanx
 - Level Requirement: 30
-- Description: The Warrior creates an impenetrable barrier with their shield, increasing both defenses for 5 rounds.
+- Description: The Warrior creates an impenetrable barrier with their shield, greatly increasing both defenses for 5 rounds.
 - Cool Down: 6 rounds
 
 
@@ -23,7 +23,7 @@ Magic Barrier
 
 Fireball
 - Level Requirement: 10
-- Description: Hurls a fiery projectile at the target, dealing magical damage.
+- Description: Hurls a fiery projectile at the target, dealing massive magical damage.
 - Cool Down: 4 rounds
 
 Flow of Void
@@ -55,9 +55,9 @@ Divine Shield
 - Description: Creates a small barrier, increasing both defenses.
 - Cool Down: 2 rounds
 
-Holy Smite
+Dual Smite
 - Level Requirement: 10
-- Description: Smashes the target with divine light, dealing both damage and slight heal.
+- Description: Slashes the target twice, dealing both damages and slight heal.
 - Cool Down: 4 rounds
 
 Ancient Blessings
