@@ -9,7 +9,7 @@ public class MagicShield extends Spell {
             cooldown = 2 + 1; // not include the round spell is cast
             magDefend = (int) (0.25 * creature.magDefense());
             creature.modifyMagDefense(magDefend);
-            message.add(" > You cast Magic Barrier");
+            message.add(" > You cast Magic Shield");
             message.add(" + You increase your Barrier by " + magDefend);
         }
         else
