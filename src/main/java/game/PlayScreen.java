@@ -298,7 +298,7 @@ public class PlayScreen implements Screen {
         terminal.write("",x,y++);
         terminal.write("ESC -- Save & Exit",x,y++);
 
-        terminal.write("World 1 but "+ChooseClassScreen.worldCount,42,21);
+        displayWorlds(terminal);
     }
 
     public void displayWorlds(AsciiPanel terminal) {
@@ -375,13 +375,13 @@ public class PlayScreen implements Screen {
          */
     }
 
-    public void createNewWorld(){
+    protected void createNewWorld(){
         int width = 40;
         int height = 40;
-        float initialChance = 0.47f; // higher = more wall in initial map
+        float initialChance = 0.4f; // higher = more wall in initial map
         int deathLimit = 3; //num of adjacent tile to decide if the tile is removed
         int birthLimit = 4;  //num of adjacent tile to decide if the tile is added
-        int repeat = 6; // lower = more jagged
+        int repeat = 7; // lower = more jagged
         int desiredSize = 750; //desired size of the largest region
 
         world = new WorldBuilder(width, height)
@@ -438,17 +438,20 @@ public class PlayScreen implements Screen {
             creatureFactory.newBat();
         }
          */
+
+        createEnemies(creatureFactory);
+    }
+
+    protected void createEnemies(StuffFactory creatureFactory){
+        //20 creature
         for (int i = 0; i < 6; i++){
             creatureFactory.newFungus();
         }
-        for (int i = 0; i < 5; i++){
-            creatureFactory.newWitch();
+        for (int i = 0; i < 7; i++){
+            creatureFactory.newGoblin();
         }
-        for (int i = 0; i < 4; i++){
-            creatureFactory.newOrc();
-        }
-        for (int i = 0; i < 5; i++){
-            creatureFactory.newHarpy();
+        for (int i = 0; i < 7; i++){
+            creatureFactory.newSkeleton();
         }
     }
 
@@ -482,7 +485,7 @@ public class PlayScreen implements Screen {
         //initialise creature array list
         List<Creature> creatures = world.getCreatures();
 
-        fov.update(player.x, player.y, player.visionRadius());
+        fov.update(player.x, player.y, visionRadius());
 
 
         //to render the tiles of the world
@@ -498,7 +501,10 @@ public class PlayScreen implements Screen {
                     terminal.write(fov.tile(wx, wy).glyph(), x, y, Color.DARK_GRAY);
             }
         }
+    }
 
+    protected int visionRadius() {
+        return 9;
     }
 
     /*
@@ -629,11 +635,4 @@ public class PlayScreen implements Screen {
     }
 
      */
-
-
-
-
-
-
-
 }

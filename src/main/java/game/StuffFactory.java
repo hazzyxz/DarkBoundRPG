@@ -109,13 +109,50 @@ public class StuffFactory {
         return harpy;
     }
 
-    //create new harpy 2 with increased stat from harpy
-    public Creature newHarpy2(){
-        Creature harpy2 = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,80, 80, 25,25,16,12,10,10, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
-        world.addAtEmptyLocation(harpy2);
-        new BatAi(harpy2);
-        return harpy2;
+    public Creature newGoblin2(){
+        Creature goblin = new Creature(world, "Hobgoblin",'G',AsciiPanel.brightRed,80, 80, 1,1,20,2,10,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(goblin);
+        new GoblinAi(goblin);
+        return goblin;
     }
+
+    public Creature newSkeleton2() {
+        Creature skeleton = new Creature(world, "Skeleton Warrior",'S',AsciiPanel.brightRed,120, 120, 1,1,24,1,14,6, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(skeleton);
+        new SkeletonAi(skeleton);
+        return skeleton;
+    }
+
+    public Creature newWitch2(){
+        Creature witch = new Creature(world, "Coven Witch",'W',AsciiPanel.brightRed,100,100, 160,160,16,40,12,24, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/witch.txt");
+        world.addAtEmptyLocation(witch);
+        new WitchAi(witch);
+        return witch;
+    }
+
+    public Creature newOrc2(){
+        Creature orc = new Creature(world, "Ogre",'0',AsciiPanel.brightRed,140, 140, 1,1,30,1,18,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(orc);
+        new OrcAi(orc);
+        return orc;
+    }
+
+    public Creature newHarpy2(){
+        Creature harpy = new Creature(world, "Stygian Harpy",'H',AsciiPanel.brightRed,120, 120, 40,40,28,20,16,16, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(harpy);
+        new HarpyAi(harpy);
+        return harpy;
+    }
+
+    /*
+    //create boss character
+    public Creature newBoss(){
+        Creature boss = new Creature(world, "Boss",'B',AsciiPanel.brightRed,200, 200, 50,50,50,50,50,50, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        world.addAtEmptyLocation(boss);
+        new BossAi(boss);
+        return boss;
+    }
+     */
 
     // a rock item
     public Item newRock(){

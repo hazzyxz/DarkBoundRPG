@@ -200,28 +200,14 @@ public class WorldBuilder {
         return this;
     }
 
-    /*
-    private WorldBuilder addExitStairs() {
-        int x = -1;
-        int y = -1;
-
-        do {
-            x = (int)(Math.random() * width);
-            y = (int)(Math.random() * height);
-        }
-        while (tiles[x][y] != Tile.FLOOR);
-
-        tiles[x][y] = Tile.STAIRS_UP;
-        return this;
-    }
-
-     */
-
     public void convertToFloor() {
         // Convert bottom row to floor tiles
+        /*
         for (int x = 0; x < width; x++) {
             tiles[x][height - 1] = Tile.FLOOR;
         }
+
+         */
 
         // Convert upper row to floor tiles
         for (int x = 0; x < width; x++) {
@@ -231,9 +217,15 @@ public class WorldBuilder {
 
     public WorldBuilder addExitStairs(){
         for (int x = 0; x<width; x++){
-            if(tiles[x][height-1] != Tile.WALL) {
-                tiles[x][height-1] = Tile.STAIRS_DOWN;
-
+            if(tiles[x][height-1] == Tile.FLOOR) {
+                //make if statement that will turn the tiles into down stairs with a 0.3 chance
+                int num = (int) (Math.random()*10);
+                if (num>8) {
+                    tiles[x][height - 1] = Tile.STAIRS_DOWN;
+                }
+                else{
+                    tiles[x][height - 1] = Tile.FLOOR;
+                }
             }
         }
         return this;

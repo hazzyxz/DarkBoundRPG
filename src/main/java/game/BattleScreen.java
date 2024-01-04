@@ -570,6 +570,7 @@ public class BattleScreen implements Screen {
                         // Move to the next line if the word exceeds the terminal width
                         xPosition = 46; // Reset X position
                         logY++; // Move to the next line
+                        lines++;
                     }
 
                     // Write the word at the calculated position
@@ -593,12 +594,10 @@ public class BattleScreen implements Screen {
 
                     xPosition += word.length() + 1; // Move X position for the next word
                 }
-
                 logY++; // Move to the next line for the next log entry
                 lines++;
                 xPosition = 49; // Reset X position for a new line
             }
-
             logY++; // Extra space between logs
             lines++;
         }
@@ -608,9 +607,11 @@ public class BattleScreen implements Screen {
     protected static void log(String log) {
         //logHistory.add(log);
         logHistory.add(log);
+        System.out.println(lines);
 
         // Ensure the log history maintains a maximum size
-        if (logHistory.size() > 0 && lines > 30+2 ) {//22
+        if (logHistory.size() > 0 && lines > 30 ) {//22
+
             logHistory.remove(0); // Remove the oldest log until it reaches the maximum size
         }
 

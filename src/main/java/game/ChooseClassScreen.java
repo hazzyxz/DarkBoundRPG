@@ -149,7 +149,7 @@ public class ChooseClassScreen implements Screen {
         worldCount = 0;
 
         //inititate playscreen (world)
-        return new PlayScreen();
+        return new PlayScreen4();
 
 
     }

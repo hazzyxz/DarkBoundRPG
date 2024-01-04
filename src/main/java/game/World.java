@@ -219,8 +219,6 @@ public class World {
         }
     }
 
-
-
     //let creature knows to update itself and start their turn
     public void update(){
         //'creature' represents every Creature in the creatures list

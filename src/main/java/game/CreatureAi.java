@@ -83,6 +83,7 @@ public class CreatureAi {
         else
             amount -= other.magDefense();
 
+        System.out.println(amount);
         amount = Math.max(5,amount);
 
         if (BattleScreen.isPlayerDefending) {
