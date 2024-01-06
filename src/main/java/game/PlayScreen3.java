@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 
 public class PlayScreen3 extends PlayScreen {
     private Screen subscreen;
-
+    private final int worldID = 3;
     public PlayScreen3(){
         super();
         player.doAction("enter Playscreen 3");
@@ -53,5 +53,10 @@ public class PlayScreen3 extends PlayScreen {
     public void displayHotkey(AsciiPanel terminal) {
         super.displayHotkey(terminal);
         terminal.write("World 3 but "+ChooseClassScreen.worldCount,42,21);
+    }
+
+    protected void saveGame () {
+        save.saveToFileSave(player);
+        save.saveToWorldSave(worldID);
     }
 }

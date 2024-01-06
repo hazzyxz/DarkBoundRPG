@@ -30,6 +30,7 @@ public class PlayScreen implements Screen {
     private int screenWidth;
     private int screenHeight;
     private Connection connection = null;
+    protected int worldID = 1;
 
     public PlayScreen(){
         //initialize dimension of play screen
@@ -169,13 +170,12 @@ public class PlayScreen implements Screen {
 
                 case KeyEvent.VK_P:
                     player.doAction("quick-save");
-                    save.saveToFileSave(player);
+                    saveGame();
                     break;
 
                 case KeyEvent.VK_ESCAPE:
-                    save.saveToFileSave(player);
-                    ChooseClassScreen.worldCount = 0;
-                    return new StartScreen();
+                    saveGame();
+                    System.exit(0);
 
                 //go down
 
@@ -605,6 +605,11 @@ public class PlayScreen implements Screen {
             }
         }
         return null;
+    }
+
+    protected void saveGame () {
+        save.saveToFileSave(player);
+        save.saveToWorldSave(worldID);
     }
 
 

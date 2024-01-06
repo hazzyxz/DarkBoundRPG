@@ -4,7 +4,7 @@ import asciiPanel.AsciiPanel;
 
 public class PlayScreen4 extends PlayScreen{
     private Screen subscreen;
-
+    private final int worldID = 4;
     public PlayScreen4(){
         super();
         player.doAction("enter Playscreen 4");
@@ -61,5 +61,10 @@ public class PlayScreen4 extends PlayScreen{
     public void displayHotkey(AsciiPanel terminal) {
         super.displayHotkey(terminal);
         terminal.write("World 4 but "+ChooseClassScreen.worldCount,42,21);
+    }
+
+    protected void saveGame () {
+        save.saveToFileSave(player);
+        save.saveToWorldSave(worldID);
     }
 }

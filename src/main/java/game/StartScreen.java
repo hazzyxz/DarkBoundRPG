@@ -9,7 +9,7 @@ public class StartScreen implements Screen {
     private World world;
     // private boolean haveClass = false;
     public static boolean cont;
-
+    SaveFunction save = new SaveFunction();
 
     //Creature player = new Creature(world, '@', AsciiPanel.brightWhite, 100, 20, 5);
     public void displayOutput(AsciiPanel terminal) {
@@ -39,7 +39,15 @@ public class StartScreen implements Screen {
             // Press 2 to continue from Save File
             case KeyEvent.VK_2:
                 cont = true;
-                return new PlayScreen();
+                int worldID = save.loadFromWorldSave();
+
+                return switch (worldID) {
+                    case 2 -> new PlayScreen2();
+                    case 3 -> new PlayScreen3();
+                    case 4 -> new PlayScreen4();
+                    case 5 -> new PlayScreen5();
+                    default -> new PlayScreen();
+                };
 
             case KeyEvent.VK_3:
                 System.exit(0);

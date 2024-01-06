@@ -100,6 +100,40 @@ public class SaveFunction {
         }
         return statFromSave;
     }
+    
+    public int loadFromWorldSave () {
+        int worldProgress = 0;
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:WorldSave.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(5);
+            ResultSet rs = statement.executeQuery("select * from world");
+            
+            worldProgress = Integer.parseInt(rs.getString("currentWorld"));
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return worldProgress;
+    }
+    
+    public void saveToWorldSave(int worldProgress) {
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:WorldSave.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(5);
+            
+            statement.executeUpdate("drop table if exists world");
+            statement.executeUpdate("create table if not exists world(currentWorld integer)");
+            
+            String insertCommand = "insert into world values("+worldProgress+")";
+            statement.executeUpdate(insertCommand);
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
 
     public void saveToFileSave(Creature player) {
         try {

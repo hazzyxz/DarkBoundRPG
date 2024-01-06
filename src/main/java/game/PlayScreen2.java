@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 public class PlayScreen2 extends PlayScreen {
     private Screen subscreen;
+    protected int worldID = 2;
 
     public PlayScreen2(){
         super();
@@ -52,5 +53,10 @@ public class PlayScreen2 extends PlayScreen {
     public void displayHotkey(AsciiPanel terminal) {
         super.displayHotkey(terminal);
         terminal.write("World 2 but "+ChooseClassScreen.worldCount,42,21);
+    }
+
+    protected void saveGame () {
+        save.saveToFileSave(player);
+        save.saveToWorldSave(worldID);
     }
 }
