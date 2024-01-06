@@ -43,4 +43,8 @@ public abstract class Spell {
     void removeEffect(Creature player, Creature enemy) {
         // @Override
     }
+
+    int getManaCost(Spell spell) {
+        return this.manaCost;
+    }
 }

@@ -281,6 +281,9 @@ public class BattleScreen implements Screen {
             }
         }
         else if (key.getKeyCode() == KeyEvent.VK_W) {
+            if (player.spellList().get(1).equals("Locked")){
+                log(" > You can't cast that yet.");
+            }
             if (player.spell2Cooldown() == 0  )
                 castSpell(player.spellList().get(1),player,enemy);
             else {
@@ -288,6 +291,9 @@ public class BattleScreen implements Screen {
             }
         }
         else if (key.getKeyCode() == KeyEvent.VK_E) {
+            if (player.spellList().get(2).equals("Locked")){
+                log(" > You can't cast that yet.");
+            }
             if (player.spell3Cooldown() == 0)
                 castSpell(player.spellList().get(2),player,enemy);
             else {
@@ -296,12 +302,6 @@ public class BattleScreen implements Screen {
         }
         else
             return this;
-
-
-
-        //isEnemyAttacking = !isEnemyAttacking;
-        enemyTurn();
-        round++;
 
         if(enemy.isDead()) {
             enemy.leaveCorpse();
@@ -319,6 +319,10 @@ public class BattleScreen implements Screen {
 
             return null;
         }
+
+        //isEnemyAttacking = !isEnemyAttacking;
+        enemyTurn();
+        round++;
 
         if (defenseCooldown > 0) {
             defenseCooldown--;
