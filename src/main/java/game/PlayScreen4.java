@@ -28,6 +28,7 @@ public class PlayScreen4 extends PlayScreen{
                 //generate game world with specific dimensions
                 //class that provide generating and customizing world
                 .makeCaves2(initialChance,deathLimit,birthLimit,repeat,desiredSize)
+                .addExitStairs()
                 .build();
         ChooseClassScreen.worldCount++;
     }

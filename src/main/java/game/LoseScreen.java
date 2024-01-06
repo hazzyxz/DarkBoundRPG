@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 public class LoseScreen implements Screen {
     public void displayOutput(AsciiPanel terminal) {
+        terminal.clear();
         AsciiArtDisplayer asciiDisplay = new AsciiArtDisplayer();
 
         asciiDisplay.displayAsciiArtFromFile(11,3,"/asciiArt/youDied.txt",AsciiPanel.brightRed,terminal);

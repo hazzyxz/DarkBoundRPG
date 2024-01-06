@@ -388,6 +388,7 @@ public class PlayScreen implements Screen {
                 //generate game world with specific dimensions
                 //class that provide generating and customizing world
                 .makeCaves2(initialChance,deathLimit,birthLimit,repeat,desiredSize)
+                .addExitStairs()
                 .build();
         ChooseClassScreen.worldCount++;
     }
@@ -444,6 +445,10 @@ public class PlayScreen implements Screen {
 
     protected void createEnemies(StuffFactory creatureFactory){
         //20 creature
+        for (int i = 0; i < 25; i++){
+            creatureFactory.newOrc();
+        }
+        /*
         for (int i = 0; i < 6; i++){
             creatureFactory.newFungus();
         }
@@ -453,6 +458,8 @@ public class PlayScreen implements Screen {
         for (int i = 0; i < 7; i++){
             creatureFactory.newSkeleton();
         }
+
+         */
     }
 
     //create items method

@@ -195,7 +195,7 @@ public class WorldBuilder {
             makeCaves2( initialChance, deathLimit, birthLimit, times, desiredSize);
         }
 
-        addExitStairs(); //add exit stairs to next level
+        //addExitStairs(); //add exit stairs to next level
 
         return this;
     }
@@ -220,7 +220,7 @@ public class WorldBuilder {
             if(tiles[x][height-1] == Tile.FLOOR) {
                 //make if statement that will turn the tiles into down stairs with a 0.3 chance
                 int num = (int) (Math.random()*10);
-                if (num>8) {
+                if (num>6) {
                     tiles[x][height - 1] = Tile.STAIRS_DOWN;
                 }
                 else{

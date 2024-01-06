@@ -32,6 +32,13 @@ public class PlayScreen5 extends PlayScreen{
         ChooseClassScreen.worldCount++;
     }
 
+    protected void createEnemies(StuffFactory creatureFactory){
+        //1 boss
+        for (int i = 0; i < 1; i++){
+            creatureFactory.newBoss();
+        }
+    }
+
     @Override
     public void displayHotkey(AsciiPanel terminal) {
         super.displayHotkey(terminal);

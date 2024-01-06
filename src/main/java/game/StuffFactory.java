@@ -144,15 +144,15 @@ public class StuffFactory {
         return harpy;
     }
 
-    /*
+
     //create boss character
     public Creature newBoss(){
-        Creature boss = new Creature(world, "Boss",'B',AsciiPanel.brightRed,200, 200, 50,50,50,50,50,50, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature boss = new Creature(world, "Margit, Omen Jatuh",'B',AsciiPanel.brightRed,300, 300, 50,50,80,20,70,50, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/boss1.txt");
         world.addAtEmptyLocation(boss);
         new BossAi(boss);
         return boss;
     }
-     */
+
 
     // a rock item
     public Item newRock(){

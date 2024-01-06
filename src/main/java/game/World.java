@@ -137,6 +137,19 @@ public class World {
             creature.y = y;
             creatures.add(creature);
         }
+        else if(creature.glyph()=='B'){
+            y = 30; // Fixed y coordinate at the first column
+
+            do {
+                x = (int) (Math.random() * height);
+                // Randomly generate x coordinate within the height of the screen
+            } while (!tile(x, y).isGround() || creature(x, y) != null);
+            // Keep generating new x coordinates until an empty location is found
+
+            creature.x = x;
+            creature.y = y;
+            creatures.add(creature);
+        }
         //add any creature in any
         else {
             do {

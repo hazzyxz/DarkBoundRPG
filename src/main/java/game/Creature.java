@@ -48,6 +48,10 @@ public class Creature {
     public int phyAttack() { return phyAttack; }
     private int magAttack;
     public int magAttack() { return magAttack; }
+    private int maxPhyAttack;
+    public int maxPhyAttack() { return maxPhyAttack; }
+    private int maxMagAttack;
+    public int maxMagAttack() { return maxMagAttack; }
 
     private int maxPhyDefense;
     public int maxPhyDefense() { return maxPhyDefense; }
@@ -162,7 +166,7 @@ public class Creature {
 
 
     // later change this and others to incorporate phyattack, magattack ...
-    public Creature(World world, String name, char glyph, Color color, int maxHp, int hp, int maxMp, int mp, int phyAttack, int magAttack, int maxPhyDefense, int maxMagDefense, boolean[] statusEffect, int[] lvl, ArrayList<String> spells, String asciiPath){
+    public Creature(World world, String name, char glyph, Color color, int maxHp, int hp, int maxMp, int mp, int maxPhyAttack, int maxMagAttack, int maxPhyDefense, int maxMagDefense, boolean[] statusEffect, int[] lvl, ArrayList<String> spells, String asciiPath){
         //constructor injection of creature class to set values
 
         this.world = world; //the world
@@ -176,8 +180,11 @@ public class Creature {
         this.maxMp = maxMp;
         this.mp = mp;
 
-        this.phyAttack = phyAttack; //the attack value of this creature
-        this.magAttack = magAttack;
+        this.phyAttack = maxPhyAttack; //the attack value of this creature
+        this.maxPhyAttack = maxPhyAttack; //the attack value of this creature
+        this.magAttack = maxMagAttack;
+        this.maxMagAttack = maxMagAttack; //the attack value of this creature
+
 
         this.maxPhyDefense = maxPhyDefense; //the defense value of this creature
         this.phyDefense = maxPhyDefense;
@@ -325,6 +332,13 @@ public class Creature {
     public void resetMagDefense(){
         //hp is minus the amount of damage taken
         magDefense = maxMagDefense;
+    }
+
+    public void resetAll(){
+        phyDefense = maxPhyDefense;
+        magDefense = maxMagDefense;
+        phyAttack = maxPhyAttack;
+        magAttack = maxMagAttack;
     }
 
     public void modifyFood(int amount) {

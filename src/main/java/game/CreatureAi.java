@@ -2,6 +2,7 @@ package game;
 
 public class CreatureAi {
     protected Creature creature;
+    private World world;
     //stores a reference to the Creature object
 
     public CreatureAi(Creature creature){
@@ -18,7 +19,7 @@ public class CreatureAi {
             creature.x = x;
             creature.y = y;
         } else {
-            creature.doAction("bump into a wall");
+            //creature.doAction("bump into a wall");
         }
     }
     //provides a framework for custom AI logic for different creatures in a game
@@ -83,7 +84,6 @@ public class CreatureAi {
         else
             amount -= other.magDefense();
 
-        System.out.println(amount);
         amount = Math.max(5,amount);
 
         if (BattleScreen.isPlayerDefending) {
@@ -93,7 +93,8 @@ public class CreatureAi {
 
         other.modifyHp(-amount);
 
-        BattleScreen.log(" > The " + creature.name() + " attack " + other.name() + " for " + amount + " damage");
+        BattleScreen.log(" > The " + creature.name() + " deals "  + amount + " damage");
+
     }
 
 

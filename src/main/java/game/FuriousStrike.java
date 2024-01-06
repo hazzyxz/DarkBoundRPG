@@ -9,7 +9,6 @@ public class FuriousStrike extends Spell {
             phyDamage = (int) (0.40 * creature.phyAttack() + 0.40 * creature.phyDefense() + 0.40 * creature.magDefense());
             phyDamage -= other.phyDefense();
             other.modifyHp(-phyDamage);
-            System.out.println(phyDamage);
             message.add(" > You cast Furious Strike on " + other.name());
             message.add(" > You hit the " + other.name() + " for " + phyDamage() + " damage");
         }

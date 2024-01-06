@@ -10,5 +10,9 @@ class GoblinAi extends CreatureAi {
         //call method 2x so move 2x every turn
         wander();
     }
+
+    public void onTurn(Creature other){
+        super.onTurn(other);
+    }
 }
 

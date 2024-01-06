@@ -13,6 +13,8 @@ public class StartScreen implements Screen {
 
     //Creature player = new Creature(world, '@', AsciiPanel.brightWhite, 100, 20, 5);
     public void displayOutput(AsciiPanel terminal) {
+        terminal.clear();
+
         AsciiArtDisplayer asciiDisplay = new AsciiArtDisplayer();
         //terminal.write("DarkBoundRPG",1, 3);
 
@@ -44,8 +46,7 @@ public class StartScreen implements Screen {
 
         }
 
-        //initiate class screen
-        return this;//enter on any key
+        return this;
     }
 
 

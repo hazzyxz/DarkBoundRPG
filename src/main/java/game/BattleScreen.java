@@ -240,21 +240,10 @@ public class BattleScreen implements Screen {
         if (key.getKeyCode() == KeyEvent.VK_1)
             playerAttack();
         else if (key.getKeyCode() == KeyEvent.VK_2) {
-            if (defenseCooldown == 0) {
-                isPlayerDefending = true;
-                defenseCooldown = 3; // Set the cooldown to 3 rounds
-                log(" > You defend! Damage received is reduced");
-            } else {
-                log(" > You can't defend yet. ( " + defenseCooldown +" more round )");
-            }
-            //playerDefend(); //increase defense value for 3 turn
+            playerDefend(); //increase defense value for 3 turn
         }
         else if (key.getKeyCode() == KeyEvent.VK_3) {
-            if(canHeal==1)
-                playerHeal();
-            else {
-                log(" > You can only heal once per game ");
-            }
+            playerHeal();
         }
         else if (key.getKeyCode() == KeyEvent.VK_4) {
             if(canPlayerRun()) {
@@ -267,8 +256,7 @@ public class BattleScreen implements Screen {
                 return this;
             }
         }
-        else if (key.getKeyCode() == KeyEvent.VK_4)
-            return null;
+
         else if (key.getKeyCode() == KeyEvent.VK_Q) {
             if (player.spellList().get(0).equals("Locked")){
                 log(" > You can't cast that yet.");
@@ -303,8 +291,11 @@ public class BattleScreen implements Screen {
         else
             return this;
 
+
         if(enemy.isDead()) {
+            enemy.doAction("fell to the ground");
             enemy.leaveCorpse();
+            enemy.resetAll();
             player.gainXp(enemy);
 
             // Remove all effects on the player
@@ -317,10 +308,13 @@ public class BattleScreen implements Screen {
             player.setSpell2Cooldown(0);
             player.setSpell3Cooldown(0);
 
+            if (enemy.glyph()=='B'){
+                return new WinScreen();
+            }
+
             return null;
         }
 
-        //isEnemyAttacking = !isEnemyAttacking;
         enemyTurn();
         round++;
 
@@ -359,18 +353,6 @@ public class BattleScreen implements Screen {
         //enemyAttack();
     }
 
-    public boolean canPlayerRun(){
-        int player =(int) (Math.random() * 6)+1;
-        log(" : Player roll a "+player+ " to escape");
-        if(player == 4){
-            return true;
-        }
-        else{
-            return false;
-        }
-
-    }
-
     public void playerAttack(){
         int amount;
 
@@ -402,6 +384,15 @@ public class BattleScreen implements Screen {
     }
 
     public void playerDefend(){
+        if (defenseCooldown == 0) {
+            isPlayerDefending = true;
+            defenseCooldown = 3; // Set the cooldown to 3 rounds
+            log(" > You defend! Damage received is reduced");
+        } else {
+            log(" > You can't defend yet. ( " + defenseCooldown +" more round )");
+        }
+
+        /*
         //take the players 35% of defend value
         int amount =(int) (Math.max(0, (player.magDefense()+player.phyDefense())*0.35/2));
 
@@ -411,9 +402,29 @@ public class BattleScreen implements Screen {
         player.modifyPhyDefense(amount);
         player.modifyMagDefense(amount);
         log(" + You increase your Armour and Barrier by " + amount);
+
+         */
     }
 
     public void playerHeal(){
+        if(canHeal==1) {
+            //take the players remaining hp
+            int amount = (int) (0.15 * player.hp());
+
+            //random number from 1 to amount of possible lost hp
+            //amount = (int)(Math.random() * amount) + 1;
+            if (player.hp() + amount > player.maxHp())
+                amount = player.maxHp() - player.hp();
+
+            player.modifyHp(amount);
+            log(" + You increase your health for " + amount + " Hp");
+            canHeal = 0;
+        }
+        else {
+            log(" > You can only heal once per game ");
+        }
+
+        /*
         //take the players remaining hp
         int amount = (int) (0.15 * player.hp());
 
@@ -425,6 +436,19 @@ public class BattleScreen implements Screen {
         player.modifyHp(amount);
         log(" + You increase your health for " + amount + " Hp");
         canHeal = 0;
+         */
+    }
+
+    public boolean canPlayerRun(){
+        int player =(int) (Math.random() * 6)+1;
+        log(" : Player roll a "+player+ " to escape");
+        if(player >= 5){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
     private void castSpell(String spellName, Creature creature, Creature other) {
@@ -447,7 +471,7 @@ public class BattleScreen implements Screen {
         }
     }
 
-    private void useSpell(Spell spell, int spellSlot, Creature creature, Creature other) {
+    public void useSpell(Spell spell, int spellSlot, Creature creature, Creature other) {
         // Cast the spell
         spell.cast(creature,other);
 
@@ -573,7 +597,7 @@ public class BattleScreen implements Screen {
                     if (xPosition + word.length() >= terminal.getWidth()) {
                         // Move to the next line if the word exceeds the terminal width
                         xPosition = 46; // Reset X position
-                        logY++; // Move to the next line
+                        //logY++; // Move to the next line
                         lines++;
                     }
 
@@ -614,7 +638,7 @@ public class BattleScreen implements Screen {
         System.out.println(lines);
 
         // Ensure the log history maintains a maximum size
-        if (logHistory.size() > 0 && lines > 30 ) {//22
+        if (logHistory.size() > 0 && lines > 29 ) {//22
 
             logHistory.remove(0); // Remove the oldest log until it reaches the maximum size
         }
