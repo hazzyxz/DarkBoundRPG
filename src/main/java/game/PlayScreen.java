@@ -448,18 +448,12 @@ public class PlayScreen implements Screen {
         for (int i = 0; i < 25; i++){
             creatureFactory.newOrc();
         }
-        /*
         for (int i = 0; i < 6; i++){
             creatureFactory.newFungus();
         }
         for (int i = 0; i < 7; i++){
             creatureFactory.newGoblin();
         }
-        for (int i = 0; i < 7; i++){
-            creatureFactory.newSkeleton();
-        }
-
-         */
     }
 
     //create items method

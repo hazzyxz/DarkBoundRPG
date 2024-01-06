@@ -46,25 +46,25 @@ public class ChooseClassScreen implements Screen {
         y = 5;
         terminal.write("[2] MAGE",x+9-2,y+11);
         String[] mage = ArchetypeLoader.loadArchetype(2);
-        displayClassStat(mage,x,y, "/asciiArt/warriorAscii.txt",terminal);
+        displayClassStat(mage,x,y, "/asciiArt/mageAscii.txt",terminal);
 
         x = 5;
         y = 20;
         terminal.write("[3] ROGUE",x+8-2,y+11);
         String[] rogue = ArchetypeLoader.loadArchetype(3);
-        displayClassStat(rogue,x,y, "/asciiArt/warriorAscii.txt",terminal);
+        displayClassStat(rogue,x,y, "/asciiArt/rogueAscii.txt",terminal);
 
         x = 50;
         y = 20;
         terminal.write("[4] PALADIN",x+7-2,y+11);
         String[] paladin = ArchetypeLoader.loadArchetype(4);
-        displayClassStat(paladin,x,y, "/asciiArt/warriorAscii.txt",terminal);
+        displayClassStat(paladin,x,y, "/asciiArt/paladinAscii.txt",terminal);
 
         x = 27;
         y = 35;
         terminal.write("[5] ARCHER",x+8-2,y+11);
         String[] archer = ArchetypeLoader.loadArchetype(5);
-        displayClassStat(archer,x,y, "/asciiArt/warriorAscii.txt",terminal);
+        displayClassStat(archer,x,y, "/asciiArt/archerAscii.txt",terminal);
 
         /*
         int y = 1;

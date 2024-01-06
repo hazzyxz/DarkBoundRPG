@@ -74,14 +74,14 @@ public class StuffFactory {
     }
 
     public Creature newGoblin(){
-        Creature goblin = new Creature(world, "Goblin",'g',AsciiPanel.brightRed,40, 40, 1,1,10,1,5,2, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature goblin = new Creature(world, "Goblin",'g',AsciiPanel.brightRed,40, 40, 1,1,10,1,5,2, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/goblinIdle.txt");
         world.addAtEmptyLocation(goblin);
         new GoblinAi(goblin);
         return goblin;
     }
 
     public Creature newSkeleton() {
-        Creature skeleton = new Creature(world, "Skeleton",'s',AsciiPanel.brightRed,60, 60, 1,1,12,1,7,3, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature skeleton = new Creature(world, "Skeleton",'s',AsciiPanel.brightRed,60, 60, 1,1,12,1,7,3, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/skeletonIdle.txt");
         world.addAtEmptyLocation(skeleton);
         new SkeletonAi(skeleton);
         return skeleton;
@@ -95,7 +95,7 @@ public class StuffFactory {
     }
 
     public Creature newOrc(){
-        Creature orc = new Creature(world, "Orc",'O',AsciiPanel.brightRed,70, 70, 1,1,15,1,9,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature orc = new Creature(world, "Orc",'O',AsciiPanel.brightRed,70, 70, 1,1,15,1,9,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/orcIdle.txt");
         world.addAtEmptyLocation(orc);
         new OrcAi(orc);
         return orc;
@@ -103,7 +103,7 @@ public class StuffFactory {
 
     public Creature newHarpy(){
 
-        Creature harpy = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,60, 60, 20,20,14,10,8,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature harpy = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,60, 60, 20,20,14,10,8,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/harpyIdle.txt");
         world.addAtEmptyLocation(harpy);
         new HarpyAi(harpy);
         return harpy;
