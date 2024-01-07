@@ -6,7 +6,7 @@ public class Backstab extends Spell{
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
             cooldown = 4 + 1;
-            uptime = 2;
+            uptime = 2 + 1;
             other.setStun();
             phyDamage = (int) (0.85 * creature.phyAttack());
             phyDamage -= other.phyDefense();

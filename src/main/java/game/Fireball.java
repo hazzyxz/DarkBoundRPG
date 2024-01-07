@@ -6,7 +6,7 @@ public class Fireball extends Spell {
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
             cooldown = 4 + 1;
-            magDamage = (int) (1.05* creature.magAttack());
+            magDamage = (int) (1.50* creature.magAttack());
             magDamage -= other.magDefense();
             other.modifyHp(-magDamage);
             message.add(" > You cast Fireball on " + other.name());

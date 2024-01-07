@@ -52,7 +52,7 @@ Dark Daggers
 Paladin [Holy Knight: Skills center around healing and defenses]
 Divine Shield
 - Level Requirement: 5
-- Description: Creates a small barrier, increasing both defenses.
+- Description: Creates a small barrier, increasing both defenses for 2 rounds.
 - Cool Down: 2 rounds
 
 Dual Smite
@@ -62,7 +62,7 @@ Dual Smite
 
 Ancient Blessings
 - Level Requirement: 30
-- Description: The Paladin pray for good health and fortune, recover the ability to heal and increases healing potency.
+- Description: The Paladin pray for good health and fortune, heal himself then recover the ability to heal.
 - Cool down: 6 rounds
 
 

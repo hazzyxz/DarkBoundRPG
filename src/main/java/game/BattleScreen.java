@@ -14,11 +14,11 @@ public class BattleScreen implements Screen {
 
 
     private boolean isEnemyAttacking = false;//for turn based combat
-    private int canHeal = 1; //heal 1 per game, 1 = true
+    private int canHeal = 2; //heal 2 per game
 
     private int defenseCooldown = 0; // Track the remaining cooldown rounds for defense
     protected static boolean isPlayerDefending = false;
-    private int round = 0;
+    private int round = 1;
     private int randEncounter = (int) (Math.random()*4);
     private int randType = (int) (Math.random()*7);
 
@@ -107,7 +107,7 @@ public class BattleScreen implements Screen {
         terminal.write("<"+defenseCooldown+"/2>cd",58,y++,AsciiPanel.brightBlack);
         str = "[3] Heal";
         terminal.write(str,x,y);
-        terminal.write("<"+canHeal+"/1>",58,y++,AsciiPanel.brightBlack);
+        terminal.write("<"+canHeal+"/2>",58,y++,AsciiPanel.brightBlack);
         terminal.write("[4] Escape",x,y++);
 
         y = 38;
@@ -234,6 +234,7 @@ public class BattleScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        log(" [ROUND "+round+"]");
         // Check for spell uptime, remove any at zero
         checkSpellUptime(player,enemy);
 
@@ -331,7 +332,7 @@ public class BattleScreen implements Screen {
                 log(" > The " + enemy.name() + " cannot see anything!");
             }
         }
-        if (enemy.statusEffect(1)) {
+        else if (enemy.statusEffect(1)) {
             log(" > The " + enemy.name() + " is stunned!");
         }
         else
@@ -428,9 +429,9 @@ public class BattleScreen implements Screen {
     }
 
     public void playerHeal(){
-        if(canHeal==1) {
+        if(canHeal>0) {
             //take the players remaining hp
-            int amount = (int) (0.15 * player.hp());
+            int amount = (int) (0.25 * player.maxHp());
 
             //random number from 1 to amount of possible lost hp
             //amount = (int)(Math.random() * amount) + 1;
@@ -439,10 +440,10 @@ public class BattleScreen implements Screen {
 
             player.modifyHp(amount);
             log(" + You increase your health for " + amount + " Hp");
-            canHeal = 0;
+            canHeal -= 1;
         }
         else {
-            log(" > You can only heal once per game ");
+            log(" > Out of charges ");
         }
 
         /*
@@ -502,6 +503,13 @@ public class BattleScreen implements Screen {
                 break;
             case "Dark Daggers":
                 useSpell(new DarkDaggers(),3, creature, other);
+                break;
+
+            case "Divine Shield":
+                useSpell(new DivineShield(),1, creature, other);
+                break;
+            case "Dual Smite":
+                useSpell(new DualSmite(),2, creature, other);
                 break;
         }
     }
@@ -568,6 +576,7 @@ public class BattleScreen implements Screen {
             case "Silent Domain":
                 removeEffect(new SilentDomain(), creature, other);
                 creature.setSpell1Uptime(-1);
+                break;
             case "Backstab":
                 removeEffect(new Backstab(), creature, other);
                 creature.setSpell2Uptime(-1);
@@ -575,6 +584,11 @@ public class BattleScreen implements Screen {
             case "Dark Daggers":
                 removeEffect(new DarkDaggers(), creature, other);
                 creature.setSpell3Uptime(-1);
+                break;
+
+            case "Divine Shield":
+                removeEffect(new DivineShield(), creature, other);
+                creature.setSpell1Uptime(-1);
                 break;
         }
     }

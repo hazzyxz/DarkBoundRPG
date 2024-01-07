@@ -125,7 +125,7 @@ public class PlayScreen implements Screen {
             switch (key.getKeyCode()) {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit()){
-                        save.saveToQuickSave(player);
+                        save.saveToFileSave(player);
                         return nextPlayScreen();
                         //return new PlayScreen2();
                     }
@@ -412,7 +412,7 @@ public class PlayScreen implements Screen {
         }
 
         // if world 1 and cont true = continue game from FileSave
-        else if (ChooseClassScreen.worldCount == 1 && StartScreen.cont) {
+        else {
             // Create the archetype class
             playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
 
@@ -423,6 +423,7 @@ public class PlayScreen implements Screen {
             player = creatureFactory.newPlayer(messages,playerCharacter);
             StartScreen.cont = false;
         }
+        /*
         // if not world 1 = continue game from QuickSave
         else if (ChooseClassScreen.worldCount > 1){
             playerCharacter = Archetype.createCharacter(ChooseClassScreen.classChoice);
@@ -432,6 +433,8 @@ public class PlayScreen implements Screen {
             player = creatureFactory.newPlayer(messages,playerCharacter);
             StartScreen.cont = false;
         }
+
+         */
 
         /*
         //create bat

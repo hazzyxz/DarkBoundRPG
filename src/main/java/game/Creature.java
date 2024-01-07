@@ -422,6 +422,7 @@ public class Creature {
             case "Rogue":
                 return "Silent Domain";
             case "Paladin":
+                return "Divine Shield";
             case "Archer":
             default:
                 return "Regal Roar";
@@ -435,6 +436,7 @@ public class Creature {
             case "Rogue":
                 return "Backstab";
             case "Paladin":
+                return "Dual Smite";
             case "Archer":
             default:
                 return "Furious Strike";
@@ -448,6 +450,7 @@ public class Creature {
             case "Rogue":
                 return "Dark Daggers";
             case "Paladin":
+                return "Ancient Blessing";
             case "Archer":
             default:
                 return "Great Phalanx";
