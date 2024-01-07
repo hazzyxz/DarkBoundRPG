@@ -315,7 +315,18 @@ public class BattleScreen implements Screen {
             return null;
         }
 
-        enemyTurn();
+        // Check for stun, silence & blind
+        if (enemy.statusEffect(3)) {
+            // check for blind - only 10% chance to hit
+            int chance = (int) (Math.random()*10) + 1;
+            if (chance == 1) {
+                enemyTurn();
+            } else {
+                log(" > The " + enemy.name() + " cannot see anything!");
+            }
+        }
+        else
+            enemyTurn();
         round++;
 
         if (defenseCooldown > 0) {
@@ -468,6 +479,9 @@ public class BattleScreen implements Screen {
                 break;
             case "Fireball":
                 useSpell(new Fireball(), 2, creature, other);
+                break;
+            case "Flow of Void":
+                useSpell(new FlowOfVoid(),3, creature, other);
         }
     }
 
@@ -525,6 +539,9 @@ public class BattleScreen implements Screen {
                 removeEffect(new MagicShield(), creature, other);
                 creature.setSpell1Uptime(-1);
                 break;
+            case "Flow of Void":
+                removeEffect(new FlowOfVoid(), creature, other);
+                creature.setSpell3Uptime(-1);
         }
     }
 

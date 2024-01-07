@@ -64,10 +64,36 @@ public class Creature {
     public int magDefense() { return magDefense; }
 
     private boolean[] statusEffect;
-    public boolean[] StatusEffect() {
-        return statusEffect;
+    public boolean statusEffect(int effect) {
+        return statusEffect[effect];
+    }
+    public void setPoison() {
+        statusEffect[0] = true;
+    }
+    public void removePoison() {
+        statusEffect[0] = false;
     }
 
+    public void setStun() {
+        statusEffect[1] = true;
+    }
+    public void removeStun() {
+        statusEffect[1] = false;
+    }
+
+    public void setSilence() {
+        statusEffect[2] = true;
+    }
+    public void removeSilence() {
+        statusEffect[2] = false;
+    }
+
+    public void setBlind() {
+        statusEffect[3] = true;
+    }
+    public void removeBlind() {
+        statusEffect[3] = false;
+    }
 
     private Inventory inventory;
     public Inventory inventory() { return inventory; }
