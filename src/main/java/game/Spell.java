@@ -47,4 +47,7 @@ public abstract class Spell {
     int getManaCost(Spell spell) {
         return this.manaCost;
     }
+    int getCooldown(Spell spell) {
+        return this.cooldown;
+    }
 }

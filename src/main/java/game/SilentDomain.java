@@ -5,7 +5,7 @@ public class SilentDomain extends Spell{
         manaCost = 10;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
-            cooldown = 3 + 1;
+            cooldown = 2 + 1;
             uptime = 2;
             other.setSilence();
             message.add(" > You cast Silent Domain!");

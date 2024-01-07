@@ -97,6 +97,20 @@ public class Creature {
 
     private Inventory inventory;
     public Inventory inventory() { return inventory; }
+    private int spell1Cost;
+    public int spell1Cost() {
+        return spell1Cost;
+    }
+
+    private int spell2Cost;
+    public int spell2Cost() {
+        return spell2Cost;
+    }
+
+    private int spell3Cost;
+    public int spell3Cost() {
+        return spell3Cost;
+    }
 
     private int maxFood;
     public int maxFood() { return maxFood; }
@@ -418,13 +432,17 @@ public class Creature {
     private String getClassSpell1() {
         switch(name) {
             case "Mage":
+                spell1Cost = 10;
                 return "Magic Shield";
             case "Rogue":
+                spell1Cost = 10;
                 return "Silent Domain";
             case "Paladin":
+                spell1Cost = 20;
                 return "Divine Shield";
             case "Archer":
             default:
+                spell1Cost = 10;
                 return "Regal Roar";
         }
     }
@@ -432,13 +450,17 @@ public class Creature {
     private String getClassSpell2() {
         switch(name) {
             case "Mage":
+                spell2Cost = 30;
                 return "Fireball";
             case "Rogue":
+                spell2Cost = 30;
                 return "Backstab";
             case "Paladin":
+                spell2Cost = 40;
                 return "Dual Smite";
             case "Archer":
             default:
+                spell2Cost = 25;
                 return "Furious Strike";
         }
     }
@@ -446,13 +468,16 @@ public class Creature {
     private String getClassSpell3() {
         switch(name) {
             case "Mage":
+                spell3Cost = 70;
                 return "Flow of Void";
             case "Rogue":
+                spell3Cost = 100;
                 return "Dark Daggers";
             case "Paladin":
                 return "Ancient Blessing";
             case "Archer":
             default:
+                spell3Cost = 50;
                 return "Great Phalanx";
         }
     }
