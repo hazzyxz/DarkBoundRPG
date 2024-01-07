@@ -449,7 +449,7 @@ public class PlayScreen implements Screen {
     protected void createEnemies(StuffFactory creatureFactory){
         //20 creature
         for (int i = 0; i < 25; i++){
-            creatureFactory.newOrc();
+            creatureFactory.newWitch();
         }
         for (int i = 0; i < 6; i++){
             creatureFactory.newFungus();
@@ -458,6 +458,8 @@ public class PlayScreen implements Screen {
             creatureFactory.newGoblin();
         }
     }
+
+
 
     //create items method
     private void createItems(StuffFactory factory) {

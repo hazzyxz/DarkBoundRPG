@@ -103,11 +103,11 @@ public class BattleScreen implements Screen {
         terminal.write("",x,y++);
         terminal.write("[1] Attack",x,y++);
         str = "[2] Defend";
-        terminal.write(str,x,y);
-        terminal.write("<"+defenseCooldown+"/2>cd",58,y++,AsciiPanel.brightBlack);
+        terminal.write(str,x,y++);
+        terminal.write("<"+defenseCooldown+"/2>cd",x,y++,AsciiPanel.brightBlack);
         str = "[3] Heal";
-        terminal.write(str,x,y);
-        terminal.write("<"+canHeal+"/2>",58,y++,AsciiPanel.brightBlack);
+        terminal.write(str,x,y++);
+        terminal.write("<"+canHeal+"/2>",x,y++,AsciiPanel.brightBlack);
         terminal.write("[4] Escape",x,y++);
 
         y = 38;
@@ -116,8 +116,11 @@ public class BattleScreen implements Screen {
         terminal.write("---------",x,y++,AsciiPanel.brightBlack);
         terminal.write("",x,y++);
         terminal.write("[Q] "+player.spellList().get(0),x,y++);
+        terminal.write("<"+player.spell1Cooldown()+"/2>cd",x,y++,AsciiPanel.brightBlack);
         terminal.write("[W] "+player.spellList().get(1),x,y++);
+        terminal.write("<"+player.spell1Cooldown()+"/4>cd",x,y++,AsciiPanel.brightBlack);
         terminal.write("[E] "+player.spellList().get(2),x,y++);
+        terminal.write("<"+player.spell1Cooldown()+"/6cd>",x,y++,AsciiPanel.brightBlack);
 
         //log
         displayLog(terminal);
