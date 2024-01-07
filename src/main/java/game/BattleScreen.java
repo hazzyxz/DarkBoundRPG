@@ -291,6 +291,12 @@ public class BattleScreen implements Screen {
         else
             return this;
 
+        // Check for poison effect
+        if (enemy.statusEffect(0)) {
+            enemy.modifyHp(-(int)(0.05*enemy.maxHp()));
+            log(" > The "+enemy.name()+" took poison damage!");
+        }
+
 
         if(enemy.isDead()) {
             enemy.doAction("fell to the ground");
@@ -315,7 +321,7 @@ public class BattleScreen implements Screen {
             return null;
         }
 
-        // Check for stun, silence & blind
+        // Check for stun & blind
         if (enemy.statusEffect(3)) {
             // check for blind - only 10% chance to hit
             int chance = (int) (Math.random()*10) + 1;
@@ -325,8 +331,12 @@ public class BattleScreen implements Screen {
                 log(" > The " + enemy.name() + " cannot see anything!");
             }
         }
+        if (enemy.statusEffect(1)) {
+            log(" > The " + enemy.name() + " is stunned!");
+        }
         else
             enemyTurn();
+
         round++;
 
         if (defenseCooldown > 0) {
@@ -482,6 +492,17 @@ public class BattleScreen implements Screen {
                 break;
             case "Flow of Void":
                 useSpell(new FlowOfVoid(),3, creature, other);
+                break;
+
+            case "Silent Domain":
+                useSpell(new SilentDomain(),1, creature, other);
+                break;
+            case "Backstab":
+                useSpell(new Backstab(),2, creature, other);
+                break;
+            case "Dark Daggers":
+                useSpell(new DarkDaggers(),3, creature, other);
+                break;
         }
     }
 
@@ -542,6 +563,19 @@ public class BattleScreen implements Screen {
             case "Flow of Void":
                 removeEffect(new FlowOfVoid(), creature, other);
                 creature.setSpell3Uptime(-1);
+                break;
+
+            case "Silent Domain":
+                removeEffect(new SilentDomain(), creature, other);
+                creature.setSpell1Uptime(-1);
+            case "Backstab":
+                removeEffect(new Backstab(), creature, other);
+                creature.setSpell2Uptime(-1);
+                break;
+            case "Dark Daggers":
+                removeEffect(new DarkDaggers(), creature, other);
+                creature.setSpell3Uptime(-1);
+                break;
         }
     }
 

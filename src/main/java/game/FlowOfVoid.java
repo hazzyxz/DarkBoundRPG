@@ -2,7 +2,7 @@ package game;
 
 public class FlowOfVoid extends Spell{
     public void cast(Creature creature, Creature other) {
-        manaCost = 30;
+        manaCost = 70;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
             cooldown = 6 + 1;

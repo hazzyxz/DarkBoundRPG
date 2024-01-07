@@ -14,13 +14,23 @@ public class OrcAi extends CreatureAi {
 
     public void onTurn(Creature other) {
         attack(other);
-        enrage();
+
+        // Check for silence effect, if true monster cannot be enraged
+        if (!creature.statusEffect(2)) {
+            enrage();
+        }
     }
 
 
     @Override
     public void attack(Creature other) {
         chance = (int) (Math.random() * 7)+1;
+
+        // Check for silence effect, if true monster cannot cast spells
+        if (creature.statusEffect(2)) {
+            chance += 1;
+        }
+
         int amount;
         System.out.println(chance);
 

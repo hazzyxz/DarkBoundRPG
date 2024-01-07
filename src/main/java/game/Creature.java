@@ -420,6 +420,7 @@ public class Creature {
             case "Mage":
                 return "Magic Shield";
             case "Rogue":
+                return "Silent Domain";
             case "Paladin":
             case "Archer":
             default:
@@ -432,6 +433,7 @@ public class Creature {
             case "Mage":
                 return "Fireball";
             case "Rogue":
+                return "Backstab";
             case "Paladin":
             case "Archer":
             default:
@@ -444,6 +446,7 @@ public class Creature {
             case "Mage":
                 return "Flow of Void";
             case "Rogue":
+                return "Dark Daggers";
             case "Paladin":
             case "Archer":
             default:

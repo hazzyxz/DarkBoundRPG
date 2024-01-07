@@ -40,7 +40,7 @@ Silent Domain
 
 Backstab
 - Level Requirement: 10
-- Description: Sneak behind the enemy and stabs them, causing physical damage and stunning them for 1 round.
+- Description: Sneak behind the enemy and stabs them, causing physical damage and stunning them for 2 rounds.
 - Cool Down: 4 rounds
 
 Dark Daggers
