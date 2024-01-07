@@ -110,6 +110,8 @@ public class SaveFunction {
             ResultSet rs = statement.executeQuery("select * from world");
             
             worldProgress = Integer.parseInt(rs.getString("currentWorld"));
+
+            rs.close();
         }
         catch (SQLException e) {
             System.err.println(e.getMessage());
