@@ -23,11 +23,11 @@ public abstract class Spell {
     public int magDamage() {
         return this.magDamage;
     }
-    protected int phyDefend;
+    protected int phyDefend = 0;
     public int phyDefend() {
         return this.phyDefend;
     }
-    protected int magDefend;
+    protected int magDefend = 0;
     public int magDefend() {
         return this.magDefend;
     }

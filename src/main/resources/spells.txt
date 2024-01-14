@@ -36,7 +36,7 @@ Rogue [Assassin of Dark: Skills center around status effects]
 Silent Domain
 - Level Requirement: 5
 - Description: Deletes all noises around temporarily, silencing the enemy for 2 rounds.
-- Cool Down: 3 rounds
+- Cool Down: 2 rounds
 
 Backstab
 - Level Requirement: 10
@@ -70,7 +70,7 @@ Archer [Elven-Blessed Hunter: Skills center around status effects and physical d
 Sand Throw
 - Level Requirement: 5
 - Description: Hurl bits of sand at the enemy, blinding them for 1 round.
-- Cool Down: 3 rounds
+- Cool Down: 2 rounds
 
 Coated Arrows
 - Level Requirement: 10

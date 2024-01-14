@@ -12,9 +12,7 @@ public class BattleScreen implements Screen {
     private Creature player;
     private Creature enemy;
 
-
     private boolean isEnemyAttacking = false;//for turn based combat
-    private int canHeal = 2; //heal 2 per game
 
     private int defenseCooldown = 0; // Track the remaining cooldown rounds for defense
     protected static boolean isPlayerDefending = false;
@@ -33,6 +31,8 @@ public class BattleScreen implements Screen {
 
         this.player = player;
         this.enemy = enemy;
+
+        log(" [ROUND " + round + "]");
     }
 
     private int xCenter = 45;
@@ -105,22 +105,24 @@ public class BattleScreen implements Screen {
         str = "[2] Defend";
         terminal.write(str,x,y++);
         terminal.write("<"+defenseCooldown+"/2>cd",x,y++,AsciiPanel.brightBlack);
-        str = "[3] Heal";
-        terminal.write(str,x,y++);
-        terminal.write("<"+canHeal+"/2>",x,y++,AsciiPanel.brightBlack);
-        terminal.write("[4] Escape",x,y++);
+        //str = "[3] Heal";
+        terminal.write("[3] Heal",x,y);
+        terminal.write("<"+player.hpFlask()+"/"+player.maxHpFlask()+">use",x+11,y++,AsciiPanel.brightBlack);
+        terminal.write("[4] Focus",x,y);
+        terminal.write("<"+player.mpFlask()+"/"+player.maxMpFlask()+">use",x+11,y++,AsciiPanel.brightBlack);
+        terminal.write("[5] Escape",x,y++);
 
         y = 38;
-        x = 46+20;
+        x = 46+21;
         terminal.write("{ SPELL }",x,y++,AsciiPanel.brightBlack);
         terminal.write("---------",x,y++,AsciiPanel.brightBlack);
         terminal.write("",x,y++);
         terminal.write("[Q] "+player.spellList().get(0),x,y++);
         terminal.write("<"+player.spell1Cooldown()+"/2>cd",x,y++,AsciiPanel.brightBlack);
         terminal.write("[W] "+player.spellList().get(1),x,y++);
-        terminal.write("<"+player.spell1Cooldown()+"/4>cd",x,y++,AsciiPanel.brightBlack);
+        terminal.write("<"+player.spell2Cooldown()+"/4>cd",x,y++,AsciiPanel.brightBlack);
         terminal.write("[E] "+player.spellList().get(2),x,y++);
-        terminal.write("<"+player.spell1Cooldown()+"/6cd>",x,y++,AsciiPanel.brightBlack);
+        terminal.write("<"+player.spell3Cooldown()+"/6>cd",x,y++,AsciiPanel.brightBlack);
 
         //log
         displayLog(terminal);
@@ -237,7 +239,6 @@ public class BattleScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-        log(" [ROUND "+round+"]");
         // Check for spell uptime, remove any at zero
         checkSpellUptime(player,enemy);
 
@@ -250,6 +251,9 @@ public class BattleScreen implements Screen {
             playerHeal();
         }
         else if (key.getKeyCode() == KeyEvent.VK_4) {
+            playerRecoverMp();
+        }
+        else if (key.getKeyCode() == KeyEvent.VK_5) {
             if(canPlayerRun()) {
                 player.doAction("manage to run away..");
                 return null;
@@ -341,8 +345,6 @@ public class BattleScreen implements Screen {
         else
             enemyTurn();
 
-        round++;
-
         if (defenseCooldown > 0) {
             defenseCooldown--;
         }
@@ -367,7 +369,8 @@ public class BattleScreen implements Screen {
             player.modifySpell3Uptime(-1);
         }
 
-
+        round++;
+        log(" [ROUND "+round+"]");
         // For example, returning null to exit the battle screen
         return this;
     }
@@ -432,18 +435,16 @@ public class BattleScreen implements Screen {
     }
 
     public void playerHeal(){
-        if(canHeal>0) {
+        if(player.hpFlask()>0) {
             //take the players remaining hp
             int amount = (int) (0.25 * player.maxHp());
 
-            //random number from 1 to amount of possible lost hp
-            //amount = (int)(Math.random() * amount) + 1;
             if (player.hp() + amount > player.maxHp())
                 amount = player.maxHp() - player.hp();
 
             player.modifyHp(amount);
             log(" + You increase your health for " + amount + " Hp");
-            canHeal -= 1;
+            player.modifyHpFlask(-1);
         }
         else {
             log(" > Out of charges ");
@@ -462,6 +463,21 @@ public class BattleScreen implements Screen {
         log(" + You increase your health for " + amount + " Hp");
         canHeal = 0;
          */
+    }
+    public void playerRecoverMp() {
+        if (player.mpFlask() > 0) {
+            //take the players remaining hp
+            int amount = (int) (0.25 * player.maxMp());
+
+            if (player.mp() + amount > player.maxMp())
+                amount = player.maxMp() - player.mp();
+
+            player.modifyMp(amount);
+            log(" + You increase your mana for " + amount + " mp");
+            player.modifyMpFlask(-1);
+        } else {
+            log(" > Out of charges ");
+        }
     }
 
     public boolean canPlayerRun(){
@@ -513,6 +529,9 @@ public class BattleScreen implements Screen {
                 break;
             case "Dual Smite":
                 useSpell(new DualSmite(),2, creature, other);
+                break;
+            case "Ancient Blessing":
+                useSpell(new AncientBlessing(), 3, creature, other);
                 break;
         }
     }

@@ -87,7 +87,7 @@ public class CreatureAi {
         amount = Math.max(5,amount);
 
         if (BattleScreen.isPlayerDefending) {
-            amount = (int) (0.85 * amount);
+            amount = (int) (0.5 * amount);
             BattleScreen.isPlayerDefending = false;
         }
 

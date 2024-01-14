@@ -97,6 +97,35 @@ public class Creature {
 
     private Inventory inventory;
     public Inventory inventory() { return inventory; }
+    private int hpFlask;
+    public int hpFlask() {
+        return hpFlask;
+    }
+    public void setHpFlask(int value) {
+        hpFlask = value;
+    }
+    public void modifyHpFlask(int value) {
+        hpFlask += value;
+    }
+    public int maxHpFlask = 2;
+    public int maxHpFlask() {
+        return maxHpFlask;
+    }
+    private int mpFlask;
+    public int mpFlask() {
+        return mpFlask;
+    }
+    public void setMpFlask(int value) {
+        mpFlask = value;
+    }
+    public void modifyMpFlask(int value) {
+        mpFlask += value;
+    }
+    public int maxMpFlask = 2;
+    public int maxMpFlask() {
+        return maxMpFlask;
+    }
+
     private int spell1Cost;
     public int spell1Cost() {
         return spell1Cost;

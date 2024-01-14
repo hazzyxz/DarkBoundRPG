@@ -407,6 +407,8 @@ public class PlayScreen implements Screen {
             playerCharacter.setStats(ArchetypeLoader.loadArchetype(ChooseClassScreen.classChoice));
             // Create a player object with stats from archetype
             player = creatureFactory.newPlayer(messages,playerCharacter);
+            player.setHpFlask(2);
+            player.setMpFlask(2);
 
             creatureFactory.newNpc();
         }
@@ -421,6 +423,9 @@ public class PlayScreen implements Screen {
 
             // Create a player creature from stats
             player = creatureFactory.newPlayer(messages,playerCharacter);
+            player.setHpFlask(2);
+            player.setMpFlask(2);
+
             StartScreen.cont = false;
         }
         /*
