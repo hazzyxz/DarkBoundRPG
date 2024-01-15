@@ -16,7 +16,7 @@ Great Phalanx
 
 
 Mage [Sorcerer of the Void: Skills center around magical attack and defense]
-Magic Barrier
+Magic Shield
 - Level Requirement: 5
 - Description: Create a magical barrier, increasing magical defense for 2 rounds.
 - Cool Down: 2 rounds
@@ -77,7 +77,7 @@ Coated Arrows
 - Description: Fires a flurry of arrows at the target, dealing damage and poisons the enemy for 2 rounds.
 - Cool Down: 4 rounds
 
-Artemis' Arrow
+Artemis Arrow
 - Level Requirement: 30
 - Description: The Archer shoots a great arrow that pierces the enemy, dealing physical damage ignoring physical defense.
 - Cool Down: 6 rounds

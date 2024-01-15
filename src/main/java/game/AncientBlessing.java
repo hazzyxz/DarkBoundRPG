@@ -2,7 +2,7 @@ package game;
 
 public class AncientBlessing extends Spell{
     public void cast(Creature creature, Creature other) {
-        manaCost = 60;
+        manaCost = 120;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
             cooldown = 6 + 1;
@@ -21,7 +21,7 @@ public class AncientBlessing extends Spell{
             creature.modifyHp(heal);
 
             message.add(" > You cast Ancient Blessing!");
-            message.add(" + You recovered"+ healUses +" healing uses");
+            message.add(" + You recovered "+ healUses +" healing uses");
             message.add(" + You increase your health for " + heal + " Hp");
         }
     }

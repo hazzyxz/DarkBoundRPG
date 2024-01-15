@@ -2,7 +2,7 @@ package game;
 
 public class GreatPhalanx extends Spell {
     void cast(Creature creature, Creature other) {
-        manaCost = 50;
+        manaCost = 120;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
             uptime = 5;

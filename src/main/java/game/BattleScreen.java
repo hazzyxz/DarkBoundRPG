@@ -104,7 +104,7 @@ public class BattleScreen implements Screen {
         terminal.write("[1] Attack",x,y++);
         str = "[2] Defend";
         terminal.write(str,x,y);
-        terminal.write("<"+defenseCooldown+"/2>cd",x+ 11,y++,AsciiPanel.brightBlack);
+        terminal.write("<"+defenseCooldown+"/2>cd",x+11,y++,AsciiPanel.brightBlack);
         //str = "[3] Heal";
         terminal.write("[3] Heal",x,y);
         terminal.write("<"+player.hpFlask()+"/"+player.maxHpFlask()+">use",x+11,y++,AsciiPanel.brightBlack);
@@ -382,7 +382,7 @@ public class BattleScreen implements Screen {
     }
 
     public void playerAttack(){
-        int amount;
+        int amount = 0;
 
         switch (player.name()){
             case "Warrior":
@@ -391,16 +391,15 @@ public class BattleScreen implements Screen {
                 amount = (int) (0.25*player.phyAttack());
                 amount -= enemy.phyDefense();
                 break;
+            case "Paladin":
             case "Mage":
                 amount = (int) (0.25 * player.magAttack());
                 amount -= enemy.magDefense();
                 break;
-            default:
-                amount = (int) (0.25 * (player.phyAttack()+ player.magAttack())/2);
-                amount -= (enemy.phyDefense() + enemy.magDefense())/2;
         }
-
         enemy.modifyHp(-amount);
+
+
         log(" > You attack the " + enemy.name() + " for " + amount + " damage");
 
         //call the notify method while passing the string
@@ -533,6 +532,16 @@ public class BattleScreen implements Screen {
             case "Ancient Blessing":
                 useSpell(new AncientBlessing(), 3, creature, other);
                 break;
+
+            case "Sand Throw":
+                useSpell(new SandThrow(),1,creature,other);
+                break;
+            case "Coated Arrows":
+                useSpell(new CoatedArrows(),2,creature,other);
+                break;
+            case "Artemis Arrow":
+                useSpell(new ArtemisArrow(),3,creature,other);
+                break;
         }
     }
 
@@ -610,6 +619,15 @@ public class BattleScreen implements Screen {
 
             case "Divine Shield":
                 removeEffect(new DivineShield(), creature, other);
+                creature.setSpell1Uptime(-1);
+                break;
+
+            case "Sand Throw":
+                removeEffect(new SandThrow(), creature, other);
+                creature.setSpell1Uptime(-1);
+                break;
+            case "Coated Arrows":
+                removeEffect(new CoatedArrows(), creature, other);
                 creature.setSpell1Uptime(-1);
                 break;
         }

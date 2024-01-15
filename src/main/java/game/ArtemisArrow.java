@@ -1,15 +1,15 @@
 package game;
 
-public class FuriousStrike extends Spell {
+public class ArtemisArrow extends Spell{
     public void cast(Creature creature, Creature other) {
-        manaCost = 70;
+        manaCost = 120;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
-            cooldown = 4 + 1;
-            phyDamage = (int) (0.40 * creature.phyAttack() + 0.40 * creature.phyDefense() + 0.40 * creature.magDefense());
-            phyDamage -= other.phyDefense();
+            cooldown = 6 + 1;
+            phyDamage = (int)(1.50 * creature.phyAttack());
             other.modifyHp(-phyDamage);
-            message.add(" > You cast Furious Strike on " + other.name());
+            message.add(" > You cast Artemis Arrow!");
+            message.add(" > Your arrow pierces the enemies' armor");
             message.add(" > You hit the " + other.name() + " for " + phyDamage() + " damage");
         }
         else

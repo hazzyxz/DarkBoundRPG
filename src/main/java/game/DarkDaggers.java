@@ -2,7 +2,7 @@ package game;
 
 public class DarkDaggers extends Spell {
     public void cast(Creature creature, Creature other) {
-        manaCost = 100;
+        manaCost = 120;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
             cooldown = 6 + 1;

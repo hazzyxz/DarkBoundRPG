@@ -126,7 +126,7 @@ public class PlayScreen implements Screen {
             switch (key.getKeyCode()) {
                 case KeyEvent.VK_F:
                     if (userIsTryingToExit()){
-                        save.saveToFileSave(player);
+                        saveGame();
                         return nextPlayScreen();
                         //return new PlayScreen2();
                     }

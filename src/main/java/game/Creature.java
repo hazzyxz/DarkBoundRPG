@@ -192,7 +192,7 @@ public class Creature {
         spell3Cooldown += value;
     }
 
-    private int spell1Uptime;
+    private int spell1Uptime = -1;
     public int spell1Uptime() {
         return spell1Uptime;
     }
@@ -203,7 +203,7 @@ public class Creature {
         spell1Uptime += value;
     }
 
-    private int spell2Uptime;
+    private int spell2Uptime = -1;
     public int spell2Uptime() {
         return spell2Uptime;
     }
@@ -214,7 +214,7 @@ public class Creature {
         spell2Uptime += value;
     }
 
-    private int spell3Uptime;
+    private int spell3Uptime = -1;
     public int spell3Uptime() {
         return spell3Uptime;
     }
@@ -461,17 +461,14 @@ public class Creature {
     private String getClassSpell1() {
         switch(name) {
             case "Mage":
-                spell1Cost = 10;
                 return "Magic Shield";
             case "Rogue":
-                spell1Cost = 10;
                 return "Silent Domain";
             case "Paladin":
-                spell1Cost = 20;
                 return "Divine Shield";
             case "Archer":
+                return "Sand Throw";
             default:
-                spell1Cost = 10;
                 return "Regal Roar";
         }
     }
@@ -479,17 +476,14 @@ public class Creature {
     private String getClassSpell2() {
         switch(name) {
             case "Mage":
-                spell2Cost = 30;
                 return "Fireball";
             case "Rogue":
-                spell2Cost = 30;
                 return "Backstab";
             case "Paladin":
-                spell2Cost = 40;
                 return "Dual Smite";
             case "Archer":
+                return "Coated Arrows";
             default:
-                spell2Cost = 25;
                 return "Furious Strike";
         }
     }
@@ -497,16 +491,14 @@ public class Creature {
     private String getClassSpell3() {
         switch(name) {
             case "Mage":
-                spell3Cost = 70;
                 return "Flow of Void";
             case "Rogue":
-                spell3Cost = 100;
                 return "Dark Daggers";
             case "Paladin":
                 return "Ancient Blessing";
             case "Archer":
+                return "Artemis Arrow";
             default:
-                spell3Cost = 50;
                 return "Great Phalanx";
         }
     }

@@ -1,21 +1,21 @@
 package game;
 
-public class SilentDomain extends Spell{
+public class SandThrow extends Spell {
     public void cast(Creature creature, Creature other) {
         manaCost = 20;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
             cooldown = 2 + 1;
-            uptime = 2 + 1;
-            other.setSilence();
-            message.add(" > You cast Silent Domain!");
-            message.add(" > The surroundings became dead quiet... ");
+            uptime = 1 + 1;
+            other.setBlind();
+            message.add(" > You cast Sand Throw!");
+            message.add(" > The "+other.name()+"'s accuracy is reduced for 1 round");
         }
         else
             message.add(" > Not enough mana!");
     }
 
     public void removeEffect(Creature creature, Creature other) {
-        other.removeSilence();
+        other.removeBlind();
     }
 }
