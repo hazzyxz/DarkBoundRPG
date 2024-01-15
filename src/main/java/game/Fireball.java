@@ -8,6 +8,7 @@ public class Fireball extends Spell {
             cooldown = 4 + 1;
             magDamage = (int) (1.50* creature.magAttack());
             magDamage -= other.magDefense();
+            magDamage = Math.max(5, magDamage);
             other.modifyHp(-magDamage);
             message.add(" > You cast Fireball on " + other.name());
             message.add(" > You hit the " + other.name() + " for " + magDamage() + " damage");

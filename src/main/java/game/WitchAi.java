@@ -42,7 +42,7 @@ public class WitchAi extends CreatureAi{
                 }
 
                 spell.cast(creature, other);
-                amount = spell.magDamage;
+                amount = Math.max(5, spell.magDamage);
 
                 BattleScreen.log(" > " + creature.name() + " cast Fireball!" );
                 BattleScreen.log(" : The Fireball burns you!");

@@ -432,7 +432,7 @@ public class Creature {
 
         //notify("You %s %d xp.", amount < 0 ? "lose" : "gain", amount);
         //(int)(Math.pow(level, 1.5) * 20)
-        while (xp > (int)(100*Math.pow(1.1,this.level-1))) {
+        while (xp > (int)(100*Math.pow(1.1,this.level-1)) && level < 35) {
             xp -= (int)(100*Math.pow(1.1,this.level-1));
             level++;
             maxXp = (int)(100*Math.pow(1.1,this.level-1));
@@ -444,7 +444,6 @@ public class Creature {
             this.hp = this.maxHp;
             this.mp = this.maxMp;
             doAction("gain a level!");
-            //modifyMaxHp(level * 2);
         }
     }
 
