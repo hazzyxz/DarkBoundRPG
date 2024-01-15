@@ -32,7 +32,7 @@ public class PlayerAi extends CreatureAi {
             //take the (x,y) of the tile that player is entering
             //update the (x,y) of player to new cord
         } else if (tile.isDiggable()) {
-            creature.dig(x, y);
+            //creature.dig(x, y);
             //call the dig method while passing new cord
         }
     }

@@ -363,6 +363,10 @@ public class Creature {
         mp += amount;
     }
 
+    public void setMp(int amount) {
+        mp = amount;
+    }
+
     public void modifyMaxMp(int amount) {
         maxMp += amount;
     }

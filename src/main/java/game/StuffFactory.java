@@ -147,7 +147,7 @@ public class StuffFactory {
 
     //create boss character
     public Creature newBoss(){
-        Creature boss = new Creature(world, "Margit, Omen Jatuh",'B',AsciiPanel.brightRed,2500, 2500, 50,50,650,650,70,50, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/bossAscii.txt");
+        Creature boss = new Creature(world, "Dragon",'B',AsciiPanel.brightRed,2500, 2500, 100,100,700,700,70,50, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/bossAscii.txt");
         world.addAtEmptyLocation(boss);
         new BossAi(boss);
         return boss;

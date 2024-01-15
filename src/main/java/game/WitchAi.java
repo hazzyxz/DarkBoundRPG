@@ -28,7 +28,7 @@ public class WitchAi extends CreatureAi{
         chance = (int) (Math.random() * 7)+1;
         // Check for silence effect, if true monster cannot cast spells
         if (creature.statusEffect(2)) {
-            chance += 1;
+            chance += 2;
         }
 
         int amount = 0;
@@ -45,7 +45,7 @@ public class WitchAi extends CreatureAi{
                 amount = spell.magDamage;
 
                 BattleScreen.log(" > " + creature.name() + " cast Fireball!" );
-                BattleScreen.log(" : The Fireball cause a 2nd degree burn!");
+                BattleScreen.log(" : The Fireball burns you!");
                 BattleScreen.log(" > The " + creature.name() + " deals " + amount + " damage");
 
                 break;
@@ -59,28 +59,13 @@ public class WitchAi extends CreatureAi{
 
                 spell.cast(creature, other);
                 amount = 0;
-                System.out.println(spell.magDefend);
 
+                BattleScreen.log(" > " + creature.name() + " mutter an incomprehensible mantra" );
                 BattleScreen.log(" > " + creature.name() + " cast Magic Shield!" );
                 BattleScreen.log(" : A bright light seem to surround the " + creature.name() + "!");
 
                 break;
 
-            case 3:
-                spell = new FlowOfVoid();
-
-                if(spell.manaCost > creature.mp()){
-                    attack(other);
-                }
-
-                spell.cast(creature, other);
-                amount = 0;
-                System.out.println(spell.magDefend);
-
-                BattleScreen.log(" > " + creature.name() + " cast Magic Shield!" );
-                BattleScreen.log(" : A bright light seem to surround the " + creature.name() + "!");
-
-                break;
 
             default:
                 //take the largest between phyatt or magatt
