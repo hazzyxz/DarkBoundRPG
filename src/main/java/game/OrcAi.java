@@ -75,7 +75,7 @@ public class OrcAi extends CreatureAi {
 
     public void enrage(){
         if (chance == 2 && !isEnraged) {
-            creature.modifyAttack(creature.phyAttack());
+            creature.modifyPhyAttack(creature.phyAttack());
             creature.modifyPhyDefense(-(creature.phyDefense() / 2));
             BattleScreen.log(" : The " + creature.name() + " is Enraged!! ");
             BattleScreen.log(" : The " + creature.name() + " now deals damage with extra passion ");

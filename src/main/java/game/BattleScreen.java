@@ -110,6 +110,7 @@ public class BattleScreen implements Screen {
         terminal.write("<"+player.hpFlask()+"/"+player.maxHpFlask()+">use",x+11,y++,AsciiPanel.brightBlack);
         terminal.write("[4] Focus",x,y);
         terminal.write("<"+player.mpFlask()+"/"+player.maxMpFlask()+">use",x+11,y++,AsciiPanel.brightBlack);
+        terminal.write("",x,y++);
         terminal.write("[5] Escape",x,y++);
 
         y = 38;
@@ -118,11 +119,11 @@ public class BattleScreen implements Screen {
         terminal.write("---------",x,y++,AsciiPanel.brightBlack);
         terminal.write("",x,y++);
         terminal.write("[Q] "+player.spellList().get(0),x,y++);
-        terminal.write("<"+player.spell1Cooldown()+"/2>cd",x,y++,AsciiPanel.brightBlack);
+        terminal.write("<"+player.spell1Cooldown()+"/2>cd <20>mp",x,y++,AsciiPanel.brightBlack);
         terminal.write("[W] "+player.spellList().get(1),x,y++);
-        terminal.write("<"+player.spell2Cooldown()+"/4>cd",x,y++,AsciiPanel.brightBlack);
+        terminal.write("<"+player.spell2Cooldown()+"/4>cd <70>mp",x,y++,AsciiPanel.brightBlack);
         terminal.write("[E] "+player.spellList().get(2),x,y++);
-        terminal.write("<"+player.spell3Cooldown()+"/6>cd",x,y++,AsciiPanel.brightBlack);
+        terminal.write("<"+player.spell3Cooldown()+"/6>cd <120>mp",x,y++,AsciiPanel.brightBlack);
 
         //log
         displayLog(terminal);

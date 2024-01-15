@@ -387,9 +387,12 @@ public class Creature {
         maxMagDefense += amount;
     }
 
-    public void modifyAttack(int amount) {
+    public void modifyPhyAttack(int amount) {
         //defense value
         phyAttack += amount;
+    }
+
+    public void modifyMagAttack(int amount) {
         magAttack += amount;
     }
 
@@ -444,18 +447,44 @@ public class Creature {
     public void increaseStats(){
         if (this.level >= 5)
             spellList.set(0, getClassSpell1());
-        if (this.level >= 10)
+        if (this.level >= 15)
             spellList.set(1, getClassSpell2());
         if (this.level >= 30)
             spellList.set(2, getClassSpell3());
         doAction("feel a power surging through");
+
+        switch (name) {
+            case "Warrior":
+                modifyMaxHp(level/3);
+                modifyPhyDefense(level/3);
+                modifyMaxPhyDefense(level/3);
+                modifyMagDefense(level/3);
+                modifyMaxMagDefense(level/3);
+                break;
+            case "Mage":
+                modifyMagAttack(level/3);
+                modifyMaxMp(level/3);
+                break;
+            case "Rogue":
+                modifyPhyAttack(level/3);
+                modifyPhyDefense(level/3);
+                modifyMaxPhyDefense(level/3);
+                break;
+            case "Paladin":
+                modifyPhyAttack(level/3);
+                modifyMagAttack(level/3);
+                break;
+            case "Archer":
+                modifyPhyAttack(level/2);
+        }
         modifyMaxHp(level);
         modifyMaxMp(level);
         modifyPhyDefense(level);
         modifyMaxPhyDefense(level);
         modifyMagDefense(level);
         modifyMaxMagDefense(level);
-        modifyAttack(level);
+        modifyPhyAttack(level);
+        modifyMagAttack(level);
     }
 
     private String getClassSpell1() {

@@ -14,7 +14,7 @@ public class CoatedArrows extends Spell {
 
             message.add(" > You cast Coated Arrows!");
             message.add(" > Your arrows poison the enemy!");
-            message.add(" > You hit "+other.name()+" for "+phyDamage+"damage");
+            message.add(" > You hit "+other.name()+" for "+phyDamage+" damage");
         }
         else
             message.add(" > Not enough mana!");
