@@ -67,6 +67,7 @@ public class PlayScreen implements Screen {
         displayInfo(terminal);
         displayLegends(terminal);
         displayHotkey(terminal);
+        displayWorlds(terminal);
 
         //call the displayMessages method
         displayMessages(terminal, messages);
@@ -212,6 +213,7 @@ public class PlayScreen implements Screen {
     }
 
     public Screen nextPlayScreen(){
+        player.doAction("enter Station Universiti");
         return new PlayScreen2();
     }
 
@@ -277,9 +279,16 @@ public class PlayScreen implements Screen {
         terminal.write("-------",x,y++);
         terminal.write(" ",x,y++);
 
-        terminal.write(player.glyph() + " - " + " Player",x,y++);
+        terminal.write(player.glyph() + " --" + " Player",x,y++);
         terminal.write(" ",x,y++);
-        terminal.write("F - " + " Fungus",x,y++);
+        terminal.write("N --" + " Penasihat",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("g --" + " Goblin",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("s --" + " Skeleton",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("w --" + " Witch",x,y++);
+
     }
 
     public void displayHotkey(AsciiPanel terminal) {
@@ -297,12 +306,50 @@ public class PlayScreen implements Screen {
         terminal.write("P -- Quick-save",x,y++);
         terminal.write("",x,y++);
         terminal.write("ESC -- Save & Exit",x,y++);
-
-        displayWorlds(terminal);
     }
 
     public void displayWorlds(AsciiPanel terminal) {
-        terminal.write("World 1 but "+ChooseClassScreen.worldCount,42,21);
+        int x = 59;
+
+        for(int i =0; i<19; i++) {
+            terminal.write("|", x+2, 21 + i,Color.DARK_GRAY);
+        }
+
+        terminal.write("LRT Universiti",x-17,22,AsciiPanel.brightWhite);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 21+i, AsciiPanel.brightWhite);
+            }
+        }
+
+        terminal.write("LRT KL Sentral",x-17,26,Color.DARK_GRAY);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 25+i, Color.DARK_GRAY);
+            }
+        }
+
+        terminal.write("LRT Pasar Seni",x-17,30,Color.DARK_GRAY);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 29+i, Color.DARK_GRAY);
+            }
+        }
+
+        terminal.write("LRT Kampung Baru",x-17,34,Color.DARK_GRAY);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 33+i, Color.DARK_GRAY);
+            }
+        }
+
+        terminal.write("LRT KLCC",x-17,38,Color.DARK_GRAY);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 37+i, Color.DARK_GRAY);
+            }
+        }
+
     }
 
     private void displayHealth(Creature creature,int x, int y, AsciiPanel terminal){
@@ -396,7 +443,6 @@ public class PlayScreen implements Screen {
     //create creatures method
     private void createCreatures(StuffFactory creatureFactory){
         //create player and player messages
-        System.out.println(ChooseClassScreen.worldCount);
 
         // if world 1 and cont false = new game | create character from base stats
         if(ChooseClassScreen.worldCount==1 && !StartScreen.cont){
@@ -452,15 +498,15 @@ public class PlayScreen implements Screen {
     }
 
     protected void createEnemies(StuffFactory creatureFactory){
-        //20 creature
-        for (int i = 0; i < 25; i++){
+        //25 creature
+        for (int i = 0; i < 5; i++){
             creatureFactory.newWitch();
         }
-        for (int i = 0; i < 6; i++){
-            creatureFactory.newFungus();
-        }
-        for (int i = 0; i < 7; i++){
+        for (int i = 0; i < 13; i++){
             creatureFactory.newGoblin();
+        }
+        for (int i = 0; i < 8; i++){
+            creatureFactory.newSkeleton();
         }
     }
 

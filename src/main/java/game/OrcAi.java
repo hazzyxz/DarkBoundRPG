@@ -32,7 +32,6 @@ public class OrcAi extends CreatureAi {
         }
 
         int amount;
-        System.out.println(chance);
 
         switch (chance){
             case 1:

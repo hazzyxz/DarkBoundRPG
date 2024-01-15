@@ -2,6 +2,7 @@ package game;
 
 import asciiPanel.AsciiPanel;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class PlayScreen2 extends PlayScreen {
@@ -10,7 +11,7 @@ public class PlayScreen2 extends PlayScreen {
 
     public PlayScreen2(){
         super();
-        player.doAction("enter Playscreen 2");
+        player.doAction("enter Station KL Sentral");
     }
 
     @Override
@@ -52,7 +53,71 @@ public class PlayScreen2 extends PlayScreen {
     @Override
     public void displayHotkey(AsciiPanel terminal) {
         super.displayHotkey(terminal);
-        terminal.write("World 2 but "+ChooseClassScreen.worldCount,42,21);
+    }
+
+    @Override
+    public void displayLegends(AsciiPanel terminal) {
+        int x = 67;
+        int y = 5;
+
+        terminal.write("Legends",x,y++);
+        terminal.write("-------",x,y++);
+        terminal.write(" ",x,y++);
+
+        terminal.write(player.glyph() + " --" + " Player",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("N --" + " Penasihat",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("w --" + " Witch",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("O --" + " Orc",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("h --" + " Harpy",x,y++);
+
+    }
+
+    @Override
+    public void displayWorlds(AsciiPanel terminal) {
+        int x = 59;
+
+        for(int i =0; i<19; i++) {
+            terminal.write("|", x+2, 21 + i,Color.DARK_GRAY);
+        }
+
+        terminal.write("LRT Universiti",x-17,22,AsciiPanel.brightWhite);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 21+i, AsciiPanel.brightWhite);
+            }
+        }
+
+        terminal.write("LRT KL Sentral",x-17,26, AsciiPanel.brightWhite);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 25+i, AsciiPanel.brightWhite);
+            }
+        }
+
+        terminal.write("LRT Pasar Seni",x-17,30,Color.DARK_GRAY);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 29+i, Color.DARK_GRAY);
+            }
+        }
+
+        terminal.write("LRT Kampung Baru",x-17,34,Color.DARK_GRAY);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 33+i, Color.DARK_GRAY);
+            }
+        }
+
+        terminal.write("LRT KLCC",x-17,38,Color.DARK_GRAY);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 37+i, Color.DARK_GRAY);
+            }
+        }
     }
 
     protected void saveGame () {

@@ -2,12 +2,14 @@ package game;
 
 import asciiPanel.AsciiPanel;
 
+import java.awt.*;
+
 public class PlayScreen5 extends PlayScreen{
     private Screen subscreen;
     private final int worldID = 5;
     public PlayScreen5(){
         super();
-        player.doAction("enter Playscreen 5");
+        player.doAction("enter Station KLCC");
     }
 
     @Override
@@ -42,7 +44,67 @@ public class PlayScreen5 extends PlayScreen{
     @Override
     public void displayHotkey(AsciiPanel terminal) {
         super.displayHotkey(terminal);
-        terminal.write("World 5 but "+ChooseClassScreen.worldCount,42,21);
+    }
+
+
+    public void displayLegends(AsciiPanel terminal) {
+        int x = 67;
+        int y = 5;
+
+        terminal.write("Legends",x,y++);
+        terminal.write("-------",x,y++);
+        terminal.write(" ",x,y++);
+
+        terminal.write(player.glyph() + " --" + " Player",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("N --" + " Penasihat",x,y++);
+        terminal.write(" ",x,y++);
+        terminal.write("B --" + " ?",x,y++);
+
+    }
+
+    @Override
+    public void displayWorlds(AsciiPanel terminal) {
+        int x = 59;
+
+        for(int i =0; i<19; i++) {
+            terminal.write("|", x+2, 21 + i,Color.DARK_GRAY);
+        }
+
+        terminal.write("LRT Universiti",x-17,22,AsciiPanel.brightWhite);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 21+i, AsciiPanel.brightWhite);
+            }
+        }
+
+        terminal.write("LRT KL Sentral",x-17,26, AsciiPanel.brightWhite);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 25+i, AsciiPanel.brightWhite);
+            }
+        }
+
+        terminal.write("LRT Pasar Seni",x-17,30, AsciiPanel.brightWhite);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 29+i, AsciiPanel.brightWhite);
+            }
+        }
+
+        terminal.write("LRT Kampung Baru",x-17,34, AsciiPanel.brightWhite);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 33+i, AsciiPanel.brightWhite);
+            }
+        }
+
+        terminal.write("LRT KLCC",x-17,38,AsciiPanel.red);
+        for(int i =0; i<3; i++) {
+            for (int j = 0; j < 5; j++) {
+                terminal.write("-", x + j, 37+i, AsciiPanel.red);
+            }
+        }
     }
 
     protected void saveGame () {

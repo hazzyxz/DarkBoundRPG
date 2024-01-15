@@ -722,7 +722,6 @@ public class BattleScreen implements Screen {
     protected static void log(String log) {
         //logHistory.add(log);
         logHistory.add(log);
-        System.out.println(lines);
 
         // Ensure the log history maintains a maximum size
         if (logHistory.size() > 0 && lines > 29 ) {//22
