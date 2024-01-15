@@ -37,7 +37,7 @@ public class StuffFactory {
 
     public Creature newNpc(){
         // initialize npc in world with green 'N' and its stats
-        Creature npc = new Creature(world, "Damsel",'N', AsciiPanel.brightMagenta, 1, 1, 1, 1, 1, 1,1,1, new boolean[]{false, false, false, false}, new int[]{1, 0}, empty,"/asciiArt/npc.txt");
+        Creature npc = new Creature(world, "Damsel",'N', AsciiPanel.brightMagenta, 1, 1, 1, 1, 1, 1,1,1, new boolean[]{false, false, false, false}, new int[]{1, 0}, empty, "/asciiArt/npcAscii.txt");
 
         // adds the npc creature to an empty location in the game world
         world.addAtEmptyLocation(npc);
@@ -74,28 +74,28 @@ public class StuffFactory {
     }
 
     public Creature newGoblin(){
-        Creature goblin = new Creature(world, "Goblin",'g',AsciiPanel.brightRed,40, 40, 1,1,10,1,5,2, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/goblinIdle.txt");
+        Creature goblin = new Creature(world, "Goblin",'g',AsciiPanel.brightRed,40, 40, 1,1,10,1,5,2, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/goblinAscii.txt");
         world.addAtEmptyLocation(goblin);
         new GoblinAi(goblin);
         return goblin;
     }
 
     public Creature newSkeleton() {
-        Creature skeleton = new Creature(world, "Skeleton",'s',AsciiPanel.brightRed,60, 60, 1,1,12,1,7,3, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/skeletonIdle.txt");
+        Creature skeleton = new Creature(world, "Skeleton",'s',AsciiPanel.brightRed,60, 60, 1,1,12,1,7,3, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/skeletonAscii.txt");
         world.addAtEmptyLocation(skeleton);
         new SkeletonAi(skeleton);
         return skeleton;
     }
 
     public Creature newWitch(){
-        Creature witch = new Creature(world, "Witch",'w',AsciiPanel.brightRed,50,50, 80,80,8,20,6,12, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/witch.txt");
+        Creature witch = new Creature(world, "Witch",'w',AsciiPanel.brightRed,50,50, 80,80,8,50,6,12, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/witchAscii.txt");
         world.addAtEmptyLocation(witch);
         new WitchAi(witch);
         return witch;
     }
 
     public Creature newOrc(){
-        Creature orc = new Creature(world, "Orc",'O',AsciiPanel.brightRed,70, 70, 1,1,15,1,9,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/orcIdle.txt");
+        Creature orc = new Creature(world, "Orc",'O',AsciiPanel.brightRed,70, 70, 1,1,15,1,9,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/orcAscii.txt");
         world.addAtEmptyLocation(orc);
         new OrcAi(orc);
         return orc;
@@ -103,42 +103,42 @@ public class StuffFactory {
 
     public Creature newHarpy(){
 
-        Creature harpy = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,60, 60, 20,20,14,10,8,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/harpyIdle.txt");
+        Creature harpy = new Creature(world, "Harpy",'h',AsciiPanel.brightRed,60, 60, 20,20,14,10,8,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/harpyAscii.txt");
         world.addAtEmptyLocation(harpy);
         new HarpyAi(harpy);
         return harpy;
     }
 
     public Creature newGoblin2(){
-        Creature goblin = new Creature(world, "Hobgoblin",'G',AsciiPanel.brightRed,80, 80, 1,1,20,2,10,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature goblin = new Creature(world, "Hobgoblin",'G',AsciiPanel.brightRed,80, 80, 1,1,20,2,10,4, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/goblinAscii.txt");
         world.addAtEmptyLocation(goblin);
         new GoblinAi(goblin);
         return goblin;
     }
 
     public Creature newSkeleton2() {
-        Creature skeleton = new Creature(world, "Skeleton Warrior",'S',AsciiPanel.brightRed,120, 120, 1,1,24,1,14,6, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature skeleton = new Creature(world, "Skeleton Warrior",'S',AsciiPanel.brightRed,120, 120, 1,1,24,1,14,6, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/skeletonAscii.txt");
         world.addAtEmptyLocation(skeleton);
         new SkeletonAi(skeleton);
         return skeleton;
     }
 
     public Creature newWitch2(){
-        Creature witch = new Creature(world, "Coven Witch",'W',AsciiPanel.brightRed,100,100, 160,160,16,40,12,24, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/witch.txt");
+        Creature witch = new Creature(world, "Coven Witch",'W',AsciiPanel.brightRed,100,100, 160,160,16,100,12,24, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/witchAscii.txt");
         world.addAtEmptyLocation(witch);
         new WitchAi(witch);
         return witch;
     }
 
     public Creature newOrc2(){
-        Creature orc = new Creature(world, "Ogre",'0',AsciiPanel.brightRed,140, 140, 1,1,30,1,18,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature orc = new Creature(world, "Ogre",'0',AsciiPanel.brightRed,140, 140, 1,1,30,1,18,8, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/orcAscii.txt");
         world.addAtEmptyLocation(orc);
         new OrcAi(orc);
         return orc;
     }
 
     public Creature newHarpy2(){
-        Creature harpy = new Creature(world, "Stygian Harpy",'H',AsciiPanel.brightRed,120, 120, 40,40,28,20,16,16, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/test ascii 2.txt");
+        Creature harpy = new Creature(world, "Stygian Harpy",'H',AsciiPanel.brightRed,120, 120, 40,40,28,20,16,16, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/harpyAscii.txt");
         world.addAtEmptyLocation(harpy);
         new HarpyAi(harpy);
         return harpy;
@@ -147,7 +147,7 @@ public class StuffFactory {
 
     //create boss character
     public Creature newBoss(){
-        Creature boss = new Creature(world, "Margit, Omen Jatuh",'B',AsciiPanel.brightRed,2500, 2500, 50,50,650,650,70,50, new boolean[]{false, false, false, false}, new int[]{1, 0},empty,"/asciiArt/boss1.txt");
+        Creature boss = new Creature(world, "Margit, Omen Jatuh",'B',AsciiPanel.brightRed,2500, 2500, 50,50,650,650,70,50, new boolean[]{false, false, false, false}, new int[]{1, 0},empty, "/asciiArt/bossAscii.txt");
         world.addAtEmptyLocation(boss);
         new BossAi(boss);
         return boss;

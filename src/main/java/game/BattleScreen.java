@@ -103,8 +103,8 @@ public class BattleScreen implements Screen {
         terminal.write("",x,y++);
         terminal.write("[1] Attack",x,y++);
         str = "[2] Defend";
-        terminal.write(str,x,y++);
-        terminal.write("<"+defenseCooldown+"/2>cd",x,y++,AsciiPanel.brightBlack);
+        terminal.write(str,x,y);
+        terminal.write("<"+defenseCooldown+"/2>cd",x+ 11,y++,AsciiPanel.brightBlack);
         //str = "[3] Heal";
         terminal.write("[3] Heal",x,y);
         terminal.write("<"+player.hpFlask()+"/"+player.maxHpFlask()+">use",x+11,y++,AsciiPanel.brightBlack);

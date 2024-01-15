@@ -75,8 +75,6 @@ public class PlayScreen4 extends PlayScreen{
 
         terminal.write(player.glyph() + " --" + " Player",x,y++);
         terminal.write(" ",x,y++);
-        terminal.write("N --" + " Penasihat",x,y++);
-        terminal.write(" ",x,y++);
         terminal.write("G --" + " Hobgoblin",x,y++);
         terminal.write(" ",x,y++);
         terminal.write("0 --" + " Ogre",x,y++);

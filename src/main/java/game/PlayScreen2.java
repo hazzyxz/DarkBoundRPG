@@ -66,8 +66,6 @@ public class PlayScreen2 extends PlayScreen {
 
         terminal.write(player.glyph() + " --" + " Player",x,y++);
         terminal.write(" ",x,y++);
-        terminal.write("N --" + " Penasihat",x,y++);
-        terminal.write(" ",x,y++);
         terminal.write("w --" + " Witch",x,y++);
         terminal.write(" ",x,y++);
         terminal.write("O --" + " Orc",x,y++);

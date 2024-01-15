@@ -24,8 +24,8 @@ public class StartScreen implements Screen {
         terminal.writeCenter("    [2] Continue ", y++);
         terminal.writeCenter(" ", y++);
         terminal.writeCenter("[3] Quit ", y++);
-        asciiDisplay.displayAsciiArtFromFile(7,5,"/asciiArt/title.txt",AsciiPanel.brightWhite,terminal);
-        asciiDisplay.displayAsciiArtFromFile(0,33,"/asciiArt/klcc.txt",AsciiPanel.brightBlack, terminal);
+        asciiDisplay.displayAsciiArtFromFile(7,5, "/asciiArt/titleDbrpgAscii.txt",AsciiPanel.brightWhite,terminal);
+        asciiDisplay.displayAsciiArtFromFile(0,33, "/asciiArt/klccAscii.txt",AsciiPanel.brightBlack, terminal);
         terminal.write("DarkBoundRPGtm/c2023 FromHardware,Inc.",1,49,AsciiPanel.white);//28 center
     }
 

@@ -301,11 +301,11 @@ public class PlayScreen implements Screen {
 
         terminal.write("WASD -- Move",x,y++);
         terminal.write("",x,y++);
-        terminal.write("F -- Interact",x,y++);
+        terminal.write("F    -- Interact",x,y++);
         terminal.write("",x,y++);
-        terminal.write("P -- Quick-save",x,y++);
+        terminal.write("P    -- Quick-save",x,y++);
         terminal.write("",x,y++);
-        terminal.write("ESC -- Save & Exit",x,y++);
+        terminal.write("ESC  -- Save & Exit",x,y++);
 
 
     }
