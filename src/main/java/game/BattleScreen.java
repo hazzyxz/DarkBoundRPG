@@ -326,6 +326,7 @@ public class BattleScreen implements Screen {
             enemy.leaveCorpse();
             enemy.resetAll();
             player.gainXp(enemy);
+            round = 1;
 
             // Remove all effects on the player
             removeSpellEffect(player.spellList().get(0), player, enemy);
@@ -412,6 +413,8 @@ public class BattleScreen implements Screen {
                 amount -= enemy.magDefense();
                 break;
         }
+
+        amount = Math.max(amount, 5);
         enemy.modifyHp(-amount);
 
 

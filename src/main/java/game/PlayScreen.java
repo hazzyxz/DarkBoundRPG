@@ -144,9 +144,6 @@ public class PlayScreen implements Screen {
                     else
                         player.pickup();
                     break;
-                case KeyEvent.VK_G: subscreen = new DropScreen(player); break;
-                case KeyEvent.VK_E: subscreen = new EatScreen(player); break;
-                case KeyEvent.VK_H: subscreen = new HelpScreen(); break;
                 case KeyEvent.VK_L: player.modifyXp(1000); break;
 
                 case KeyEvent.VK_LEFT:
