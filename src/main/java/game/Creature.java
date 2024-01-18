@@ -441,8 +441,10 @@ public class Creature {
             //this.hp = maxHp;
             //this.mp = maxMp;
             increaseStats();
-            //this.hp = this.maxHp;
-            //this.mp = this.maxMp;
+            if (level < 20) {
+                this.hp = this.maxHp;
+                this.mp = this.maxMp;
+            }
             doAction("gain a level!");
         }
     }
