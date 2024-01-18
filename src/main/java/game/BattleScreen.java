@@ -684,7 +684,7 @@ public class BattleScreen implements Screen {
         //either 5 0r other
         amount = Math.max(5,amount);
         if (isPlayerDefending) {
-            amount = (int) (0.85 * amount);
+            amount = (int) (0.5 * amount);
             isPlayerDefending = false;
         }
         player.modifyHp(-amount);
