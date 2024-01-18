@@ -31,8 +31,6 @@ public class BattleScreen implements Screen {
 
         this.player = player;
         this.enemy = enemy;
-
-        log(" [ROUND " + round + "]");
     }
 
     private int xCenter = 45;
@@ -254,6 +252,7 @@ public class BattleScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        log(" [ROUND "+round+"]");
         // Check for poison effect
         if (enemy.statusEffect(0)) {
             enemy.modifyHp(-(int)(0.065*enemy.maxHp()));
@@ -386,7 +385,6 @@ public class BattleScreen implements Screen {
         }
 
         round++;
-        log(" [ROUND "+round+"]");
         // For example, returning null to exit the battle screen
         return this;
     }
