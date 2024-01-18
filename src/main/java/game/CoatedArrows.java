@@ -5,10 +5,11 @@ public class CoatedArrows extends Spell {
         manaCost = 70;
         if (manaCost() <= creature.mp()) {
             creature.modifyMp(-manaCost());
-            cooldown = 6 + 1;
+            cooldown = 4 + 1;
             uptime = 2;
 
             phyDamage = (int)(1.10*creature.phyAttack());
+            phyDamage -= other.phyDefense();
             other.modifyHp(-phyDamage);
             other.setPoison();
 

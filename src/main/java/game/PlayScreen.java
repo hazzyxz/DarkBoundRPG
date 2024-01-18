@@ -177,6 +177,11 @@ public class PlayScreen implements Screen {
                 case KeyEvent.VK_ESCAPE:
                     saveGame();
                     System.exit(0);
+                    break;
+
+                case KeyEvent.VK_K:
+                    saveGame();
+                    return new PlayScreen5();
 
                 //go down
 

@@ -77,6 +77,9 @@ public class BattleScreen implements Screen {
         terminal.write('+',0,50-1,Color.yellow);
         terminal.write('+',88,50-1,Color.yellow);
 
+        //Ascii Art
+        // x=43, y=24 character
+        enemyAscii.displayAsciiArtFromFile(1,10, enemy.asciiPath(), isEnemyAttacking, terminal);
 
         //content profile
         String str = String.format("You"+ encounter[randEncounter] + "a" + type[randType] + enemy.name());
@@ -86,14 +89,25 @@ public class BattleScreen implements Screen {
         displayHealth(enemy,2,6, isPlayer,terminal);
         displayMana(enemy,2,8,isPlayer,terminal);
 
+        // Status effects for enemy
+        if (enemy.statusEffect(0)) {
+            terminal.write("[PSN]",2,7,AsciiPanel.green);
+        }
+        if (enemy.statusEffect(1)) {
+            terminal.write("[STN]",8,7,AsciiPanel.brightWhite);
+        }
+        if (enemy.statusEffect(2)) {
+            terminal.write("[SIL]",14,7,AsciiPanel.brightBlack);
+        }
+        if (enemy.statusEffect(3)) {
+            terminal.write("[BLN]",20,7,AsciiPanel.blue);
+        }
+
         terminal.write(">> " + player.name() + " <<",2,38,AsciiPanel.brightGreen);
         isPlayer = true;
         displayHealth(player,2,40, isPlayer, terminal);
         displayMana(player,2,42,isPlayer,terminal);
 
-        //Ascii Art
-        // x=43, y=24 character
-        enemyAscii.displayAsciiArtFromFile(1,10, enemy.asciiPath(), isEnemyAttacking, terminal);
 
         //action
         int y = 38;
@@ -240,6 +254,12 @@ public class BattleScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        // Check for poison effect
+        if (enemy.statusEffect(0)) {
+            enemy.modifyHp(-(int)(0.065*enemy.maxHp()));
+            log(" > The "+enemy.name()+" took poison damage!");
+        }
+
         // Check for spell uptime, remove any at zero
         checkSpellUptime(player,enemy);
 
@@ -299,12 +319,6 @@ public class BattleScreen implements Screen {
         }
         else
             return this;
-
-        // Check for poison effect
-        if (enemy.statusEffect(0)) {
-            enemy.modifyHp(-(int)(0.05*enemy.maxHp()));
-            log(" > The "+enemy.name()+" took poison damage!");
-        }
 
 
         if(enemy.isDead()) {
